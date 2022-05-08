@@ -24,10 +24,11 @@ const InsertExpense = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getObjects().then((res) => {
-      setObjects(res.data.objects);
-    });
-    console.log(categories.length);
+    getObjects()
+      .then((res) => {
+        setObjects(res.data.objects);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {

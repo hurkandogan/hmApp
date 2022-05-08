@@ -31,7 +31,7 @@ const House = () => {
         .then((res) => setObject(res.data.object))
         .catch((err) => console.log(err));
     }
-  }, [route]);
+  }, [route, selectedYear]);
 
   useEffect(() => {
     let fetchedCategories = [];
