@@ -1,0 +1,39 @@
+.container
+  padding: 0 2rem
+  &_inner
+    @apply flex flex-col justify-between items-center items-stretch
+    &_title
+      @apply flex flex-row
+      h1
+        font-size: 1.5rem
+        @apply w-full font-bold
+    &_header
+      height: 150px
+      @apply w-full flex flex-row items-center overflow-hidden border-b mb-2
+    .header_svg
+      @apply w-1/5
+    svg
+      width: 125px
+      height: 125px
+      opacity: 0.5
+    .header_col
+      @apply w-2/5
+  .content
+    @apply w-full flex flex-row items-center
+    .tab
+      &_container
+        @apply w-full
+      &_title_container
+        border-bottom: 1px solid gray
+        @apply flex flex-row items-center mt-2 cursor-pointer
+      &_title
+        border-top: 1px solid gray
+        border-bottom: 1px solid gray
+        border-right: 1px solid gray
+        &:first-child
+          border-left: 1px solid gray
+        @apply p-2
+      &_content
+        @apply w-full text-center
+        table
+          @apply w-full text-center

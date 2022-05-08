@@ -1,0 +1,33 @@
+@import 'Variables.module'
+
+.container
+  min-width: 250px
+  background-color: $secondary-background-color
+  color: #F5F5F5
+  -ms-overflow-style: none
+  scrollbar-width: none
+  @apply flex flex-col py-1.5 px-2.5 h-screen sticky top-0 overflow-hidden overflow-y-scroll
+  &::-webkit-scrollbar
+    display: none
+  .userInfo
+    @apply flex flex-row items-center justify-center mt-2
+    img
+      width: 50px
+      @apply mr-2
+    p
+      @apply inline text-sm text-center
+  h1
+    @apply text-xl text-center font-bold
+  hr
+    width: 80%
+    margin: 0 10%
+    @apply my-3 border-stone-600
+  .sidebarMenuSeperator
+    width: 100%
+    @apply m-0 mb-2
+  ul
+    @apply list-none m-0 p-0
+    li
+      @apply flex flex-row items-center justify-start cursor-pointer py-1.5 px-0 my-2
+      svg
+        @apply inline mr-2
