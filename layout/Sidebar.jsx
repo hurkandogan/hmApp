@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import styles from '../styles/Sidebar.module.sass';
 import globalStyles from '../styles/Global.module.sass';
 import getObjects from '../service/objects/getObjects';
@@ -7,7 +8,9 @@ import { house, expense } from '../assets/icons';
 import Link from 'next/link';
 
 const Sidebar = () => {
+  const { data: session } = useSession();
   const { objects, setObjects, setSelectedObject } = useAppContext();
+
   useEffect(() => {
     getObjects().then((res) => {
       console.log(res.data.objects);
@@ -16,15 +19,12 @@ const Sidebar = () => {
   }, []);
 
   const handleMenuClick = (object) => setSelectedObject(object);
-
+  console.log(session);
   return (
     <div className={styles.container}>
       <div className={styles.userInfo}>
         <img src="https://picsum.photos/50/50" />
-        <p>
-          Hürkan <br />
-          Dogan
-        </p>
+        <p>{session?.user.email}</p>
       </div>
       <hr />
       <ul>

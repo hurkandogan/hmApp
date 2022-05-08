@@ -56,7 +56,8 @@ const House = () => {
             setSelectedCategory(categoriesWithExpenses[i].id);
           }
         }
-      });
+      })
+      .catch((err) => console.log(err));
   }, [object]);
 
   const handleSelectedYear = (e) => setSelectedYear(e.target.value);

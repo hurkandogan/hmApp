@@ -3,6 +3,7 @@ import Head from 'next/head';
 import styles from '../styles/App.module.sass';
 import Layout from '../layout/Layout';
 import { AppProvider } from '../context';
+import { SessionProvider } from 'next-auth/react';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
@@ -13,9 +14,11 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AppProvider>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <SessionProvider session={session}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </SessionProvider>
       </AppProvider>
     </div>
   );
