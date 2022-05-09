@@ -9,4 +9,17 @@ export default NextAuth({
             issuer: process.env.COGNITO_ISSUER,
         }),
     ],
+    callbacks: {
+        async jwt({ token, account }) {
+            if (account) {
+                token.token = account.id_token
+            }
+            return token
+        },
+        async session({ session, token }) {
+            if (token.token)
+                session.token = token.token
+            return session
+        },
+    },
 })

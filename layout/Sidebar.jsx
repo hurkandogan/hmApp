@@ -13,7 +13,6 @@ const Sidebar = () => {
 
   useEffect(() => {
     getObjects().then((res) => {
-      console.log(res.data.objects);
       setObjects(res.data.objects);
     });
   }, []);
@@ -24,7 +23,7 @@ const Sidebar = () => {
     <div className={styles.container}>
       <div className={styles.userInfo}>
         <img src="https://picsum.photos/50/50" />
-        <p>{session?.user.email}</p>
+        <p>{session?.user.name ? session?.user.name : session?.user.email}</p>
       </div>
       <hr />
       <ul>
