@@ -18,7 +18,7 @@ const House = () => {
 
   useEffect(() => {
     setRoute(router.query.route);
-    // TODO: Year value should be handled in ContextAPI or in Header
+    // TODO: Year value should be handled in ContextAPI or in Header 
     setYearValues([]);
     for (let i = selectedYear; i >= 2019; i--) {
       setYearValues((prevState) => [...prevState, i]);
