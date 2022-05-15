@@ -12,13 +12,17 @@ const Sidebar = () => {
   const { objects, setObjects, setSelectedObject } = useAppContext();
 
   useEffect(() => {
-    getObjects().then((res) => {
-      setObjects(res.data.objects);
-    });
+    getObjects()
+      .then((res) => {
+        console.log(res);
+        if (res.data.data) {
+          setObjects(res.data.data);
+        }
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   const handleMenuClick = (object) => setSelectedObject(object);
-  console.log(session);
   return (
     <div className={styles.container}>
       <div className={styles.userInfo}>

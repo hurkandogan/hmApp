@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-    baseURL: 'http://localhost:8000/api/v1',
+    baseURL: 'https://h6ruft66h1.execute-api.eu-central-1.amazonaws.com/dev',
 });
 
 async function get(route, data = "") {

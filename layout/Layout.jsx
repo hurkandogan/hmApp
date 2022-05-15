@@ -1,11 +1,12 @@
 import Header from './Header';
 import Sidebar from './Sidebar';
 import styles from '../styles/Layout.module.sass';
-import { useSession, signIn, signOut } from 'next-auth/react';
+//import { useSession, signIn } from 'next-auth/react';
 
 const Layout = ({ children }) => {
-  const { data: session } = useSession();
-  if (session) {
+  // const { data: session } = useSession();
+  //if (session) {
+  if (true) {
     return (
       <div className={styles.container}>
         <Sidebar />
@@ -18,7 +19,9 @@ const Layout = ({ children }) => {
   } else {
     return (
       <div className={styles.container}>
-        <button onClick={() => signIn()}>Sign In</button>
+        <button onClick={() => console.log('Sign in function should be added')}>
+          Sign In
+        </button>
       </div>
     );
   }
