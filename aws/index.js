@@ -43,7 +43,6 @@ exports.handler = async (event) => {
                     console.log('getAllObjects: ', objects);
                     return success(objects);
                 }
-                    break;
             }
         }
             break;
