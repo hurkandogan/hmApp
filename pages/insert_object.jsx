@@ -21,12 +21,20 @@ const InsertObject = () => {
     });
   };
 
+  const checkboxChangeHandler = (e) => {
+    setObject({
+      ...object,
+      [e.target.name]: e.target.checked ? 1 : 0,
+    });
+  };
+
   const formSubmit = () => {
     saveObject(object)
       .then((res) => {
         console.log(res);
       })
       .catch((err) => console.log(err));
+    setObject(INITIAL_STATE);
   };
 
   return (
@@ -70,7 +78,8 @@ const InsertObject = () => {
             type="checkbox"
             id="isMenu"
             name="isMenu"
-            onChange={changeHandler}
+            value={object.isMenu}
+            onChange={checkboxChangeHandler}
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
@@ -79,7 +88,8 @@ const InsertObject = () => {
             type="checkbox"
             id="isHouse"
             name="isHouse"
-            onChange={changeHandler}
+            value={object.isHouse}
+            onChange={checkboxChangeHandler}
           />
         </div>
       </div>
