@@ -26,7 +26,7 @@ const InsertExpense = () => {
   useEffect(() => {
     getObjects()
       .then((res) => {
-        setObjects(res.data.objects);
+        setObjects(res.data.data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -34,7 +34,7 @@ const InsertExpense = () => {
   useEffect(() => {
     getCategories()
       .then((res) => {
-        const categories = res.data.result;
+        const categories = res.data.data;
         let categoriesToMap = [];
         if (selectedObject && categories.length > 0) {
           categories.forEach((el) => {
@@ -51,7 +51,7 @@ const InsertExpense = () => {
   const changeHandler = (e) => {
     const { type, checked, name, value } = e.target;
     if (type === 'checkbox') {
-      setExpense({ ...expense, [name]: checked });
+      setExpense({ ...expense, [name]: checked ? 1 : 0 });
     } else {
       setExpense({ ...expense, [name]: value });
     }

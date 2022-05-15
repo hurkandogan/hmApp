@@ -14,7 +14,6 @@ const Sidebar = () => {
   useEffect(() => {
     getObjects()
       .then((res) => {
-        console.log(res);
         if (res.data.data) {
           setObjects(res.data.data);
         }

@@ -1,7 +1,9 @@
 const mysql = require('mysql2');
 const { getAllObjects } = require('./objects/getAllObjects');
 const { saveObject } = require('./objects/saveObject');
+const { getCategories } = require('./categories/getCategories');
 const { getDashboardTotals } = require('./dashboard/getDashboardTotals');
+const { saveExpense } = require('./expense/saveExpense');
 
 const con = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -51,6 +53,7 @@ exports.handler = async (event) => {
                 }
             }
         }
+            break;
 
         /***** OBJECTS *****/
         case '/objects': {
@@ -70,6 +73,36 @@ exports.handler = async (event) => {
                         return success(result);
                     }
                     return error('No objects found or some error occured.');
+                }
+            }
+        }
+            break;
+
+        /***** CATEGORIES *****/
+        case '/categories': {
+            switch (event.httpMethod) {
+                case 'GET': {
+                    const result = await getCategories(con);
+                    console.log('getCategories: ', result);
+                    if (result) {
+                        return success(result);
+                    }
+                    return error('No categories found or some error occured.');
+                }
+            }
+        }
+            break;
+
+        /***** SAVE EXPENSE *****/
+        case '/saveexpense': {
+            switch (event.httpMethod) {
+                case 'POST': {
+                    const result = await saveExpense(con, event.body);
+                    console.log('saveExpense: ', result);
+                    if (result) {
+                        return success(result);
+                    }
+                    return error('No expenses found or some error occured.');
                 }
             }
         }
