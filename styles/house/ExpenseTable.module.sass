@@ -1,0 +1,29 @@
+.container
+    @apply flex flex-col
+    .table
+        &_payment
+            width: 25px
+        &_date
+            width: 200px
+        &_firm
+            width: 250px
+        &_amount
+            width: 100px
+        &_link
+            width: 150px
+    .table_head
+        th
+            @apply p-4
+    .table_body
+        @apply border-t-2 border-b-2
+        svg
+            width: 16px
+            height: 16px
+            @apply inline-block
+        .table_row
+            &:hover
+                @apply bg-gray-100 cursor-pointer
+        .table_row_gray
+            @apply bg-gray-200
+        td
+            @apply p-2 overflow-hidden

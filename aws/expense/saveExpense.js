@@ -6,8 +6,6 @@ exports.saveExpense = async (con, data) => {
     console.log('expenseData: ', expenseData);
     const id = v4();
     const date = getSqlDate();
-    console.log(date);
-    console.log(expenseData.date);
 
     const result = await con.promise().query(
         `INSERT INTO expenses  ` +

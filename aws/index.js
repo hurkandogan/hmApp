@@ -4,6 +4,7 @@ const { saveObject } = require('./objects/saveObject');
 const { getCategories } = require('./categories/getCategories');
 const { getDashboardTotals } = require('./dashboard/getDashboardTotals');
 const { saveExpense } = require('./expense/saveExpense');
+const { getExpensesForObject } = require('./expense/getExpensesForObject');
 
 const con = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -103,6 +104,21 @@ exports.handler = async (event) => {
                         return success(result);
                     }
                     return error('No expenses found or some error occured.');
+                }
+            }
+        }
+            break;
+
+        /***** GET EXPENSES FOR OBJECT *****/
+        case '/getexpensesforobject': {
+            switch (event.httpMethod) {
+                case 'POST': {
+                    const result = await getExpensesForObject(con, event.body);
+                    console.log('getexpensesforobject: ', result);
+                    if (result) {
+                        return success(result);
+                    }
+                    return error('No expenses found for this object or some error occured.');
                 }
             }
         }
