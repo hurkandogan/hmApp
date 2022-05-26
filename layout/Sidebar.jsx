@@ -14,7 +14,6 @@ const Sidebar = () => {
   useEffect(() => {
     getObjects()
       .then((res) => {
-        console.log(res);
         if (res.data.data) {
           setObjects(res.data.data);
         }
@@ -34,7 +33,7 @@ const Sidebar = () => {
         <small>Insert:</small>
         <hr className={styles.sidebarMenuSeperator} />
         <li>
-          <Link href="/insert_expense">
+          <Link href="/insert_expense" passHref>
             <button className={globalStyles.sidebarButton}>
               {house} Insert Expense
             </button>
