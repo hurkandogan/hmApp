@@ -1,0 +1,18 @@
+.container
+    padding: 0 2rem
+    height: 400px
+    right: 0
+    bottom: 0
+    left: 250px
+    color: #fff
+    transform: translateY(400px)
+    transition: transform 1s ease
+    @apply fixed bg-slate-600 flex flex-col
+    &_header
+        @apply flex flex-row justify-between align-middle
+        h1
+            font-size: 1.5rem
+            @apply font-bold
+.open
+    transform: translateY(0)
+    transition: transform 1s ease

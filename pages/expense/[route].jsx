@@ -5,6 +5,7 @@ import { house_filled } from '../../assets/icons';
 import { useRouter } from 'next/router';
 import getHouseData from '../../service/expenses/getHouseData';
 import CategoryTab from '../../components/house/CategoryTab';
+import EditExpenseOffCanvas from '../../components/house/EditExpenseOffCanvas';
 
 const OBJECT_INITIAL_DATA = {
   object: {},
@@ -19,6 +20,8 @@ const House = () => {
   const [route, setRoute] = useState(undefined);
   const [object, setObject] = useState(OBJECT_INITIAL_DATA);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedInvoice, setSelectedInvoice] = useState({});
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   useEffect(() => {
     setRoute(router.query.route);
@@ -33,6 +36,16 @@ const House = () => {
   }, [route, selectedYear]);
 
   const handleSelectedCategory = (cat_id) => setSelectedCategory(cat_id);
+
+  const editInvoiceClose = () => {
+    setIsEditOpen(false);
+    setSelectedInvoice({});
+  };
+
+  const editInvoice = (invoice) => {
+    setIsEditOpen(true);
+    setSelectedInvoice(invoice);
+  };
 
   return (
     <div className={styles.container}>
@@ -64,16 +77,24 @@ const House = () => {
                     <div
                       key={index}
                       onClick={() => handleSelectedCategory(el.id)}
-                      className={styles.tab_title}
+                      className={
+                        styles.tab_title +
+                        ' ' +
+                        (el.id === selectedCategory
+                          ? styles.tab_title_active
+                          : '')
+                      }
                     >
                       {el.name}
                     </div>
                   );
                 }
               })}
+              <div className={styles.offset}></div>
             </div>
             <div className={styles.tab_content}>
               <CategoryTab
+                editInvoice={editInvoice}
                 category={object?.expenseList.find(
                   (el) => el.id === selectedCategory
                 )}
@@ -82,6 +103,11 @@ const House = () => {
           </div>
         </div>
       </div>
+      <EditExpenseOffCanvas
+        isOpen={isEditOpen}
+        close={editInvoiceClose}
+        invoice={selectedInvoice}
+      />
     </div>
   );
 };

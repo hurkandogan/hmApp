@@ -24,12 +24,24 @@
       &_container
         @apply w-full
       &_title_container
-        border-bottom: 1px solid gray
         @apply flex flex-row items-center mt-2 cursor-pointer
+        .offset
+          border-bottom: 1px solid gray
+          height: 50px
+          @apply w-full
       &_title
+        height: 50px
         border-top: 1px solid gray
         border-bottom: 1px solid gray
         border-right: 1px solid gray
+        @apply flex flex-row w-60 items-center text-center justify-center rounded-t-md
+        &:hover
+          color: #000
+          @apply bg-gray-100 font-bold
+        &_active
+          color: #fff
+          font-weight: bold
+          @apply bg-gray-400
         &:first-child
           border-left: 1px solid gray
         @apply p-2

@@ -20,6 +20,7 @@ const ExpenseTable = (props) => {
           {props.expenses?.map((el, index) => {
             return (
               <tr
+                onClick={() => props.editInvoice(el)}
                 className={
                   styles.table_row +
                   ' ' +
