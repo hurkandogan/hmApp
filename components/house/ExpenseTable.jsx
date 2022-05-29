@@ -29,7 +29,7 @@ const ExpenseTable = (props) => {
                 key={index}
               >
                 <td>{el.isPaid ? paid_icon : unpaid_icon}</td>
-                <td>{moment(el.date).format('DD.MM.YYYY')}</td>
+                <td>{el.date}</td>
                 <td>{el.firm}</td>
                 <td>{el.description}</td>
                 <td>{el.amount} €</td>

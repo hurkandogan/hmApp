@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAppContext } from '../context';
 import getObjects from '../service/objects/getObjects';
 import getCategories from '../service/categories/getCategories';
 import saveExpense from '../service/expenses/saveExpense';
@@ -17,19 +18,12 @@ const InsertExpense = () => {
     objectId: '-',
     userId: '',
   };
+  const { objects } = useAppContext();
+
   const [expense, setExpense] = useState(INITIAL_STATE);
   const [categories, setCategories] = useState([]);
-  const [objects, setObjects] = useState([]);
   const [selectedObject, setSelectedObject] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    getObjects()
-      .then((res) => {
-        setObjects(res.data.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   useEffect(() => {
     getCategories()

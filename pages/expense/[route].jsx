@@ -1,3 +1,4 @@
+import moment from 'moment';
 import styles from '../../styles/House.module.sass';
 import { useAppContext } from '../../context/index';
 import { useEffect, useState } from 'react';
@@ -20,7 +21,7 @@ const House = () => {
   const [route, setRoute] = useState(undefined);
   const [object, setObject] = useState(OBJECT_INITIAL_DATA);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedInvoice, setSelectedInvoice] = useState({});
+  const [selectedExpense, setSelectedExpense] = useState({});
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   useEffect(() => {
@@ -30,7 +31,18 @@ const House = () => {
   useEffect(() => {
     if (route) {
       getHouseData({ route: route, selectedYear: selectedYear })
-        .then((res) => setObject(res.data.data))
+        .then((res) => {
+          let data = res.data.data;
+          console.log(data);
+          if (data.expenseList?.length > 0) {
+            data.expenseList.forEach((el) => {
+              el.expenses.forEach((expense) => {
+                expense.date = moment(expense.date).format('DD.MM.YYYY');
+              });
+            });
+          }
+          setObject(data);
+        })
         .catch((err) => console.log(err));
     }
   }, [route, selectedYear]);
@@ -42,9 +54,19 @@ const House = () => {
     setSelectedInvoice({});
   };
 
-  const editInvoice = (invoice) => {
+  const editInvoice = (data) => {
+    let invoice = data;
     setIsEditOpen(true);
-    setSelectedInvoice(invoice);
+    setSelectedExpense(invoice);
+  };
+
+  const editChangeHandler = (name, value) => {
+    setSelectedExpense((prevState) => {
+      return {
+        ...prevState,
+        [name]: value,
+      };
+    });
   };
 
   return (
@@ -106,7 +128,8 @@ const House = () => {
       <EditExpenseOffCanvas
         isOpen={isEditOpen}
         close={editInvoiceClose}
-        invoice={selectedInvoice}
+        expense={selectedExpense}
+        editChangeHandler={editChangeHandler}
       />
     </div>
   );

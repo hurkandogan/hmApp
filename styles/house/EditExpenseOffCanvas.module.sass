@@ -1,9 +1,18 @@
+.page_wrapper
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    background: rgba(0,0,0,0.0)
+    visibility: hidden
+    transition: background 1s ease, visibility 1s ease
+    @apply fixed
 .container
     padding: 0 2rem
     height: 400px
     right: 0
     bottom: 0
-    left: 250px
+    left: 0
     color: #fff
     transform: translateY(400px)
     transition: transform 1s ease
@@ -13,6 +22,20 @@
         h1
             font-size: 1.5rem
             @apply font-bold
+    .formGroupContainer
+        color: #000
+        @apply flex flex-row w-full
+        label
+            color: #fff
+            font-weight: bold
+        &_inner
+            @apply inline w-2/4 p-2 align-middle justify-center
+        input, select
+            @apply inline w-full border-2 border-gray-200 rounded-lg px-4 py-2 mt-1
 .open
     transform: translateY(0)
     transition: transform 1s ease
+.show
+    visibility: visible
+    background: rgba(0,0,0,0.5)
+    transition: background 1s ease, visibility 1s ease
