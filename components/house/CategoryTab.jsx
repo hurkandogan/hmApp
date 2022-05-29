@@ -7,7 +7,10 @@ const CategoryTab = (props) => {
       <div className={styles.tab_header}>
         <span>Total Amount: {props.category?.categoryTotal} €</span>
       </div>
-      <ExpenseTable expenses={props.category?.expenses} />
+      <ExpenseTable
+        editInvoice={props.editInvoice}
+        expenses={props.category?.expenses}
+      />
     </div>
   );
 };

@@ -1,3 +1,4 @@
+const moment = require('moment');
 exports.getExpensesForObject = async (con, data) => {
     const postedData = JSON.parse(data);
     const result = {
@@ -22,6 +23,8 @@ exports.getExpensesForObject = async (con, data) => {
             categoryResult[0][i].categoryTotal = 0;
             for (let j = 0; j < expenseResult[0].length; j++) {
                 if (expenseResult[0][j].categoryId === categoryResult[0][i].id) {
+                    // This is a fix because date() function in sql query is not working properly
+                    expenseResult[0][j].date = moment(expenseResult[0][j].date).format('YYYY-MM-DD');
                     result.objectTotal += expenseResult[0][j].amount;
                     categoryResult[0][i].categoryTotal += expenseResult[0][j].amount;
                     categoryResult[0][i].expenses.push(expenseResult[0][j]);

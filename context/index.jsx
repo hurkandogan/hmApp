@@ -6,6 +6,7 @@ const AppProvider = ({ children }) => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [pageTitle, setPageTitle] = useState('');
   const [objects, setObjects] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [selectedObject, setSelectedObject] = useState('');
 
   return (
@@ -17,6 +18,8 @@ const AppProvider = ({ children }) => {
         setPageTitle,
         objects,
         setObjects,
+        categories,
+        setCategories,
         selectedObject,
         setSelectedObject,
       }}

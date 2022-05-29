@@ -1,3 +1,4 @@
+import moment from 'moment';
 import styles from '../../styles/House.module.sass';
 import { useAppContext } from '../../context/index';
 import { useEffect, useState } from 'react';
@@ -5,6 +6,7 @@ import { house_filled } from '../../assets/icons';
 import { useRouter } from 'next/router';
 import getHouseData from '../../service/expenses/getHouseData';
 import CategoryTab from '../../components/house/CategoryTab';
+import EditExpenseOffCanvas from '../../components/house/EditExpenseOffCanvas';
 
 const OBJECT_INITIAL_DATA = {
   object: {},
@@ -19,20 +21,57 @@ const House = () => {
   const [route, setRoute] = useState(undefined);
   const [object, setObject] = useState(OBJECT_INITIAL_DATA);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedExpense, setSelectedExpense] = useState({});
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setRoute(router.query.route);
   }, [router.query.route]);
 
   useEffect(() => {
-    if (route) {
-      getHouseData({ route: route, selectedYear: selectedYear })
-        .then((res) => setObject(res.data.data))
-        .catch((err) => console.log(err));
-    }
+    loadHouseData();
   }, [route, selectedYear]);
 
+  useEffect(() => {
+    setSelectedCategory(object?.expenseList[0]?.id);
+  }, [object]);
+
+  const loadHouseData = () => {
+    if (route) {
+      setLoading(true);
+      getHouseData({ route: route, selectedYear: selectedYear })
+        .then((res) => {
+          let data = res.data.data;
+          setObject(data);
+        })
+        .catch((err) => console.log(err));
+      setLoading(true);
+    }
+  };
+
   const handleSelectedCategory = (cat_id) => setSelectedCategory(cat_id);
+
+  const editInvoiceClose = () => {
+    setIsEditOpen(false);
+    setSelectedExpense({});
+    loadHouseData();
+  };
+
+  const editInvoice = (data) => {
+    let invoice = data;
+    setIsEditOpen(true);
+    setSelectedExpense(invoice);
+  };
+
+  const editChangeHandler = (name, value) => {
+    setSelectedExpense((prevState) => {
+      return {
+        ...prevState,
+        [name]: value,
+      };
+    });
+  };
 
   return (
     <div className={styles.container}>
@@ -64,16 +103,24 @@ const House = () => {
                     <div
                       key={index}
                       onClick={() => handleSelectedCategory(el.id)}
-                      className={styles.tab_title}
+                      className={
+                        styles.tab_title +
+                        ' ' +
+                        (el.id === selectedCategory
+                          ? styles.tab_title_active
+                          : '')
+                      }
                     >
                       {el.name}
                     </div>
                   );
                 }
               })}
+              <div className={styles.offset}></div>
             </div>
             <div className={styles.tab_content}>
               <CategoryTab
+                editInvoice={editInvoice}
                 category={object?.expenseList.find(
                   (el) => el.id === selectedCategory
                 )}
@@ -82,6 +129,12 @@ const House = () => {
           </div>
         </div>
       </div>
+      <EditExpenseOffCanvas
+        isOpen={isEditOpen}
+        close={editInvoiceClose}
+        expense={selectedExpense}
+        editChangeHandler={editChangeHandler}
+      />
     </div>
   );
 };

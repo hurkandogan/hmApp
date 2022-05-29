@@ -4,6 +4,7 @@ const { saveObject } = require('./objects/saveObject');
 const { getCategories } = require('./categories/getCategories');
 const { getDashboardTotals } = require('./dashboard/getDashboardTotals');
 const { saveExpense } = require('./expense/saveExpense');
+const { editExpense } = require('./expense/editExpense');
 const { getExpensesForObject } = require('./expense/getExpensesForObject');
 
 const con = mysql.createConnection({
@@ -109,6 +110,17 @@ exports.handler = async (event) => {
         }
             break;
 
+        /***** EDIT EXPENSE *****/
+        case '/editexpense': {
+            const result = await editExpense(con, event.body);
+            console.log('editExpense: ', result);
+
+            if (result) return success(result);
+            return error('No expenses found or some error occured.');
+
+        }
+            break;
+
         /***** GET EXPENSES FOR OBJECT *****/
         case '/getexpensesforobject': {
             switch (event.httpMethod) {
@@ -124,6 +136,6 @@ exports.handler = async (event) => {
         }
             break;
         default:
-            return error({ msg: 'This route is not available.' })
+            return error({ msg: 'This route is not available.' });
     }
 };

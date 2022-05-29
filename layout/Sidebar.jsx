@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import getCategories from '../service/categories/getCategories';
 import styles from '../styles/Sidebar.module.sass';
 import globalStyles from '../styles/Global.module.sass';
 import getObjects from '../service/objects/getObjects';
@@ -9,14 +10,18 @@ import Link from 'next/link';
 
 const Sidebar = () => {
   const { data: session } = useSession();
-  const { objects, setObjects, setSelectedObject } = useAppContext();
+  const { objects, setObjects, setSelectedObject, setCategories } =
+    useAppContext();
 
   useEffect(() => {
     getObjects()
       .then((res) => {
-        if (res.data.data) {
-          setObjects(res.data.data);
-        }
+        if (res.data.data) setObjects(res.data.data);
+      })
+      .catch((err) => console.log(err));
+    getCategories()
+      .then((res) => {
+        if (res.data.data) setCategories(res.data.data);
       })
       .catch((err) => console.log(err));
   }, []);
