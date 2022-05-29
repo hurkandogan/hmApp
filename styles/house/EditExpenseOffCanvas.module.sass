@@ -1,14 +1,18 @@
+@import '../Variables.module'
+
 .page_wrapper
     top: 0
-    bottom: 0
+    bottom: 400px
     left: 0
     right: 0
     background: rgba(0,0,0,0.0)
     visibility: hidden
     transition: background 1s ease, visibility 1s ease
     @apply fixed
+    .empty_field_close_div
+        @apply w-full h-full
 .container
-    padding: 0 2rem
+    background-color: $secondary-background-color
     height: 400px
     right: 0
     bottom: 0
@@ -16,12 +20,17 @@
     color: #fff
     transform: translateY(400px)
     transition: transform 1s ease
-    @apply fixed bg-slate-600 flex flex-col
+    z-index: 99
+    @apply fixed flex flex-col px-8 py-4
     &_header
-        @apply flex flex-row justify-between align-middle
+        @apply flex flex-row justify-between align-middle px-2
         h1
             font-size: 1.5rem
             @apply font-bold
+        .close_icon
+            @apply cursor-pointer
+            &:hover
+                opacity: 0.5
     .formGroupContainer
         color: #000
         @apply flex flex-row w-full

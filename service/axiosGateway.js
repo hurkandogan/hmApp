@@ -12,9 +12,14 @@ const post = async (route, data) => {
     return await API.post(route, data);
 };
 
+const put = async (route, data) => {
+    return await API.put(route, data);
+};
+
 const axiosGateway = {
     get: get,
     post: post,
+    put: put,
 }
 
 export default axiosGateway;

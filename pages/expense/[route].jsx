@@ -23,35 +23,39 @@ const House = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedExpense, setSelectedExpense] = useState({});
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setRoute(router.query.route);
   }, [router.query.route]);
 
   useEffect(() => {
+    loadHouseData();
+  }, [route, selectedYear]);
+
+  useEffect(() => {
+    setSelectedCategory(object?.expenseList[0]?.id);
+  }, [object]);
+
+  const loadHouseData = () => {
     if (route) {
+      setLoading(true);
       getHouseData({ route: route, selectedYear: selectedYear })
         .then((res) => {
           let data = res.data.data;
-          console.log(data);
-          if (data.expenseList?.length > 0) {
-            data.expenseList.forEach((el) => {
-              el.expenses.forEach((expense) => {
-                expense.date = moment(expense.date).format('DD.MM.YYYY');
-              });
-            });
-          }
           setObject(data);
         })
         .catch((err) => console.log(err));
+      setLoading(true);
     }
-  }, [route, selectedYear]);
+  };
 
   const handleSelectedCategory = (cat_id) => setSelectedCategory(cat_id);
 
   const editInvoiceClose = () => {
     setIsEditOpen(false);
-    setSelectedInvoice({});
+    setSelectedExpense({});
+    loadHouseData();
   };
 
   const editInvoice = (data) => {

@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import moment from 'moment';
 import { useAppContext } from '../../context';
-import { editExpense } from '../../service/expenses/editExpense';
+import editExpense from '../../service/expenses/editExpense';
 import styles from '../../styles/house/EditExpenseOffCanvas.module.sass';
 import globalStyles from '../../styles/Global.module.sass';
+import { close_icon } from '../../assets/icons';
 
 const EditExpenseOffCanvas = (props) => {
   const { objects, categories } = useAppContext();
   const { expense, isOpen, close, editChangeHandler } = props;
-  const [selectedObject, setSelectedObject] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const changeHandler = (e) => {
@@ -28,6 +28,8 @@ const EditExpenseOffCanvas = (props) => {
 
   const formSubmit = () => {
     setLoading(true);
+    expense.date = moment(expense.date).format('YYYY-MM-DD');
+    console.log(expense);
     editExpense(expense)
       .then((res) => {
         if (res.status === 200) {
@@ -42,17 +44,20 @@ const EditExpenseOffCanvas = (props) => {
 
   return (
     <div className={styles.page_wrapper + ' ' + (isOpen && styles.show)}>
+      <div className={styles.empty_field_close_div} onClick={close}></div>
       <div className={styles.container + ' ' + (isOpen && styles.open)}>
         <div className={styles.container_header}>
           <h1>Edit Invoice</h1>
-          <p onClick={close}>Close</p>
+          <p className={styles.close_icon} onClick={close}>
+            {close_icon}
+          </p>
         </div>
         <div className={styles.container_body}>
           <div className={styles.formGroupContainer}>
             <div className={styles.formGroupContainer_inner}>
               <label htmlFor="expenseDate">Date</label>
               <input
-                type="text"
+                type="date"
                 id="expenseDate"
                 name="date"
                 value={expense?.date}
@@ -157,18 +162,20 @@ const EditExpenseOffCanvas = (props) => {
             </div>
           </div>
           <div className={styles.formGroupContainer}>
-            <button
-              className={globalStyles.primaryButton}
-              onClick={formSubmit}
-              disabled={loading}
-            >
-              {loading && (
-                <div className={globalStyles.spinner} role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
-              )}
-              Save
-            </button>
+            <div className={styles.formGroupContainer_inner}>
+              <button
+                className={globalStyles.primaryButton}
+                onClick={formSubmit}
+                disabled={loading}
+              >
+                {loading && (
+                  <div className={globalStyles.spinner} role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                )}
+                Save
+              </button>
+            </div>
           </div>
         </div>
       </div>
