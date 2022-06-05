@@ -5,47 +5,45 @@ exports.getDashboardTotals = async (con, data) => {
         unpaidExpenses: [],
     };
 
-    const objectResult = await con.promise().query('SELECT id, name, route, description, address, isHouse, isMenu FROM objects');
+    const objectResult = await con.promise().query('SELECT id, name, route, description, address, isHouse, isMenu FROM objects ORDER BY sortPrio ASC');
     const categoryResult = await con.promise().query(`SELECT id, name, description, isHouse FROM categories ORDER BY sortPrio ASC`);
-    const expenseResult = await con.promise().query(`SELECT amount, isPaid, categoryId, objectId FROM expenses ` +
-        `WHERE year(date) = ${postedData.selectedYear} ORDER BY date DESC;`);
+    const expenseResult = await con.promise().query(`SELECT * FROM expenses WHERE year(date) = ${postedData.selectedYear} ORDER BY date DESC;`);
 
+    for (let i = 0; i < objectResult[0].length; i++) {
+        const object = objectResult[0][i];
+        object.total = 0;
+        object.expenses = [];
 
-    if (objectResult[0].length > 0) {
+        for (let j = 0; j < categoryResult[0].length; j++) {
+            const category = categoryResult[0][j];
+            let catTotal = 0;
+            let expenseCount = 0;
 
-        result.objectTotal = objectResult[0].length;
+            for (let k = 0; k < expenseResult[0].length; k++) {
+                let expense = expenseResult[0][k];
 
-        for (let i = 0; i < objectResult[0].length; i++) {
+                if (expense.objectId === object.id &&
+                    expense.categoryId === category.id) {
 
-            let object = objectResult[0][i];
-            object.expenses = [];
-            object.total = 0;
+                    catTotal += expense.amount;
+                    expenseCount++;
+                    object.total += expense.amount;
 
-            for (let j = 0; j < categoryResult[0].length; j++) {
-                let category = categoryResult[0][j];
-                category.categoryTotal = 0;
-
-                for (let k = 0; k < expenseResult[0].length; k++) {
-                    const expense = expenseResult[0][k];
-
-                    if (expense.objectId === object.id &&
-                        expense.categoryId === category.id) {
-                        if (!expense.objectId.isPaid) result.unpaidExpenses.push(expense);
-
-                        object.total += expense.amount;
-                        category.categoryTotal += expense.amount;
-                    }
                 }
-                if (category.categoryTotal > 0)
-                    category.categoryTotal = category.categoryTotal.toFixed(2);
-                object.expenses.push(category);
             }
-            if (object.total > 0)
-                object.total = object.total.toFixed(2);
-            result.objects.push(object);
+            object.expenses.push({
+                name: category.name,
+                expenseCount: expenseCount,
+                total: catTotal.toFixed(2)
+            });
         }
-        console.log('Dashboard Result: ', result);
-        return result;
+        object.total.toFixed(2);
+        result.objects.push(object);
     }
-    return null;
+
+    for (let i = 0; i < expenseResult[0].length; i++) {
+        if (expenseResult[0][i].isPaid === 0) result.unpaidExpenses.push(expenseResult[0][i]);
+    }
+
+    return result;
 };

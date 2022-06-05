@@ -3,10 +3,12 @@
   &_inner
     @apply flex flex-col justify-between items-center items-stretch
     &_title
-      @apply flex flex-row
+      @apply flex flex-row w-full
       h1
         font-size: 1.5rem
         @apply w-full font-bold
+    &_objects
+      @apply flex flex-row flex-wrap justify-start mt-5
     &_header
       height: 150px
       @apply w-full flex flex-row items-center overflow-hidden border-b mb-2
@@ -37,3 +39,30 @@
         @apply w-full text-center
         table
           @apply w-full text-center
+
+.dashboardTable
+  .dashboard_title
+    font-size: 1.5rem
+    @apply w-full flex flex-row justify-between items-center overflow-hidden border-b my-2 p-2 cursor-pointer font-bold bg-gray-200
+    .dashboard_arrow
+      &:hover
+        @apply opacity-50
+      svg
+        width: 36px
+        height: 36px
+      &_open
+        transform: rotate(0deg)
+        transition: transform 1s ease
+      &_close
+        transform: rotate(90deg)
+        transition: transform 1s ease
+  .dashboard_content
+    opacity: 0
+    height: 0
+    visibility: hidden
+    transition: opacity 1s ease, visibility 1s ease, height 1s ease
+    &_open
+      opacity: 1
+      height: 100%
+      visibility: visible
+      transition: opacity 1s ease, visibility 1s ease, height 1s ease
