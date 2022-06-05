@@ -45,12 +45,10 @@ exports.handler = async (event) => {
         /***** DASHBOARD *****/
         case '/dashboard': {
             switch (event.httpMethod) {
-                case 'GET': {
-                    const result = await getDashboardTotals(con);
+                case 'POST': {
+                    const result = await getDashboardTotals(con, event.body);
                     console.log('getDashboardTotals: ', result);
-                    if (result) {
-                        return success(result);
-                    }
+                    if (result) return success(result);
                     return error('No objects found or some error occured.');
                 }
             }
