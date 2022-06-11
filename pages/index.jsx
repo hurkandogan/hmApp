@@ -3,24 +3,58 @@ import { useAppContext } from '../context';
 import { dashboard_arrow } from '../assets/icons';
 import ObjectTotal from '../components/dashboard/ObjectTotal';
 import ExpenseTable from '../components/house/ExpenseTable';
+import ModalBox from '../components/ModalBox';
 import styles from '../styles/Home.module.sass';
+import globalStyles from '../styles/Global.module.sass';
 import getDashboardTotals from '../service/dashboard/getDashboardTotals';
+import editExpense from '../service/expenses/editExpense';
 
 const Home = () => {
   const [dashboardData, setDashboardData] = useState([]);
   const [totalsTab, setTotalsTab] = useState(true);
   const [unpaidTabIsOpen, setUnpaidTabIsOpen] = useState(false);
 
+  const [showModal, setShowModal] = useState(false);
+  const [selectedExpense, setSelectedExpense] = useState({});
+
   const { selectedYear } = useAppContext();
 
   useEffect(() => {
+    loadData();
+  }, [selectedYear]);
+
+  const loadData = () => {
     getDashboardTotals({ selectedYear: selectedYear })
       .then((res) => {
         console.log(res.data.data);
         if (res.data.data) setDashboardData(res.data.data);
       })
       .catch((err) => console.log(err));
-  }, [selectedYear]);
+  };
+
+  const updatePaymentStatus = (el) => {
+    setSelectedExpense(el);
+    setShowModal(true);
+  };
+
+  const savePaymentStatus = () => {
+    const tmpExpense = selectedExpense;
+    tmpExpense.isPaid = 1;
+    editExpense(tmpExpense)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log(res);
+        }
+        loadData();
+      })
+      .catch((err) => console.log(err));
+    closeModalBox();
+  };
+
+  const closeModalBox = () => {
+    setShowModal(false);
+    setSelectedExpense({});
+  };
 
   return (
     <div className={styles.container}>
@@ -93,10 +127,34 @@ const Home = () => {
               (unpaidTabIsOpen ? styles.dashboard_content_open : '')
             }
           >
-            <ExpenseTable expenses={dashboardData.unpaidExpenses} />
+            <ExpenseTable
+              expenses={dashboardData.unpaidExpenses}
+              editInvoice={updatePaymentStatus}
+            />
           </div>
         </div>
       </div>
+      <ModalBox
+        active={showModal}
+        close={closeModalBox}
+        headline={'Is this invoice paid?'}
+      >
+        Is this invoice paid? (This action will update the payment status.)
+        <div className={styles.modalBoxButtonWrapper}>
+          <button
+            className={globalStyles.primaryButton}
+            onClick={savePaymentStatus}
+          >
+            Yes
+          </button>
+          <button
+            className={globalStyles.secondaryButton}
+            onClick={closeModalBox}
+          >
+            No
+          </button>
+        </div>
+      </ModalBox>
     </div>
   );
 };
