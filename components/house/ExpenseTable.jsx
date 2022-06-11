@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { target, paid_icon, unpaid_icon } from '../../assets/icons';
+import { numberDivider } from '../../assets/misc/functions';
 import styles from '../../styles/house/ExpenseTable.module.sass';
 
 const ExpenseTable = (props) => {
@@ -32,7 +33,7 @@ const ExpenseTable = (props) => {
                 <td>{moment(el.date).format('DD.MM.YYYY')}</td>
                 <td>{el.firm}</td>
                 <td>{el.description}</td>
-                <td>{el.amount} €</td>
+                <td>{numberDivider(el.amount)} €</td>
                 <td>
                   <a href={el.documentLink} target="_blank" rel="noreferrer">
                     <p>Invoice {target}</p>

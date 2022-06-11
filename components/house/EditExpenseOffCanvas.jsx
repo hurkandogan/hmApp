@@ -5,6 +5,7 @@ import editExpense from '../../service/expenses/editExpense';
 import styles from '../../styles/house/EditExpenseOffCanvas.module.sass';
 import globalStyles from '../../styles/Global.module.sass';
 import { close_icon } from '../../assets/icons';
+import { numberDivider } from '../../assets/misc/functions';
 
 const EditExpenseOffCanvas = (props) => {
   const { objects, categories } = useAppContext();

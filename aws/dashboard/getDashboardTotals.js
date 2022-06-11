@@ -24,17 +24,16 @@ exports.getDashboardTotals = async (con, data) => {
 
                 if (expense.objectId === object.id &&
                     expense.categoryId === category.id) {
-
                     catTotal += expense.amount;
                     expenseCount++;
                     object.total += expense.amount;
-
                 }
             }
             object.expenses.push({
                 name: category.name,
                 expenseCount: expenseCount,
-                total: catTotal.toFixed(2)
+                isHouse: category.isHouse,
+                total: catTotal.toFixed(2),
             });
         }
         object.total.toFixed(2);
