@@ -23,14 +23,13 @@ const EditExpenseOffCanvas = (props) => {
 
   const amountFieldChangeHandler = (e) => {
     const { name, value } = e.target;
-    const dottedValue = value.replace(/,/g, '.');
+    let dottedValue = value.replace(/,/g, '.');
     editChangeHandler(name, dottedValue);
   };
 
   const formSubmit = () => {
     setLoading(true);
     expense.date = moment(expense.date).format('YYYY-MM-DD');
-    console.log(expense);
     editExpense(expense)
       .then((res) => {
         if (res.status === 200) {

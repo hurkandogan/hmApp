@@ -9,11 +9,14 @@
   @apply flex flex-col py-1.5 px-2.5 h-screen sticky top-0 overflow-hidden overflow-y-scroll
   &::-webkit-scrollbar
     display: none
-  .userInfo
+  .user_info
     @apply flex flex-row items-center justify-center mt-2
-    img
-      width: 50px
-      @apply mr-2
+    .brand
+      @apply block text-lg
+    small
+      @apply block text-xs text-center text-gray-500
+    a
+      @apply block text-xs text-center text-gray-500
     p
       @apply inline text-sm text-center
   h1
