@@ -7,6 +7,7 @@ const AppProvider = ({ children }) => {
   const [pageTitle, setPageTitle] = useState('');
   const [objects, setObjects] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(0);
   const [selectedObject, setSelectedObject] = useState('');
 
   return (
@@ -20,6 +21,8 @@ const AppProvider = ({ children }) => {
         setObjects,
         categories,
         setCategories,
+        selectedCategory,
+        setSelectedCategory,
         selectedObject,
         setSelectedObject,
       }}

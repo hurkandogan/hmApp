@@ -26,14 +26,25 @@ const Sidebar = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const handleMenuClick = (object) => setSelectedObject(object);
+  const handleMenuClick = (object) => {
+    setSelectedObject(object);
+  };
   return (
     <div className={styles.container}>
-      <div className={styles.userInfo}>
-        <img src="https://picsum.photos/50/50" />
-        <p>{session?.user.name ? session?.user.name : session?.user.email}</p>
+      <div className={styles.user_info}>
+        <div>
+          <p className={styles.brand}>hugOS</p>
+          <small>0.1.0</small>
+          <a
+            href="https://github.com/hurkandogan/hmapp/blob/develop/CHANGELOG.md"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Change Log
+          </a>
+          <p>{session?.user.name ? session?.user.name : session?.user.email}</p>
+        </div>
       </div>
-      <hr />
       <ul>
         <small>Insert:</small>
         <hr className={styles.sidebarMenuSeperator} />
@@ -50,7 +61,7 @@ const Sidebar = () => {
         {objects.map((object) => {
           if (object.isHouse && object.isMenu)
             return (
-              <li key={object.id}>
+              <li key={object.id} onClick={() => handleMenuClick(object)}>
                 <Link href={'/expense/' + object.route}>
                   <button className={globalStyles.sidebarButton}>
                     {house} {object.name}

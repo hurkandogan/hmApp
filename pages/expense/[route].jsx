@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import getHouseData from '../../service/expenses/getHouseData';
 import CategoryTab from '../../components/house/CategoryTab';
 import EditExpenseOffCanvas from '../../components/house/EditExpenseOffCanvas';
+import { numberDivider } from '../../assets/misc/functions';
 
 const OBJECT_INITIAL_DATA = {
   object: {},
@@ -16,25 +17,22 @@ const OBJECT_INITIAL_DATA = {
 
 const House = () => {
   const router = useRouter();
-  const { selectedYear } = useAppContext();
+  const { selectedYear, selectedCategory, setSelectedCategory } =
+    useAppContext();
   const [route, setRoute] = useState(undefined);
   const [object, setObject] = useState(OBJECT_INITIAL_DATA);
-  const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedExpense, setSelectedExpense] = useState({});
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setRoute(router.query.route);
+    setSelectedCategory(0);
   }, [router.query.route]);
 
   useEffect(() => {
     loadHouseData();
   }, [route, selectedYear]);
-
-  useEffect(() => {
-    setSelectedCategory(object?.expenseList[0]?.id);
-  }, [object]);
 
   const loadHouseData = () => {
     if (route) {
@@ -45,7 +43,7 @@ const House = () => {
           setObject(data);
         })
         .catch((err) => console.log(err));
-      setLoading(true);
+      setLoading(false);
     }
   };
 
@@ -57,7 +55,7 @@ const House = () => {
     loadHouseData();
   };
 
-  const editInvoice = (data) => {
+  const editInvoice = (e, data) => {
     let invoice = data;
     setIsEditOpen(true);
     setSelectedExpense(invoice);
@@ -84,11 +82,13 @@ const House = () => {
             <p>
               Oil Level: <i>last updated at today</i>
             </p>
-            <p>
-              Electric: 999,99<i>last updated at today</i>
-            </p>
             <p>Total invoice count: {object?.expenseCount} expense(s)</p>
-            <p>Total expense amount: {object?.objectTotal} €</p>
+            <p>
+              Total expense amount:{' '}
+              <strong>
+                {numberDivider(parseFloat(object?.objectTotal))} €
+              </strong>
+            </p>
           </div>
           <div className={styles.header_col}></div>
         </div>
@@ -97,15 +97,14 @@ const House = () => {
             <div className={styles.tab_title_container}>
               {object?.expenseList.map((el, index) => {
                 if (el.expenses.length > 0) {
-                  if (!selectedCategory) setSelectedCategory(el.id);
                   return (
                     <div
                       key={index}
-                      onClick={() => handleSelectedCategory(el.id)}
+                      onClick={() => handleSelectedCategory(index)}
                       className={
                         styles.tab_title +
                         ' ' +
-                        (el.id === selectedCategory
+                        (index === selectedCategory
                           ? styles.tab_title_active
                           : '')
                       }
@@ -120,9 +119,7 @@ const House = () => {
             <div className={styles.tab_content}>
               <CategoryTab
                 editInvoice={editInvoice}
-                category={object?.expenseList.find(
-                  (el) => el.id === selectedCategory
-                )}
+                category={object?.expenseList[selectedCategory]}
               />
             </div>
           </div>

@@ -4,6 +4,11 @@ import { numberDivider } from '../../assets/misc/functions';
 import styles from '../../styles/house/ExpenseTable.module.sass';
 
 const ExpenseTable = (props) => {
+  const test = (e, url) => {
+    e.stopPropagation();
+    window.open(url, '_blank').focus();
+  };
+
   return (
     <div className={styles.container}>
       <table>
@@ -21,7 +26,7 @@ const ExpenseTable = (props) => {
           {props.expenses?.map((el, index) => {
             return (
               <tr
-                onClick={() => props.editInvoice(el)}
+                onClick={(e) => props.editInvoice(e, el)}
                 className={
                   styles.table_row +
                   ' ' +
@@ -35,9 +40,13 @@ const ExpenseTable = (props) => {
                 <td>{el.description}</td>
                 <td>{numberDivider(el.amount)} €</td>
                 <td>
-                  <a href={el.documentLink} target="_blank" rel="noreferrer">
-                    <p>Invoice {target}</p>
-                  </a>
+                  {el.documentLink.length > 0 ? (
+                    <button onClick={(e) => test(e, el.documentLink)}>
+                      <p>Invoice {target}</p>
+                    </button>
+                  ) : (
+                    <p>No Invoice</p>
+                  )}
                 </td>
               </tr>
             );
