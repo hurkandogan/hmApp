@@ -7,8 +7,10 @@
         @apply flex flex-col w-full shadow-md
         .header
             border-radius: 5px
+            border-bottom-left-radius: 0
+            border-bottom-right-radius: 0
             border-bottom: 1px solid rgb(229 231 235)
-            @apply flex flex-row justify-between text-lg font-bold p-2 cursor-pointer bg-gray-200
+            @apply flex flex-row justify-between font-bold p-2 cursor-pointer bg-gray-200
             &:hover
                 @apply opacity-50
         &_content

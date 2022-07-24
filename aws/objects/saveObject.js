@@ -12,7 +12,7 @@ exports.saveObject = async (con, data) => {
     const date = getSqlDate();
 
     const result = await con.promise().query(
-        `INSERT INTO objects  ` +
+        `INSERT INTO sub_objects  ` +
         `(id, name, route, description, address, isHouse, isMenu, createdAt, updatedAt)` +
         `VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
