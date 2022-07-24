@@ -34,7 +34,7 @@ const Sidebar = () => {
       <div className={styles.user_info}>
         <div>
           <p className={styles.brand}>hugOS</p>
-          <small>0.1.0</small>
+          <small>0.1.1</small>
           <a
             href="https://github.com/hurkandogan/hmapp/blob/develop/CHANGELOG.md"
             target="_blank"
@@ -56,10 +56,34 @@ const Sidebar = () => {
           </Link>
         </li>
 
+        {objects.map((object) => {
+          if (object.sub_objects) {
+            return (
+              <div>
+                <small>{object.name}</small>
+                <hr className={styles.sidebarMenuSeperator} />
+                {object.sub_objects.map((sub_object) => {
+                  return (
+                    <li
+                      key={sub_object.id}
+                      onClick={() => handleMenuClick(sub_object)}
+                    >
+                      <Link href={'/expense/' + sub_object.route}>
+                        <button className={globalStyles.sidebarButton}>
+                          {house} {sub_object.name}
+                        </button>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </div>
+            );
+          }
+        })}
         <small>Houses:</small>
         <hr className={styles.sidebarMenuSeperator} />
         {objects.map((object) => {
-          if (object.isHouse && object.isMenu)
+          if (object.isHouse && object.isMenu) {
             return (
               <li key={object.id} onClick={() => handleMenuClick(object)}>
                 <Link href={'/expense/' + object.route}>
@@ -69,6 +93,7 @@ const Sidebar = () => {
                 </Link>
               </li>
             );
+          }
         })}
         <small>General Expenses:</small>
         <hr className={styles.sidebarMenuSeperator} />

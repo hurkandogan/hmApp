@@ -1,12 +1,14 @@
 exports.getDashboardTotals = async (con, data) => {
     const postedData = JSON.parse(data);
+    const allObjects = [];
     const result = {
         objects: [],
         unpaidExpenses: [],
     };
 
-    const objectResult = await con.promise().query('SELECT id, name, route, description, address, isHouse, isMenu FROM objects ORDER BY sortPrio ASC');
-    const categoryResult = await con.promise().query(`SELECT id, name, description, isHouse FROM categories ORDER BY sortPrio ASC`);
+    const parentObjectResult = await con.promise().query('SELECT * FROM parent_objects ORDER BY sort_number ASC');
+    const objectResult = await con.promise().query('SELECT id, name, route, description, address, isHouse, isMenu, parent_object FROM sub_objects ORDER BY sort_number ASC');
+    const categoryResult = await con.promise().query(`SELECT id, name, description, isHouse FROM categories ORDER BY sort_number ASC`);
     const expenseResult = await con.promise().query(`SELECT * FROM expenses WHERE year(date) = ${postedData.selectedYear} ORDER BY date DESC;`);
 
     for (let i = 0; i < objectResult[0].length; i++) {
@@ -37,7 +39,24 @@ exports.getDashboardTotals = async (con, data) => {
             });
         }
         object.total.toFixed(2);
-        result.objects.push(object);
+        if (!object.parent_object)
+            result.objects.push(object);
+    }
+
+    for (let i = 0; i < parentObjectResult[0].length; i++) {
+        const parentObject = parentObjectResult[0][i];
+        parentObject.total = 0;
+        parentObject.subObjects = [];
+
+        for (let j = 0; j < objectResult[0].length; j++) {
+            const sub_object = objectResult[0][j];
+            if (parentObject.id === sub_object.parent_object) {
+                parentObject.subObjects.push(sub_object);
+                parentObject.total += sub_object.total;
+            }
+        }
+        if (parentObject.subObjects.length > 0)
+            result.objects.unshift(parentObject);
     }
 
     for (let i = 0; i < expenseResult[0].length; i++) {

@@ -7,10 +7,10 @@ exports.getExpensesForObject = async (con, data) => {
         expenseCount: 0,
         expenseList: []
     };
-    const objectResult = await con.promise().query(`SELECT * FROM objects WHERE route = '${postedData.route}'`);
-    const categoryResult = await con.promise().query(`SELECT * FROM categories ORDER BY sortPrio ASC`);
+    const objectResult = await con.promise().query(`SELECT * FROM sub_objects WHERE route = '${postedData.route}'`);
+    const categoryResult = await con.promise().query(`SELECT * FROM categories ORDER BY sort_number ASC`);
     const expenseResult = await con.promise()
-        .query(`SELECT e.id, e.date, e.firm, e.description, e.documentLink, e.amount, e.isPaid, e.createdAt, e.updatedAt, e.categoryId, e.objectId, o.name as objectName, o.route as objectRoute, o.isHouse as objectIsHouse FROM hm.expenses as e JOIN hm.objects as o ` +
+        .query(`SELECT e.id, e.date, e.firm, e.description, e.documentLink, e.amount, e.isPaid, e.createdAt, e.updatedAt, e.categoryId, e.objectId, o.name as objectName, o.route as objectRoute, o.isHouse as objectIsHouse FROM hm.expenses as e JOIN hm.sub_objects as o ` +
             `ON o.id = e.objectId WHERE year(e.date) = ${postedData.selectedYear} AND o.route = '${postedData.route}'` +
             `ORDER BY e.date DESC;`);
 

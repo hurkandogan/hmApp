@@ -8,6 +8,7 @@ import styles from '../styles/Home.module.sass';
 import globalStyles from '../styles/Global.module.sass';
 import getDashboardTotals from '../service/dashboard/getDashboardTotals';
 import editExpense from '../service/expenses/editExpense';
+import { numberDivider } from '../assets/misc/functions';
 
 const Home = () => {
   const [dashboardData, setDashboardData] = useState([]);
@@ -26,13 +27,12 @@ const Home = () => {
   const loadData = () => {
     getDashboardTotals({ selectedYear: selectedYear })
       .then((res) => {
-        console.log(res.data.data);
         if (res.data.data) setDashboardData(res.data.data);
       })
       .catch((err) => console.log(err));
   };
 
-  const updatePaymentStatus = (el) => {
+  const updatePaymentStatus = (e, el) => {
     setSelectedExpense(el);
     setShowModal(true);
   };
@@ -42,9 +42,6 @@ const Home = () => {
     tmpExpense.isPaid = 1;
     editExpense(tmpExpense)
       .then((res) => {
-        if (res.status === 200) {
-          console.log(res);
-        }
         loadData();
       })
       .catch((err) => console.log(err));
@@ -86,14 +83,36 @@ const Home = () => {
           >
             <div className={styles.container_inner_objects}>
               {dashboardData.objects?.map((object) => {
-                if (object.isHouse) {
+                if (object.subObjects) {
+                  return (
+                    <div
+                      className={styles.container_inner_objects_group_container}
+                    >
+                      <h1>
+                        {object.name}
+                        <span>{numberDivider(object.total.toFixed(2))} €</span>
+                      </h1>
+                      <div className={styles.container_inner_objects}>
+                        {object.subObjects.map((object) => (
+                          <ObjectTotal key={object.id} object={object} />
+                        ))}
+                      </div>
+                      <hr />
+                    </div>
+                  );
+                }
+              })}
+            </div>
+            <div className={styles.container_inner_objects}>
+              {dashboardData.objects?.map((object) => {
+                if (object.isHouse && !object.subObjects) {
                   return <ObjectTotal key={object.id} object={object} />;
                 }
               })}
             </div>
             <div className={styles.container_inner_objects}>
               {dashboardData.objects?.map((object) => {
-                if (!object.isHouse) {
+                if (!object.isHouse && !object.subObjects) {
                   return <ObjectTotal key={object.id} object={object} />;
                 }
               })}
