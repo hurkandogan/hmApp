@@ -10,13 +10,29 @@ import Link from 'next/link';
 
 const Sidebar = () => {
   const { data: session } = useSession();
-  const { objects, setObjects, setSelectedObject, setCategories } =
-    useAppContext();
+  const {
+    setObjects,
+    sidebarObjects,
+    setSidebarObjects,
+    setSelectedObject,
+    setCategories,
+  } = useAppContext();
 
   useEffect(() => {
     getObjects()
       .then((res) => {
-        if (res.data.data) setObjects(res.data.data);
+        const { data } = res.data;
+        if (data) setSidebarObjects(data);
+        const allObjects = [];
+        for (const object of data) {
+          if (object.sub_objects && object.sub_objects.length > 0) {
+            for (const sub_object of object.sub_objects)
+              allObjects.push(sub_object);
+          } else {
+            allObjects.push(object);
+          }
+        }
+        setObjects(allObjects);
       })
       .catch((err) => console.log(err));
     getCategories()
@@ -34,7 +50,7 @@ const Sidebar = () => {
       <div className={styles.user_info}>
         <div>
           <p className={styles.brand}>hugOS</p>
-          <small>0.1.1</small>
+          <small>0.1.3 (BETA)</small>
           <a
             href="https://github.com/hurkandogan/hmapp/blob/develop/CHANGELOG.md"
             target="_blank"
@@ -56,7 +72,7 @@ const Sidebar = () => {
           </Link>
         </li>
 
-        {objects.map((object) => {
+        {sidebarObjects.map((object) => {
           if (object.sub_objects) {
             return (
               <div>
@@ -82,7 +98,7 @@ const Sidebar = () => {
         })}
         <small>Houses:</small>
         <hr className={styles.sidebarMenuSeperator} />
-        {objects.map((object) => {
+        {sidebarObjects.map((object) => {
           if (object.isHouse && object.isMenu) {
             return (
               <li key={object.id} onClick={() => handleMenuClick(object)}>
@@ -97,7 +113,7 @@ const Sidebar = () => {
         })}
         <small>General Expenses:</small>
         <hr className={styles.sidebarMenuSeperator} />
-        {objects.map((object) => {
+        {sidebarObjects.map((object) => {
           if (!object.isHouse && object.isMenu)
             return (
               <li key={object.id} onClick={() => handleMenuClick(object)}>

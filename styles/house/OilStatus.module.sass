@@ -1,0 +1,26 @@
+.container
+    @apply w-full
+    .tableContainer
+        @apply text-right
+        .addButton
+            @apply text-sm cursor-pointer hover:opacity-80
+        table
+            @apply w-full text-center
+            .oddLine
+                @apply bg-gray-200
+            th, td
+                border: 1px solid black
+.addEntryContainer
+    @apply flex flex-col text-right
+    .formContainer
+        @apply flex flex-row
+        .formGroupContainer
+            @apply flex flex-col mt-4 mx-2 w-1/2
+.backBtn
+    @apply text-sm cursor-pointer hover:opacity-80 absolute right-4
+.deleteBtn
+    @apply text-center cursor-pointer opacity-50 hover:opacity-80
+    svg
+        width: 16px
+        height: 16px
+        @apply inline-block

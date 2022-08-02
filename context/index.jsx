@@ -6,6 +6,7 @@ const AppProvider = ({ children }) => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [pageTitle, setPageTitle] = useState('');
   const [objects, setObjects] = useState([]);
+  const [sidebarObjects, setSidebarObjects] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [selectedObject, setSelectedObject] = useState('');
@@ -19,6 +20,8 @@ const AppProvider = ({ children }) => {
         setPageTitle,
         objects,
         setObjects,
+        sidebarObjects,
+        setSidebarObjects,
         categories,
         setCategories,
         selectedCategory,

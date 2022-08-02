@@ -5,6 +5,9 @@ const { getCategories } = require('./categories/getCategories');
 const { getDashboardTotals } = require('./dashboard/getDashboardTotals');
 const { saveExpense } = require('./expense/saveExpense');
 const { editExpense } = require('./expense/editExpense');
+const { saveOilStatus } = require('./expense/saveOilStatus');
+const { getOilStatus } = require('./expense/getOilStatus');
+const { deleteOilStatus } = require('./expense/deleteOilStatus');
 const { getExpensesForObject } = require('./expense/getExpensesForObject');
 
 const con = mysql.createConnection({
@@ -129,6 +132,49 @@ exports.handler = async (event) => {
                         return success(result);
                     }
                     return error('No expenses found for this object or some error occured.');
+                }
+            }
+        }
+            break;
+        
+        /***** GET OIL STATUS *****/
+        case '/getoilstatus': {
+            switch (event.httpMethod) {
+                case 'POST': {
+                    const result = await getOilStatus(con, event.body);
+                    console.log('getOilStatus: ', result);
+                    if (result) {
+                        return success(result);
+                    }
+                    return error('No oil status found or some error occured.');
+                }
+            }
+        }
+            break;
+        /***** SAVE OIL STATUS *****/
+        case '/saveoilstatus': {
+            switch (event.httpMethod) {
+                case 'POST': {
+                    const result = await saveOilStatus(con, event.body);
+                    console.log('saveOilStatus: ', result);
+                    if (result) {
+                        return success(result);
+                    }
+                    return error('Some error occured.');
+                }
+            }
+        }
+            break;
+        /***** DELETE OIL STATUS *****/
+        case '/deleteoilstatus': {
+            switch (event.httpMethod) {
+                case 'POST': {
+                    const result = await deleteOilStatus(con, event.body);
+                    console.log('deleteOilStatus: ', result);
+                    if (result) {
+                        return success(result);
+                    }
+                    return error('Some error occured.');
                 }
             }
         }

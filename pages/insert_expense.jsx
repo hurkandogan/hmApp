@@ -22,23 +22,8 @@ const InsertExpense = () => {
 
   const [expense, setExpense] = useState(INITIAL_STATE);
   const [categories, setCategories] = useState([]);
-  const [selectBoxObjects, setSelectBoxObjects] = useState([]);
   const [selectedObject, setSelectedObject] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    let object_list = [];
-    for (const obj of objects) {
-      if (obj.sub_objects) {
-        for (const sub_obj of obj.sub_objects) {
-          object_list.push(sub_obj);
-        }
-      } else {
-        object_list.push(obj);
-      }
-    }
-    setSelectBoxObjects(object_list);
-  }, [objects]);
 
   useEffect(() => {
     getCategories()
@@ -69,7 +54,6 @@ const InsertExpense = () => {
   const amountFieldChangeHandler = (e) => {
     const { name, value } = e.target;
     const dottedValue = value.replace(/,/g, '.');
-    console.log(dottedValue);
     setExpense({
       ...expense,
       [name]: dottedValue,
@@ -154,7 +138,7 @@ const InsertExpense = () => {
             <option value="-" disabled>
               Please Select an Object
             </option>
-            {selectBoxObjects.map((obj) => {
+            {objects.map((obj) => {
               return (
                 <option key={obj.id} value={obj.id}>
                   {obj.name}

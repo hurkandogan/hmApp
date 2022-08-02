@@ -2,77 +2,37 @@
   padding: 0 2rem
   &_inner
     @apply flex flex-col justify-between items-center items-stretch
-    &_title
-      @apply flex flex-row w-full
-      h1
-        font-size: 1.5rem
-        @apply w-full font-bold
-    &_objects
-      @apply flex flex-row flex-wrap justify-start mt-2
-      &_group_container
-        @apply w-full
-        h1
-          border-radius: 5px
-          @apply w-full flex flex-row justify-between items-center overflow-hidden border-b p-2 cursor-pointer font-bold bg-gray-200
-        hr
-          @apply w-full my-3
-    &_header
-      height: 150px
-      @apply w-full flex flex-row items-center overflow-hidden border-b mb-2
-    .header_svg
-      @apply w-1/5
-    svg
-      width: 125px
-      height: 125px
-      opacity: 0.5
-    .header_col
-      @apply w-2/5
-  .content
-    @apply w-full flex flex-row items-center
-    .tab
-      &_container
-        @apply w-full
-      &_title_container
-        border-bottom: 1px solid gray
-        @apply flex flex-row items-center mt-2 cursor-pointer
-      &_title
-        border-top: 1px solid gray
-        border-bottom: 1px solid gray
-        border-right: 1px solid gray
-        &:first-child
-          border-left: 1px solid gray
-        @apply p-2
-      &_content
-        @apply w-full text-center
-        table
-          @apply w-full text-center
-
-.dashboardTable
-  .dashboard_title
-    font-size: 1.2rem
-    border-radius: 5px
-    @apply w-full flex flex-row justify-between items-center overflow-hidden border-b mt-3 p-1 px-2 cursor-pointer font-bold bg-gray-200
-    .dashboard_arrow
-      &:hover
-        @apply opacity-50
-      svg
-        width: 24px
-        height: 24px
-      &_open
-        transform: rotate(0deg)
-        transition: transform 1s ease
-      &_close
-        transform: rotate(90deg)
-        transition: transform 1s ease
-  .dashboard_content
-    opacity: 0
-    height: 0
-    visibility: hidden
-    transition: opacity 1s ease, visibility 1s ease, height 1s ease
-    &_open
-      opacity: 1
-      height: 100%
-      visibility: visible
-      transition: opacity 1s ease, visibility 1s ease, height 1s ease
-.modalBoxButtonWrapper
-  @apply flex flex-row justify-around m-4 p-2
+    .dashboard_content
+      &_parent_object
+        @apply flex flex-row flex-wrap justify-start mt-2
+        &_container
+          @apply w-full
+          hr
+            @apply w-full my-3
+          &_header
+            border-radius: 5px
+            @apply relative flex flex-row justify-between items-center overflow-hidden border-b p-2 cursor-pointer font-bold bg-gray-200
+            h1
+              @apply w-2/3 justify-start
+            .headerTotal
+              @apply mr-6
+            .headerArrow
+              @apply absolute right-2 cursor-pointer
+              &_open
+                transform: rotate(0)
+                transition: transform 0.5s ease-in-out
+              &_close
+                transform: rotate(90deg)
+                transition: transform 0.5s ease-in-out
+              svg
+                height: 16px!important
+                width: 16px!important
+          &_objects
+            max-height: 0
+            transition: max-height 0.5s ease-in-out
+            @apply flex flex-row overflow-hidden
+            &_open
+              max-height: 220px
+              transition: max-height 0.5s ease-in-out
+      &_inner_objects
+        @apply flex flex-row
