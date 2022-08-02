@@ -37,6 +37,13 @@ exports.getExpensesForObject = async (con, data) => {
         }
     }
 
+    const oilResult = await con.promise().query(`SELECT * FROM oil_status WHERE object = '${result.object.id}' AND status > 0 ORDER BY date DESC LIMIT 1`);
+    if (oilResult[0].length > 0) {
+        oilResult[0][0].date = moment(oilResult[0][0].date).format('YYYY-MM-DD');
+        result.oilStatus = oilResult[0][0];
+    } else {
+        result.oilStatus = { id: null, status: 0 }
+    }
 
     if (result) {
         result.objectTotal = result.objectTotal.toFixed(2);

@@ -3,7 +3,6 @@ exports.getDashboardTotals = async (con, data) => {
     const allObjects = [];
     const result = {
         objects: [],
-        unpaidExpenses: [],
     };
 
     const parentObjectResult = await con.promise().query('SELECT * FROM parent_objects ORDER BY sort_number ASC');
@@ -58,10 +57,5 @@ exports.getDashboardTotals = async (con, data) => {
         if (parentObject.subObjects.length > 0)
             result.objects.unshift(parentObject);
     }
-
-    for (let i = 0; i < expenseResult[0].length; i++) {
-        if (expenseResult[0][i].isPaid === 0) result.unpaidExpenses.push(expenseResult[0][i]);
-    }
-
     return result;
 };

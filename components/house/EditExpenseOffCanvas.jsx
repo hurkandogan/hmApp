@@ -33,7 +33,6 @@ const EditExpenseOffCanvas = (props) => {
     editExpense(expense)
       .then((res) => {
         if (res.status === 200) {
-          console.log(res);
           close();
         }
       })

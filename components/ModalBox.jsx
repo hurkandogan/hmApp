@@ -11,7 +11,7 @@ const ModalBox = (props) => {
             <span onClick={close}>{close_icon}</span>
           </div>
           <div className={styles.content}>
-            <p>{children}</p>
+            {children}
           </div>
         </div>
       </div>

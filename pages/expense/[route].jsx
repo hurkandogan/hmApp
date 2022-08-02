@@ -1,4 +1,5 @@
 import styles from '../../styles/House.module.sass';
+import moment from 'moment';
 import { useAppContext } from '../../context/index';
 import { useEffect, useState } from 'react';
 import { house_filled } from '../../assets/icons';
@@ -6,6 +7,8 @@ import { useRouter } from 'next/router';
 import getHouseData from '../../service/expenses/getHouseData';
 import CategoryTab from '../../components/house/CategoryTab';
 import EditExpenseOffCanvas from '../../components/house/EditExpenseOffCanvas';
+import ModalBox from '../../components/ModalBox';
+import OilStatus from '../../components/house/OilStatus';
 import { numberDivider } from '../../assets/misc/functions';
 
 const OBJECT_INITIAL_DATA = {
@@ -23,6 +26,7 @@ const House = () => {
   const [object, setObject] = useState(OBJECT_INITIAL_DATA);
   const [selectedExpense, setSelectedExpense] = useState({});
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [oilStatusModal, setOilStatusModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -41,6 +45,7 @@ const House = () => {
         .then((res) => {
           let data = res.data.data;
           setObject(data);
+          getOilStatus(data.oilStatus);
         })
         .catch((err) => console.log(err));
       setLoading(false);
@@ -70,6 +75,9 @@ const House = () => {
     });
   };
 
+  const showOilStatusModal = () => setOilStatusModal(!oilStatusModal);
+  const closeOilStatusModal = () => setOilStatusModal(false);
+
   return (
     <div className={styles.container}>
       <div className={styles.container_inner}>
@@ -79,9 +87,21 @@ const House = () => {
         <div className={styles.container_inner_header}>
           <div className={styles.header_svg}>{house_filled}</div>
           <div className={styles.header_col}>
-            <p>
-              Oil Level: <i>last updated at today</i>
-            </p>
+            {object.object.hasOilTank ? (
+              <p className={styles.oilStatusText} onClick={showOilStatusModal}>
+                Oil Level:{' '}
+                <span>
+                  {object.oilStatus?.status} Lt.
+                  <i>
+                    {' '}
+                    (last status from:{' '}
+                    {moment(object.oilStatus?.date).format('DD.MM.YYYY')})
+                  </i>
+                </span>
+              </p>
+            ) : (
+              ''
+            )}
             <p>Total invoice count: {object?.expenseCount} expense(s)</p>
             <p>
               Total expense amount:{' '}
@@ -131,6 +151,13 @@ const House = () => {
         expense={selectedExpense}
         editChangeHandler={editChangeHandler}
       />
+      <ModalBox
+        active={oilStatusModal}
+        close={closeOilStatusModal}
+        headline="Oil Status"
+      >
+        <OilStatus selectedObject={object.object.id} />
+      </ModalBox>
     </div>
   );
 };
