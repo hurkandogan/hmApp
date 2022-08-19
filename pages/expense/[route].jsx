@@ -32,10 +32,12 @@ const House = () => {
   useEffect(() => {
     setRoute(router.query.route);
     setSelectedCategory(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.route]);
 
   useEffect(() => {
     loadHouseData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route, selectedYear]);
 
   const loadHouseData = () => {
@@ -88,7 +90,7 @@ const House = () => {
           <div className={styles.header_svg}>{house_filled}</div>
           <div className={styles.header_col}>
             {object.object.hasOilTank ? (
-              <p className={styles.oilStatusText} onClick={showOilStatusModal}>
+              <p className={styles.oilStatus} onClick={showOilStatusModal}>
                 Oil Level:{' '}
                 <span>
                   {object.oilStatus?.status} Lt.
