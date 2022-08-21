@@ -13,6 +13,7 @@ const GeneralExpenses = () => {
     for (let i = selectedYear; i >= 2019; i--) {
       setYearValues((prevState) => [...prevState, i]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSelectedYear = (e) => setSelectedYear(e.target.value);

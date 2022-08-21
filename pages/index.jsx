@@ -13,6 +13,7 @@ const Home = () => {
 
   useEffect(() => {
     loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedYear]);
 
   const loadData = () => {
@@ -84,20 +85,49 @@ const Home = () => {
                 );
               }
             })}
-          </div>
-          <div className={styles.dashboard_content_inner_objects}>
-            {dashboardData?.map((object) => {
-              if (object.isHouse && !object.subObjects) {
-                return <ObjectTotal key={object.id} object={object} />;
-              }
-            })}
-          </div>
-          <div className={styles.dashboard_content_inner_objects}>
-            {dashboardData?.map((object) => {
-              if (!object.isHouse && !object.subObjects) {
-                return <ObjectTotal key={object.id} object={object} />;
-              }
-            })}
+
+            <div className={styles.dashboard_content_parent_object_container}>
+              <div
+                className={
+                  styles.dashboard_content_parent_object_container_header
+                }
+                onClick={() => toggleGroupContainer('other_expenses')}
+              >
+                <h1>Other Expenses</h1>
+                <span
+                  className={
+                    styles.headerArrow +
+                    ' ' +
+                    (openedGroup === 'other_expenses'
+                      ? styles.headerArrow_open
+                      : styles.headerArrow_close)
+                  }
+                >
+                  {dashboard_arrow}
+                </span>
+              </div>
+              <div
+                className={
+                  styles.dashboard_content_parent_object_container_objects +
+                  ' ' +
+                  (openedGroup === 'other_expenses'
+                    ? styles.dashboard_content_parent_object_container_objects_open
+                    : '')
+                }
+              >
+                {dashboardData?.map((object) => {
+                  if (object.isHouse && !object.subObjects) {
+                    return <ObjectTotal key={object.id} object={object} />;
+                  }
+                })}
+                {dashboardData?.map((object) => {
+                  if (!object.isHouse && !object.subObjects) {
+                    return <ObjectTotal key={object.id} object={object} />;
+                  }
+                })}
+              </div>
+              <hr />
+            </div>
           </div>
         </div>
       </div>

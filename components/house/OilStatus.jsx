@@ -26,6 +26,7 @@ const OilStatus = (props) => {
 
   useEffect(() => {
     loadOilStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showAddEntryForm]);
 
   const addEntry = () => setShowAddEntryForm(true);
