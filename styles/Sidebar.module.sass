@@ -9,28 +9,48 @@
   @apply flex flex-col py-1.5 px-2.5 h-screen sticky top-0 overflow-hidden overflow-y-scroll
   &::-webkit-scrollbar
     display: none
+  .sidebarMenuSeperator
+    width: 100%
+    @apply m-0 mt-2 border-stone-600
   .user_info
     @apply flex flex-row items-center justify-center mt-2
     .brand
       @apply block text-lg
-    small
-      @apply block text-xs text-center text-gray-500
     a
       @apply block text-xs text-center text-gray-500
     p
       @apply inline text-sm text-center
-  h1
-    @apply text-xl text-center font-bold
-  hr
-    width: 80%
-    margin: 0 10%
-    @apply my-3 border-stone-600
-  .sidebarMenuSeperator
-    width: 100%
-    @apply m-0 mb-2
+  .sidebar_menu
+    &_header
+      @apply flex flex-row w-full justify-between align-middle cursor-pointer mt-3
+      &_text
+        @apply flex flex-row justify-start align-middle place-items-center text-base
+      &_house_icon
+        @apply mr-2
+      &_arrow
+        svg
+          width: 16px
+          height: 16px
+          @apply text-xs
+      .menu_open
+        transform: rotate(0)
+        transition: transform 1s ease-in-out
+      .menu_closed
+        transform: rotate(90deg)
+        transition: transform .7s ease-in-out
+    &_objects
+      background-color: rgba(42, 48, 54, 0.8)
+      border-bottom-right-radius: 5px
+      border-bottom-left-radius: 5px
+      max-height: 0
+      transition: max-height .7s ease-in-out
+      @apply flex flex-col overflow-hidden mb-3
+      &_open
+        max-height: 350px
+        transition: max-height 1s ease-in-out
   ul
-    @apply list-none m-0 p-0
+    @apply list-none mt-8 p-0
     li
-      @apply flex flex-row items-center justify-start cursor-pointer py-1.5 px-0 my-2
-      svg
-        @apply inline mr-2
+      @apply flex flex-row text-sm items-center justify-start cursor-pointer py-1.5 px-0
+.external_link
+  @apply w-full

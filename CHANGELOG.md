@@ -1,3 +1,18 @@
+<h4>Version: 0.1.4</h4>
+<ul>
+    <li>Sidebar updated</li>
+    <li>Clapmenus to Sidebar are added</li>
+    <li>New Objects are added</li>
+    <li>External Links for Rügen Property added</li>
+    <li>Bug fixes and small design improvements</li>
+</ul>
+
+<h4>Version: 0.1.3</h4>
+<ul>
+    <li>Dashboard updated</li>
+    <li>Oil Status added to the properties</li>
+</ul>
+
 <h4>Version: 0.1.1</h4>
 <ul>
     <li>House grouping is added to Dashboard and Sidebar</li>
