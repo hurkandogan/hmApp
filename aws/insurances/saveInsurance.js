@@ -9,8 +9,8 @@ exports.saveInsurance = async (con, data) => {
 
     const result = await con.promise().query(
         `INSERT INTO insurances  ` +
-        `(id, insurance_name, insurance_vendor, insurance_number, insurance_object, yearly_amount, contract_end_date, description, payment_type, insurance_paper_link, monthly_amount, is_cancelled, cancellation_date, contract_renewal, createdAt, updatedAt)` +
-        `VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        `(id, insurance_name, insurance_vendor, insurance_number, insurance_object, yearly_amount, monthly_amount, contract_start_date, contract_end_date, contract_renewal, payment_type, description, insurance_paper_link, createdAt, updatedAt)` +
+        `VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
             `${id}`,
             `${insuranceData.insurance_name}`,
@@ -18,14 +18,13 @@ exports.saveInsurance = async (con, data) => {
             `${insuranceData.insurance_number}`,
             `${insuranceData.insurance_object}`,
             `${insuranceData.yearly_amount}`,
-            `${insuranceData.contract_end_date}`,
-            `${insuranceData.description}`,
-            `${insuranceData.payment_type}`,
-            `${insuranceData.insurance_paper_link}`,
             `${insuranceData.monthly_amount}`,
-            `${insuranceData.is_cancelled}`,
-            `${insuranceData.cancellation_date}`,
+            `${insuranceData.contract_start_date}`,
+            `${insuranceData.contract_end_date}`,
             `${insuranceData.contract_renewal}`,
+            `${insuranceData.payment_type}`,
+            `${insuranceData.description}`,
+            `${insuranceData.insurance_paper_link}`,
             `${date}`,
             `${date}`,
         ]

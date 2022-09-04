@@ -133,17 +133,20 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link href="/all_expenses" passHref>
-              <button className={globalStyles.sidebarButton} disabled>
-                Expenses
+            <Link href="/insert_insurance" passHref>
+              <button className={globalStyles.sidebarButton}>
+                Add Insurance
               </button>
             </Link>
           </li>
           <li>
-            <Link href="/insurances" passHref>
-              <button className={globalStyles.sidebarButton} disabled>
-                Insurances
-              </button>
+            <Link href="/filtered_table/all_expenses" passHref>
+              <button className={globalStyles.sidebarButton}>Expenses</button>
+            </Link>
+          </li>
+          <li>
+            <Link href="/filtered_table/insurances" passHref>
+              <button className={globalStyles.sidebarButton}>Insurances</button>
             </Link>
           </li>
         </div>
