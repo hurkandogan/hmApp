@@ -1,8 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useAppContext } from '../context';
-import saveInsurance from '../service/insurances/saveInsurance';
-import styles from '../styles/InsertExpense.module.sass';
-import globalStyles from '../styles/Global.module.sass';
+import { useAppContext } from '../../context';
+import styles from '../../styles/modules/Form.module.sass';
+import globalStyles from '../../styles/Global.module.sass';
+import saveInsurance from '../../service/insurances/saveInsurance';
+
+// Components
+import TextField from '../atoms/TextField';
+import Button from '../atoms/Button';
+import SelectBox from '../atoms/SelectBox';
 
 const InsertInsurance = () => {
   const INITIAL_STATE = {
@@ -24,12 +29,16 @@ const InsertInsurance = () => {
 
   const [insurance, setInsurance] = useState(INITIAL_STATE);
 
-  const changeHandler = (e) => {
-    const { type, checked, name, value } = e.target;
-    if (type === 'checkbox') {
-      setInsurance({ ...insurance, [name]: checked ? 1 : 0 });
+  const changeHandler = (e, selectBoxName = null) => {
+    if (selectBoxName) {
+      setInsurance({ ...insurance, [selectBoxName]: e });
     } else {
-      setInsurance({ ...insurance, [name]: value });
+      const { type, checked, name, value } = e.target;
+      if (type === 'checkbox') {
+        setInsurance({ ...insurance, [name]: checked ? 1 : 0 });
+      } else {
+        setInsurance({ ...insurance, [name]: value });
+      }
     }
   };
 
@@ -61,163 +70,155 @@ const InsertInsurance = () => {
       <h1>Insert Insurance</h1>
       <div className={styles.formGroupContainer}>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="insurance_name">Insurance Name</label>
-          <input
+          <TextField
             type="text"
             id="insurance_name"
             name="insurance_name"
             value={insurance.insurance_name}
             onChange={changeHandler}
+            label={'Insurance Name'}
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="insurance_vendor">Vendor</label>
-          <input
+          <TextField
             type="text"
             id="insurance_vendor"
             name="insurance_vendor"
             value={insurance.insurance_vendor}
             onChange={changeHandler}
+            label={'Vendor'}
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="insurance_number">Insurance Nr.</label>
-          <input
+          <TextField
             type="text"
             id="insurance_number"
             name="insurance_number"
             value={insurance.insurance_number}
             onChange={changeHandler}
+            label="Insurance Nr."
           />
         </div>
       </div>
       <div className={styles.formGroupContainer}>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="insurance_object">Object</label>
-          <select
+          <SelectBox
             id="insurance_object"
             name="insurance_object"
             value={insurance.insurance_object}
             onChange={changeHandler}
-          >
-            <option value="-" disabled>
-              Please Select an Object
-            </option>
-            {objects.map((obj) => {
-              return (
-                <option key={obj.id} value={obj.id}>
-                  {obj.name}
-                </option>
-              );
-            })}
-          </select>
+            options={objects}
+            label="Object"
+          />
         </div>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="yearly_amount">Monthly Amount</label>
-          <input
+          <TextField
             type="text"
             id="monthly_amount"
             name="monthly_amount"
             value={insurance.monthly_amount}
             onChange={amountFieldChangeHandler}
+            label="Monthly Amount"
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="yearly_amount">Yearly Amount</label>
-          <input
+          <TextField
             type="text"
             id="yearly_amount"
             name="yearly_amount"
             value={insurance.yearly_amount}
             onChange={amountFieldChangeHandler}
+            label="Yearly Amount"
           />
         </div>
       </div>
       <div className={styles.formGroupContainer}>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="contract_start_date">Start Date</label>
-          <input
+          <TextField
             type="date"
             id="contract_start_date"
             name="contract_start_date"
             value={insurance.contract_start_date}
             onChange={changeHandler}
+            label="Start Date"
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="contract_end_date">End Date</label>
-          <input
+          <TextField
             type="date"
             id="contract_end_date"
             name="contract_end_date"
             value={insurance.contract_end_date}
             onChange={changeHandler}
+            label="End Date"
           />
         </div>
+      </div>
+      <div className={styles.formGroupContainer}>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="contract_renewal">Renewal Date</label>
-          <input
+          <TextField
             type="date"
             id="contract_renewal"
             name="contract_renewal"
             value={insurance.contract_renewal}
             onChange={changeHandler}
+            label="Renewal Date"
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="payment_type">Payment Method</label>
-          <select
+          <SelectBox
             type="text"
             id="payment_type"
             name="payment_type"
             value={insurance.payment_type}
-            onChange={amountFieldChangeHandler}
-          >
-            <option value={'-'} disabled={true}>
-              Please select a type
-            </option>
-            <option value={'auto'}>Auto</option>
-            <option value={'bank_transfer'}>Bank Transfer</option>
-          </select>
+            onChange={changeHandler}
+            options={[
+              { id: 'auto', name: 'Auto' },
+              { id: 'bank_transfer', name: 'Bank Transfer' },
+            ]}
+            label="Payment Method"
+          />
         </div>
       </div>
       <div className={styles.formGroupContainer}>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="expenseDesc">Description</label>
-          <input
+          <TextField
             type="text"
             id="expenseDesc"
             name="description"
             autoComplete="off"
             value={insurance.description}
             onChange={changeHandler}
+            label="Description"
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="insurance_paper_link">Insurance Paper Link</label>
-          <input
+          <TextField
             type="text"
             id="insurance_paper_link"
             name="insurance_paper_link"
             autoComplete="off"
             value={insurance.insurance_paper_link}
             onChange={changeHandler}
+            label="Insurance Link"
           />
         </div>
       </div>
       <div className={styles.formGroupContainer}>
-        <button
-          className={globalStyles.primaryButton}
+        <Button
+          type={'primary'}
           onClick={formSubmit}
           disabled={loading}
-        >
-          {loading && (
-            <div className={globalStyles.spinner} role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          )}
-          Submit
-        </button>
+          text={`Submit ${
+            loading ? (
+              <div className={globalStyles.spinner} role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            ) : (
+              ''
+            )
+          }`}
+        />
       </div>
     </div>
   );

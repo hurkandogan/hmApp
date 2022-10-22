@@ -12,10 +12,10 @@ import { house_filled } from '../../assets/icons';
 import { numberDivider } from '../../assets/misc/functions';
 
 // Components
-import CategoryTab from '../../components/house/CategoryTab';
-import EditExpenseOffCanvas from '../../components/house/EditExpenseOffCanvas';
+import CategoryTab from '../../components/expense/CategoryTab';
+import EditExpenseOffCanvas from '../../components/expense/EditExpenseOffCanvas';
 import ModalBox from '../../components/ModalBox';
-import OilStatus from '../../components/house/OilStatus';
+import OilStatus from '../../components/expense/OilStatus';
 
 const OBJECT_INITIAL_DATA = {
   object: {},

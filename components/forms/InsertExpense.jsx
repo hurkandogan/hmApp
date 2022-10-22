@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useAppContext } from '../context';
+import { useAppContext } from '../../context';
+import styles from '../../styles/modules/Form.module.sass';
+import globalStyles from '../../styles/Global.module.sass';
 
 // Components
-import TextField from '../components/atoms/TextField';
-import SelectBox from '../components/atoms/SelectBox';
-import Checkbox from '../components/atoms/Checkbox';
+import TextField from '../atoms/TextField';
+import SelectBox from '../atoms/SelectBox';
+import Checkbox from '../atoms/Checkbox';
+import Button from '../atoms/Button';
 
 // Services
-import getCategories from '../service/categories/getCategories';
-import saveExpense from '../service/expenses/saveExpense';
-import styles from '../styles/modules/Form.module.sass';
-import globalStyles from '../styles/Global.module.sass';
-import Button from '../components/atoms/Button';
+import getCategories from '../../service/categories/getCategories';
+import saveExpense from '../../service/expenses/saveExpense';
 
 const InsertExpense = () => {
   const INITIAL_STATE = {

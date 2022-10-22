@@ -7,7 +7,6 @@ import getObjects from '../service/objects/getObjects';
 import { useAppContext } from '../context/index';
 import {
   house,
-  expense,
   dashboard_arrow,
   list_icon,
   dashboard_icon,
@@ -127,14 +126,14 @@ const Sidebar = () => {
           }
         >
           <li>
-            <Link href="/insert_expense" passHref>
+            <Link href="/forms/insert_expense" passHref>
               <button className={globalStyles.sidebarButton}>
                 Add Expense
               </button>
             </Link>
           </li>
           <li>
-            <Link href="/insert_insurance" passHref>
+            <Link href="/forms/insert_insurance" passHref>
               <button className={globalStyles.sidebarButton}>
                 Add Insurance
               </button>
