@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import saveObject from '../service/objects/saveObject';
-import styles from '../styles/InsertExpense.module.sass';
-import globalStyles from '../styles/Global.module.sass';
+import saveObject from '../../service/objects/saveObject';
+import styles from '../../styles/modules/Form.module.sass';
+import globalStyles from '../../styles/Global.module.sass';
 
 const InsertObject = () => {
   const INITIAL_STATE = {

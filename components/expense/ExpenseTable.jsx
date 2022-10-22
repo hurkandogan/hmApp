@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { target, paid_icon, unpaid_icon } from '../../assets/icons';
 import { numberDivider } from '../../assets/misc/functions';
-import styles from '../../styles/house/ExpenseTable.module.sass';
+import styles from '../../styles/expense/ExpenseTable.module.sass';
 
 const ExpenseTable = (props) => {
   const test = (e, url) => {

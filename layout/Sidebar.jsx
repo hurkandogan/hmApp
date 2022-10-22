@@ -7,7 +7,6 @@ import getObjects from '../service/objects/getObjects';
 import { useAppContext } from '../context/index';
 import {
   house,
-  expense,
   dashboard_arrow,
   list_icon,
   dashboard_icon,
@@ -49,6 +48,7 @@ const Sidebar = () => {
         if (res.data.data) setCategories(res.data.data);
       })
       .catch((err) => console.log(err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleMenuClick = (object) => {
@@ -126,24 +126,27 @@ const Sidebar = () => {
           }
         >
           <li>
-            <Link href="/insert_expense" passHref>
+            <Link href="/forms/insert_expense" passHref>
               <button className={globalStyles.sidebarButton}>
                 Add Expense
               </button>
             </Link>
           </li>
           <li>
-            <Link href="/all_expenses" passHref>
-              <button className={globalStyles.sidebarButton} disabled>
-                Expenses
+            <Link href="/forms/insert_insurance" passHref>
+              <button className={globalStyles.sidebarButton}>
+                Add Insurance
               </button>
             </Link>
           </li>
           <li>
-            <Link href="/insurances" passHref>
-              <button className={globalStyles.sidebarButton} disabled>
-                Insurances
-              </button>
+            <Link href="/filtered_table/all_expenses" passHref>
+              <button className={globalStyles.sidebarButton}>Expenses</button>
+            </Link>
+          </li>
+          <li>
+            <Link href="/filtered_table/insurances" passHref>
+              <button className={globalStyles.sidebarButton}>Insurances</button>
             </Link>
           </li>
         </div>
@@ -191,7 +194,7 @@ const Sidebar = () => {
                         key={sub_object.id}
                         onClick={() => handleMenuClick(sub_object)}
                       >
-                        <Link href={'/expense/' + sub_object.route}>
+                        <Link href={'/expense/' + sub_object.route} passHref>
                           <button className={globalStyles.sidebarButton}>
                             {sub_object.name}
                           </button>
@@ -240,7 +243,7 @@ const Sidebar = () => {
             if (object.isMenu && !object.parent_object) {
               return (
                 <li key={object.id} onClick={() => handleMenuClick(object)}>
-                  <Link href={'/expense/' + object.route}>
+                  <Link href={'/expense/' + object.route} passHref>
                     <button className={globalStyles.sidebarButton}>
                       {object.name}
                     </button>

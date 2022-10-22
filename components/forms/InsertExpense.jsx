@@ -1,10 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useAppContext } from '../context';
-import getObjects from '../service/objects/getObjects';
-import getCategories from '../service/categories/getCategories';
-import saveExpense from '../service/expenses/saveExpense';
-import styles from '../styles/InsertExpense.module.sass';
-import globalStyles from '../styles/Global.module.sass';
+import { useAppContext } from '../../context';
+import styles from '../../styles/modules/Form.module.sass';
+import globalStyles from '../../styles/Global.module.sass';
+
+// Components
+import TextField from '../atoms/TextField';
+import SelectBox from '../atoms/SelectBox';
+import Checkbox from '../atoms/Checkbox';
+import Button from '../atoms/Button';
+
+// Services
+import getCategories from '../../service/categories/getCategories';
+import saveExpense from '../../service/expenses/saveExpense';
 
 const InsertExpense = () => {
   const INITIAL_STATE = {
@@ -60,17 +67,17 @@ const InsertExpense = () => {
     });
   };
 
-  const objectChangeHandler = (e) => {
-    const { name, value } = e.target;
-    const selectedObject = objects.find((object) => object.id === value);
-    setSelectedObject({
-      id: selectedObject.id,
-      name: selectedObject.name,
-      isHouse: selectedObject.isHouse,
-    });
+  const selectBoxChangeHandler = (val, name) => {
+    const selectedObject = objects.find((object) => object.id === val);
+    if (selectedObject)
+      setSelectedObject({
+        id: selectedObject.id,
+        name: selectedObject.name,
+        isHouse: selectedObject.isHouse,
+      });
     setExpense({
       ...expense,
-      [name]: value,
+      [name]: val,
     });
   };
 
@@ -94,106 +101,94 @@ const InsertExpense = () => {
       <h1>Insert Expense</h1>
       <div className={styles.formGroupContainer}>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="expenseDate">Date</label>
-          <input
+          <TextField
             type="date"
             id="expenseDate"
             name="date"
             value={expense.date}
             onChange={changeHandler}
+            placeholder="Date"
+            label="Date"
+            autoComplete="off"
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="expenseVendor">Vendor</label>
-          <input
+          <TextField
             type="text"
             id="expenseVendor"
             name="firm"
             value={expense.firm}
             onChange={changeHandler}
+            placeholder="Vendor"
+            label="Vendor"
           />
         </div>
       </div>
       <div className={styles.formGroupContainer}>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="expenseDesc">Description</label>
-          <input
+          <TextField
             type="text"
             id="expenseDesc"
             name="description"
             value={expense.description}
             onChange={changeHandler}
+            placeholder="Description"
+            label="Description"
+            autoComplete="off"
           />
         </div>
       </div>
       <div className={styles.formGroupContainer}>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="object">Object</label>
-          <select
+          <SelectBox
+            label="Object"
             id="object"
             name="objectId"
             value={expense.objectId}
-            onChange={objectChangeHandler}
-          >
-            <option value="-" disabled>
-              Please Select an Object
-            </option>
-            {objects.map((obj) => {
-              return (
-                <option key={obj.id} value={obj.id}>
-                  {obj.name}
-                </option>
-              );
-            })}
-          </select>
+            onChange={selectBoxChangeHandler}
+            options={objects}
+          />
         </div>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="category">Category</label>
-          <select
+          <SelectBox
+            label="Category"
             id="category"
             name="categoryId"
             value={expense.categoryId}
-            onChange={changeHandler}
+            onChange={selectBoxChangeHandler}
+            options={categories}
             disabled={categories.length < 1 && true}
-          >
-            <option value="-" disabled>
-              Please Select a Category
-            </option>
-            {categories.map((cat) => {
-              return (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
-                </option>
-              );
-            })}
-          </select>
+          />
         </div>
       </div>
       <div className={styles.formGroupContainer}>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="expenseAmount">Amount</label>
-          <input
+          <TextField
             type="text"
             id="expenseAmount"
             name="amount"
             value={expense.amount}
             onChange={amountFieldChangeHandler}
+            placeholder="Amount"
+            label="Expense Amount"
+            autoComplete="off"
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="invoiceLink">Dropbox Link</label>
-          <input
+          <TextField
             type="text"
             id="invoiceLink"
             name="link"
             value={expense.link}
             onChange={changeHandler}
+            placeholder="Link"
+            label="Invoice Link"
+            autoComplete="off"
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
-          <label htmlFor="isPaid">Payment Status</label>
-          <input
-            type="checkbox"
+          <Checkbox
+            label="Payment Status"
             id="isPaid"
             name="isPaid"
             checked={expense.isPaid}
@@ -202,18 +197,20 @@ const InsertExpense = () => {
         </div>
       </div>
       <div className={styles.formGroupContainer}>
-        <button
-          className={globalStyles.primaryButton}
+        <Button
+          text={`Submit ${
+            loading ? (
+              <div className={globalStyles.spinner} role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            ) : (
+              ''
+            )
+          }`}
           onClick={formSubmit}
           disabled={loading}
-        >
-          {loading && (
-            <div className={globalStyles.spinner} role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          )}
-          Submit
-        </button>
+          type={'primary'}
+        />
       </div>
     </div>
   );

@@ -21,6 +21,12 @@ a {
   box-sizing: border-box;
 }
 
+h1 {
+  font-size: 1.5rem;
+  width: 100%;
+  font-weight: bold;
+}
+
 .paid-icon {
   color: #15803d;
 }

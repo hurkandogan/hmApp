@@ -3,6 +3,7 @@ import { useState, useContext, createContext } from 'react';
 const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
+  const [loading, setLoading] = useState(false);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [pageTitle, setPageTitle] = useState('');
   const [objects, setObjects] = useState([]);
@@ -14,6 +15,8 @@ const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
+        loading,
+        setLoading,
         selectedYear,
         setSelectedYear,
         pageTitle,

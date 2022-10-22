@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAppContext } from '../../context';
 import moment from 'moment';
 import globalStyles from '../../styles/Global.module.sass';
-import styles from '../../styles/house/OilStatus.module.sass';
+import styles from '../../styles/expense/OilStatus.module.sass';
 import { unpaid_icon } from '../../assets/icons';
 import saveOilStatus from '../../service/oilStatus/saveOilStatus';
 import getOilStatus from '../../service/oilStatus/getOilStatus';

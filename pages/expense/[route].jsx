@@ -1,15 +1,21 @@
-import styles from '../../styles/House.module.sass';
-import moment from 'moment';
-import { useAppContext } from '../../context/index';
 import { useEffect, useState } from 'react';
-import { house_filled } from '../../assets/icons';
+import { useAppContext } from '../../context/index';
 import { useRouter } from 'next/router';
+import styles from '../../styles/expense/Index.module.sass';
+import moment from 'moment';
+
+// Services
 import getHouseData from '../../service/expenses/getHouseData';
-import CategoryTab from '../../components/house/CategoryTab';
-import EditExpenseOffCanvas from '../../components/house/EditExpenseOffCanvas';
-import ModalBox from '../../components/ModalBox';
-import OilStatus from '../../components/house/OilStatus';
+
+// Assets
+import { house_filled } from '../../assets/icons';
 import { numberDivider } from '../../assets/misc/functions';
+
+// Components
+import CategoryTab from '../../components/expense/CategoryTab';
+import EditExpenseOffCanvas from '../../components/expense/EditExpenseOffCanvas';
+import ModalBox from '../../components/ModalBox';
+import OilStatus from '../../components/expense/OilStatus';
 
 const OBJECT_INITIAL_DATA = {
   object: {},
@@ -90,7 +96,7 @@ const House = () => {
           <div className={styles.header_svg}>{house_filled}</div>
           <div className={styles.header_col}>
             {object.object.hasOilTank ? (
-              <p className={styles.oilStatus} onClick={showOilStatusModal}>
+              <p className={styles.oilStatusText} onClick={showOilStatusModal}>
                 Oil Level:{' '}
                 <span>
                   {object.oilStatus?.status} Lt.
@@ -112,7 +118,6 @@ const House = () => {
               </strong>
             </p>
           </div>
-          <div className={styles.header_col}></div>
         </div>
         <div className={styles.content}>
           <div className={styles.tab_container}>
@@ -138,12 +143,10 @@ const House = () => {
               })}
               <div className={styles.offset}></div>
             </div>
-            <div className={styles.tab_content}>
-              <CategoryTab
-                editInvoice={editInvoice}
-                category={object?.expenseList[selectedCategory]}
-              />
-            </div>
+            <CategoryTab
+              editInvoice={editInvoice}
+              category={object?.expenseList[selectedCategory]}
+            />
           </div>
         </div>
       </div>

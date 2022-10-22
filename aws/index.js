@@ -3,12 +3,16 @@ const { getAllObjects } = require('./objects/getAllObjects');
 const { saveObject } = require('./objects/saveObject');
 const { getCategories } = require('./categories/getCategories');
 const { getDashboardTotals } = require('./dashboard/getDashboardTotals');
+const { getAllExpenses } = require('./expense/getAllExpenses');
 const { saveExpense } = require('./expense/saveExpense');
 const { editExpense } = require('./expense/editExpense');
 const { saveOilStatus } = require('./expense/saveOilStatus');
 const { getOilStatus } = require('./expense/getOilStatus');
 const { deleteOilStatus } = require('./expense/deleteOilStatus');
 const { getExpensesForObject } = require('./expense/getExpensesForObject');
+const { saveInsurance } = require('./insurances/saveInsurance');
+const { editInsurance } = require('./insurances/editInsurance');
+const { getInsurances } = require('./insurances/getInsurances');
 
 const con = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -127,7 +131,7 @@ exports.handler = async (event) => {
             switch (event.httpMethod) {
                 case 'POST': {
                     const result = await getExpensesForObject(con, event.body);
-                    console.log('getexpensesforobject: ', result);
+                    console.log('getExpensesForObject: ', result);
                     if (result) {
                         return success(result);
                     }
@@ -136,7 +140,22 @@ exports.handler = async (event) => {
             }
         }
             break;
-        
+
+        /***** GET ALL EXPENSES *****/
+        case '/getallexpenses': {
+            switch (event.httpMethod) {
+                case 'POST': {
+                    const result = await getAllExpenses(con, event.body);
+                    console.log('getAllExpenses: ', result);
+                    if (result) {
+                        return success(result);
+                    }
+                    return error('No expenses found for this object or some error occured.');
+                }
+            }
+        }
+            break;
+
         /***** GET OIL STATUS *****/
         case '/getoilstatus': {
             switch (event.httpMethod) {
@@ -151,6 +170,7 @@ exports.handler = async (event) => {
             }
         }
             break;
+
         /***** SAVE OIL STATUS *****/
         case '/saveoilstatus': {
             switch (event.httpMethod) {
@@ -165,12 +185,58 @@ exports.handler = async (event) => {
             }
         }
             break;
+
         /***** DELETE OIL STATUS *****/
         case '/deleteoilstatus': {
             switch (event.httpMethod) {
                 case 'POST': {
                     const result = await deleteOilStatus(con, event.body);
                     console.log('deleteOilStatus: ', result);
+                    if (result) {
+                        return success(result);
+                    }
+                    return error('Some error occured.');
+                }
+            }
+        }
+            break;
+
+        /***** GET INSURANCES *****/
+        case '/getinsurances': {
+            switch (event.httpMethod) {
+                case 'POST': {
+                    const result = await getInsurances(con, event.body);
+                    console.log('getInsurances: ', result);
+                    if (result) {
+                        return success(result);
+                    }
+                    return error('No insurances found or some error occured.');
+                }
+            }
+        }
+            break;
+
+        /***** SAVE INSURANCE *****/
+        case '/saveinsurance': {
+            switch (event.httpMethod) {
+                case 'POST': {
+                    const result = await saveInsurance(con, event.body);
+                    console.log('saveInsurance: ', result);
+                    if (result) {
+                        return success(result);
+                    }
+                    return error('Some error occured.');
+                }
+            }
+        }
+            break;
+
+        /***** EDIT INSURANCE *****/
+        case '/editinsurance': {
+            switch (event.httpMethod) {
+                case 'POST': {
+                    const result = await editInsurance(con, event.body);
+                    console.log('editInsurance: ', result);
                     if (result) {
                         return success(result);
                     }

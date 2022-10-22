@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import saveCategory from '../service/categories/saveCategory';
-import styles from '../styles/InsertExpense.module.sass';
-import globalStyles from '../styles/Global.module.sass';
+import saveCategory from '../../service/categories/saveCategory';
+import styles from '../../styles/modules/Form.module.sass';
+import globalStyles from '../../styles/Global.module.sass';
 
 const InsertCategory = () => {
   const INITIAL_STATE = {

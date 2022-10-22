@@ -1,4 +1,4 @@
-import styles from '../../styles/house/CategoryTab.module.sass';
+import styles from '../../styles/expense/CategoryTab.module.sass';
 import ExpenseTable from './ExpenseTable';
 import { numberDivider } from '../../assets/misc/functions';
 
