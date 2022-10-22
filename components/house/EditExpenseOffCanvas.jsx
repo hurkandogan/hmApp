@@ -2,7 +2,7 @@ import { useState } from 'react';
 import moment from 'moment';
 import { useAppContext } from '../../context';
 import editExpense from '../../service/expenses/editExpense';
-import styles from '../../styles/house/EditExpenseOffCanvas.module.sass';
+import styles from '../../styles/expense/EditExpenseOffCanvas.module.sass';
 import globalStyles from '../../styles/Global.module.sass';
 import { close_icon } from '../../assets/icons';
 import { numberDivider } from '../../assets/misc/functions';

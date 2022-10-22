@@ -14,7 +14,7 @@ const Checkbox: FC<Props> = (props) => {
   return (
     <>
       <label className={styles.container}>
-        {label}
+        <p>{label}</p>
         <input
           type="checkbox"
           name={name}

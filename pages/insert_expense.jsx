@@ -7,11 +7,11 @@ import SelectBox from '../components/atoms/SelectBox';
 import Checkbox from '../components/atoms/Checkbox';
 
 // Services
-import getObjects from '../service/objects/getObjects';
 import getCategories from '../service/categories/getCategories';
 import saveExpense from '../service/expenses/saveExpense';
-import styles from '../styles/InsertExpense.module.sass';
+import styles from '../styles/modules/Form.module.sass';
 import globalStyles from '../styles/Global.module.sass';
+import Button from '../components/atoms/Button';
 
 const InsertExpense = () => {
   const INITIAL_STATE = {
@@ -109,6 +109,7 @@ const InsertExpense = () => {
             onChange={changeHandler}
             placeholder="Date"
             label="Date"
+            autoComplete="off"
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
@@ -133,6 +134,7 @@ const InsertExpense = () => {
             onChange={changeHandler}
             placeholder="Description"
             label="Description"
+            autoComplete="off"
           />
         </div>
       </div>
@@ -169,6 +171,7 @@ const InsertExpense = () => {
             onChange={amountFieldChangeHandler}
             placeholder="Amount"
             label="Expense Amount"
+            autoComplete="off"
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
@@ -180,6 +183,7 @@ const InsertExpense = () => {
             onChange={changeHandler}
             placeholder="Link"
             label="Invoice Link"
+            autoComplete="off"
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
@@ -193,18 +197,20 @@ const InsertExpense = () => {
         </div>
       </div>
       <div className={styles.formGroupContainer}>
-        <button
-          className={globalStyles.primaryButton}
+        <Button
+          text={`Submit ${
+            loading ? (
+              <div className={globalStyles.spinner} role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            ) : (
+              ''
+            )
+          }`}
           onClick={formSubmit}
           disabled={loading}
-        >
-          {loading && (
-            <div className={globalStyles.spinner} role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          )}
-          Submit
-        </button>
+          type={'primary'}
+        />
       </div>
     </div>
   );

@@ -11,6 +11,7 @@ type Props = {
   id: string;
   className: string;
   label: string;
+  autoComplete?: 'on' | 'off';
 };
 
 const TextField: FC<Props> = (props) => {
@@ -24,6 +25,7 @@ const TextField: FC<Props> = (props) => {
     id,
     className,
     label,
+    autoComplete,
   } = props;
   return (
     <>
@@ -39,6 +41,7 @@ const TextField: FC<Props> = (props) => {
         onChange={onChange}
         onBlur={onBlur}
         className={`${styles.input} ${className}`}
+        autoComplete={autoComplete}
       />
     </>
   );
