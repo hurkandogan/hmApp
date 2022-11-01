@@ -51,7 +51,7 @@ const Home = () => {
                       }
                       onClick={() => toggleGroupContainer(index)}
                     >
-                      <h1>{object.name}</h1>
+                      <h2>{object.name}</h2>
                       <span className={styles.headerTotal}>
                         {numberDivider(object.total.toFixed(2))} €
                       </span>
@@ -93,7 +93,7 @@ const Home = () => {
                 }
                 onClick={() => toggleGroupContainer('other_expenses')}
               >
-                <h1>Other Expenses</h1>
+                <h2>Other Expenses</h2>
                 <span
                   className={
                     styles.headerArrow +

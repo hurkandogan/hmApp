@@ -3,6 +3,7 @@ import styles from '../../styles/atoms/TextField.module.sass';
 
 type Props = {
   type: string;
+  size?: 'small' | 'regular';
   onChange?(): void;
   onBlur?(): void;
   value: string;
@@ -17,6 +18,7 @@ type Props = {
 const TextField: FC<Props> = (props) => {
   const {
     type,
+    size,
     onChange,
     onBlur,
     value,
@@ -29,20 +31,24 @@ const TextField: FC<Props> = (props) => {
   } = props;
   return (
     <>
-      <label htmlFor={id} className={styles.label}>
-        {label}
-      </label>
-      <input
-        type={type}
-        id={id}
-        name={name}
-        value={value}
-        placeholder={placeholder}
-        onChange={onChange}
-        onBlur={onBlur}
-        className={`${styles.input} ${className}`}
-        autoComplete={autoComplete}
-      />
+      <div className={styles.container}>
+        <label htmlFor={id} className={styles.label}>
+          {label}
+        </label>
+        <input
+          type={type}
+          id={id}
+          name={name}
+          value={value}
+          placeholder={placeholder}
+          onChange={onChange}
+          onBlur={onBlur}
+          className={`${styles.input} ${
+            size === 'small' ? styles.input_sm : styles.input_lg
+          } ${className}`}
+          autoComplete={autoComplete}
+        />
+      </div>
     </>
   );
 };
