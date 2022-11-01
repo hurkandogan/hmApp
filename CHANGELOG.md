@@ -1,3 +1,11 @@
+<h4>Version: 0.1.5</h4>
+<ul>
+    <li>Sidebar fixes for external links</li>
+    <li>Dashboard layout changes for tablet views</li>
+    <li>Filter added to Filtered Table</li>
+    <li>Layout improvements</li>
+</ul>
+
 <h4>Version: 0.1.4</h4>
 <ul>
     <li>Sidebar updated</li>

@@ -1,0 +1,20 @@
+.container
+    background: rgba(0,0,0,0.4)
+    @apply fixed w-full top-0 right-0 bottom-0 left-0
+    .placeHolder
+        @apply w-full h-full
+    .offCanvasSidebarContainer
+        position: absolute
+        right: 0
+        bottom: 0
+        top: 0
+        background: #fff
+        width: 300px
+        height: 100%
+        z-index: 999
+        transform: translateX(300px)
+        transition: transform .5s ease-out
+        @apply overflow-y-scroll
+    .isOpen
+        transform: translateX(0)
+        transition: transform .5s ease-out
