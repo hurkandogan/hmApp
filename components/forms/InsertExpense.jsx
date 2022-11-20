@@ -2,52 +2,44 @@ import { useState, useEffect } from 'react';
 import { useAppContext } from '../../context';
 import styles from '../../styles/modules/Form.module.sass';
 import globalStyles from '../../styles/Global.module.sass';
+import { validateExpenseFields } from '../../validation/InsertExpense';
 
-// Components
-import TextField from '../atoms/TextField';
-import SelectBox from '../atoms/SelectBox';
-import Checkbox from '../atoms/Checkbox';
-import Button from '../atoms/Button';
+// Redux
+import { useAppDispatch } from '../../redux/hooks';
+import { showAlert, clearAlert } from '../../redux/alertSlice';
 
 // Services
-import getCategories from '../../service/categories/getCategories';
 import saveExpense from '../../service/expenses/saveExpense';
 
-const InsertExpense = () => {
-  const INITIAL_STATE = {
-    date: '',
-    firm: '',
-    description: '',
-    amount: '',
-    link: '',
-    isPaid: false,
-    categoryId: '-',
-    objectId: '-',
-    userId: '',
-  };
-  const { objects } = useAppContext();
+// Components
+import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import { InputLabel } from '@mui/material';
+import Button from '@mui/material/Button';
 
+const INITIAL_STATE = {
+  date: '',
+  firm: '',
+  description: '',
+  amount: '',
+  link: '',
+  isPaid: false,
+  categoryId: '-',
+  objectId: '-',
+  userId: '',
+};
+
+const InsertExpense = () => {
+  const { objects, categories } = useAppContext();
   const [expense, setExpense] = useState(INITIAL_STATE);
-  const [categories, setCategories] = useState([]);
-  const [selectedObject, setSelectedObject] = useState(null);
+  const [requiredFields, setRequiredFields] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    getCategories()
-      .then((res) => {
-        const categories = res.data.data;
-        let categoriesToMap = [];
-        if (selectedObject && categories.length > 0) {
-          categories.forEach((el) => {
-            if (selectedObject.isHouse === el.isHouse) {
-              categoriesToMap.push(el);
-            }
-          });
-        }
-        setCategories(categoriesToMap);
-      })
-      .catch((err) => console.log(err));
-  }, [selectedObject]);
+  const dispatch = useAppDispatch();
 
   const changeHandler = (e) => {
     const { type, checked, name, value } = e.target;
@@ -67,33 +59,33 @@ const InsertExpense = () => {
     });
   };
 
-  const selectBoxChangeHandler = (val, name) => {
-    const selectedObject = objects.find((object) => object.id === val);
-    if (selectedObject)
-      setSelectedObject({
-        id: selectedObject.id,
-        name: selectedObject.name,
-        isHouse: selectedObject.isHouse,
-      });
-    setExpense({
-      ...expense,
-      [name]: val,
-    });
-  };
-
   const formSubmit = () => {
-    setLoading(true);
-    saveExpense(expense)
-      .then((res) => {
-        if (res.status === 200) {
-          setExpense(INITIAL_STATE);
-          setCategories([]);
-        }
-        // TODO: Add notification!
-      })
-      .catch((err) => console.log(err));
-    // TODO: Add notification!
-    setLoading(false);
+    const reqFields = validateExpenseFields(expense);
+    setRequiredFields(reqFields);
+    if (reqFields.length <= 0) {
+      setLoading(true);
+      saveExpense(expense)
+        .then((res) => {
+          if (res.status === 200) {
+            dispatch(
+              showAlert({
+                display: true,
+                status: 'success',
+                msg: 'Invoice is successfully saved!',
+              })
+            );
+            setExpense(INITIAL_STATE);
+          }
+        })
+        .catch((err) => {
+          showAlert({
+            display: true,
+            status: 'error',
+            msg: 'An error occured on saving',
+          });
+        });
+      setLoading(false);
+    }
   };
 
   return (
@@ -107,9 +99,10 @@ const InsertExpense = () => {
             name="date"
             value={expense.date}
             onChange={changeHandler}
-            placeholder="Date"
-            label="Date"
             autoComplete="off"
+            required={true}
+            error={requiredFields.indexOf('date') > -1}
+            size="small"
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
@@ -119,8 +112,25 @@ const InsertExpense = () => {
             name="firm"
             value={expense.firm}
             onChange={changeHandler}
-            placeholder="Vendor"
             label="Vendor"
+            required={true}
+            error={requiredFields.indexOf('firm') > -1}
+            size="small"
+          />
+        </div>
+        <div className={styles.formGroupContainer_inner}>
+          <TextField
+            type="text"
+            id="expenseAmount"
+            name="amount"
+            value={expense.amount}
+            onChange={amountFieldChangeHandler}
+            placeholder="Amount"
+            label="Expense Amount"
+            autoComplete="off"
+            required={true}
+            error={requiredFields.indexOf('amount') > -1}
+            size="small"
           />
         </div>
       </div>
@@ -135,43 +145,7 @@ const InsertExpense = () => {
             placeholder="Description"
             label="Description"
             autoComplete="off"
-          />
-        </div>
-      </div>
-      <div className={styles.formGroupContainer}>
-        <div className={styles.formGroupContainer_inner}>
-          <SelectBox
-            label="Object"
-            id="object"
-            name="objectId"
-            value={expense.objectId}
-            onChange={selectBoxChangeHandler}
-            options={objects}
-          />
-        </div>
-        <div className={styles.formGroupContainer_inner}>
-          <SelectBox
-            label="Category"
-            id="category"
-            name="categoryId"
-            value={expense.categoryId}
-            onChange={selectBoxChangeHandler}
-            options={categories}
-            disabled={categories.length < 1 && true}
-          />
-        </div>
-      </div>
-      <div className={styles.formGroupContainer}>
-        <div className={styles.formGroupContainer_inner}>
-          <TextField
-            type="text"
-            id="expenseAmount"
-            name="amount"
-            value={expense.amount}
-            onChange={amountFieldChangeHandler}
-            placeholder="Amount"
-            label="Expense Amount"
-            autoComplete="off"
+            size="small"
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
@@ -184,21 +158,88 @@ const InsertExpense = () => {
             placeholder="Link"
             label="Invoice Link"
             autoComplete="off"
-          />
-        </div>
-        <div className={styles.formGroupContainer_inner}>
-          <Checkbox
-            label="Payment Status"
-            id="isPaid"
-            name="isPaid"
-            checked={expense.isPaid}
-            onChange={changeHandler}
+            size="small"
           />
         </div>
       </div>
       <div className={styles.formGroupContainer}>
+        <div className={styles.formGroupContainer_inner}>
+          <FormControl>
+            <InputLabel id="object">Property</InputLabel>
+            <Select
+              label="Property"
+              placeholder="Object"
+              id="object"
+              name="objectId"
+              value={expense.objectId}
+              onChange={changeHandler}
+              size="small"
+              required={true}
+              error={requiredFields.indexOf('objectId') > -1}
+            >
+              <MenuItem value={'-'} disabled={true}>
+                Choose a property
+              </MenuItem>
+              {objects.map((object) => {
+                return (
+                  <MenuItem key={object.id} value={object.id}>
+                    {object.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        </div>
+        <div className={styles.formGroupContainer_inner}>
+          <FormControl>
+            <InputLabel id="category">Category</InputLabel>
+            <Select
+              label="Category"
+              id="category"
+              name="categoryId"
+              value={expense.categoryId}
+              onChange={changeHandler}
+              size="small"
+              required={true}
+              error={requiredFields.indexOf('categoryId') > -1}
+            >
+              <MenuItem value={'-'} disabled={true}>
+                Choose a category
+              </MenuItem>
+              {categories.map((cat) => {
+                return (
+                  <MenuItem key={cat.name} value={cat.id}>
+                    {cat.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        </div>
+        <div className={styles.formGroupContainer_inner}>
+          <FormControlLabel
+            control={
+              <Switch
+                abel="Payment Status"
+                id="isPaid"
+                name="isPaid"
+                checked={expense.isPaid}
+                onChange={changeHandler}
+              />
+            }
+            label="Paid"
+          />
+        </div>
+      </div>
+      <div className={styles.formGroupContainer}></div>
+      <div className={styles.formGroupContainer}>
         <Button
-          text={`Submit ${
+          variant="contained"
+          onClick={formSubmit}
+          disabled={loading}
+          type={'primary'}
+        >
+          {`Submit ${
             loading ? (
               <div className={globalStyles.spinner} role="status">
                 <span className="visually-hidden">Loading...</span>
@@ -207,10 +248,7 @@ const InsertExpense = () => {
               ''
             )
           }`}
-          onClick={formSubmit}
-          disabled={loading}
-          type={'primary'}
-        />
+        </Button>
       </div>
     </div>
   );

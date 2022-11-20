@@ -1,9 +1,17 @@
 import '../styles/globals.css';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 import Head from 'next/head';
 import styles from '../styles/App.module.sass';
 import Layout from '../layout/Layout';
 import { AppProvider } from '../context';
 import { SessionProvider } from 'next-auth/react';
+
+// Redux
+import { store } from '../redux/store';
+import { Provider } from 'react-redux';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
@@ -13,13 +21,15 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
         <meta name="description" content="HM App" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <AppProvider>
-        <SessionProvider session={session}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </SessionProvider>
-      </AppProvider>
+      <SessionProvider session={session}>
+        <Provider store={store}>
+          <AppProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </AppProvider>
+        </Provider>
+      </SessionProvider>
     </div>
   );
 }
