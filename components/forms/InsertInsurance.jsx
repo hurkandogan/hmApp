@@ -76,6 +76,7 @@ const InsertInsurance = () => {
             value={insurance.insurance_name}
             onChange={changeHandler}
             label={'Insurance Name'}
+            size="small"
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
@@ -86,6 +87,7 @@ const InsertInsurance = () => {
             value={insurance.insurance_vendor}
             onChange={changeHandler}
             label={'Vendor'}
+            size="small"
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
@@ -96,6 +98,7 @@ const InsertInsurance = () => {
             value={insurance.insurance_number}
             onChange={changeHandler}
             label="Insurance Nr."
+            size="small"
           />
         </div>
       </div>
@@ -109,6 +112,7 @@ const InsertInsurance = () => {
               value={insurance.insurance_object}
               label={'Choose a property'}
               onChange={changeHandler}
+              size="small"
             >
               {objects.map((obj) => (
                 <MenuItem key={obj.id} value={obj.id}>
@@ -126,6 +130,7 @@ const InsertInsurance = () => {
             value={insurance.monthly_amount}
             onChange={amountFieldChangeHandler}
             label="Monthly Amount"
+            size="small"
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
@@ -136,6 +141,7 @@ const InsertInsurance = () => {
             value={insurance.yearly_amount}
             onChange={amountFieldChangeHandler}
             label="Yearly Amount"
+            size="small"
           />
         </div>
       </div>
@@ -151,6 +157,7 @@ const InsertInsurance = () => {
             InputLabelProps={{
               shrink: true,
             }}
+            size="small"
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
@@ -164,6 +171,7 @@ const InsertInsurance = () => {
             InputLabelProps={{
               shrink: true,
             }}
+            size="small"
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
@@ -177,6 +185,7 @@ const InsertInsurance = () => {
             InputLabelProps={{
               shrink: true,
             }}
+            size="small"
           />
         </div>
       </div>
@@ -193,6 +202,7 @@ const InsertInsurance = () => {
               value={insurance.payment_type}
               onChange={changeHandler}
               label="Choose a payment method"
+              size="small"
             >
               <MenuItem value={'auto'}>Automatic</MenuItem>
               <MenuItem value={'bank_transfer'}>Bank Transfer</MenuItem>
@@ -208,6 +218,7 @@ const InsertInsurance = () => {
             value={insurance.insurance_paper_link}
             onChange={changeHandler}
             label="Insurance Link"
+            size="small"
           />
         </div>
       </div>
@@ -221,6 +232,7 @@ const InsertInsurance = () => {
             value={insurance.description}
             onChange={changeHandler}
             label="Description"
+            size="small"
           />
         </div>
       </div>

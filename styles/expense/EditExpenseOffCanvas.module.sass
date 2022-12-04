@@ -13,12 +13,13 @@
         @apply w-full h-full
 .container
     background-color: $secondary-background-color
-    height: 400px
+    width: 400px
+    height: 100%
+    top: 0
     right: 0
     bottom: 0
-    left: 0
     color: #fff
-    transform: translateY(400px)
+    transform: translateX(400px)
     transition: transform 1s ease
     z-index: 99
     @apply fixed flex flex-col px-8 py-4
@@ -33,16 +34,14 @@
                 opacity: 0.5
     .formGroupContainer
         color: #000
-        @apply flex flex-row w-full
-        label
-            color: #fff
-            font-weight: bold
+        @apply flex flex-col
         &_inner
-            @apply inline w-2/4 p-2 align-middle justify-center
-        input, select
-            @apply inline w-full border-2 border-gray-200 rounded-lg px-4 py-2 mt-1
+            @apply flex flex-col w-full my-2
+.input
+    background-color: #FFF
+    border-radius: 5px
 .open
-    transform: translateY(0)
+    transform: translateX(0)
     transition: transform 1s ease
 .show
     visibility: visible

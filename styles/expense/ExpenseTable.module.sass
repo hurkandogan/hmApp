@@ -1,29 +1,6 @@
 .container
     @apply flex flex-col
-    .table
-        &_payment
-            min-width: 25px
-        &_date
-            min-width: 200px
-        &_firm
-            min-width: 250px
-        &_amount
-            min-width: 100px
-        &_link
-            min-width: 100px
-    .table_head
-        th
-            @apply p-4
-    .table_body
-        @apply border-t-2 border-b-2 text-center
-        svg
-            width: 16px
-            height: 16px
-            @apply inline-block
-        .table_row
-            &:hover
-                @apply bg-gray-100 cursor-pointer
-        .table_row_gray
-            @apply bg-gray-200
-        td
-            @apply p-2 overflow-hidden
+.invoice_link
+    @apply flex flex-row justify-center align-middle gap-2 m-0
+.invoice_row
+    @apply cursor-pointer

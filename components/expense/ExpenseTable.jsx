@@ -2,58 +2,65 @@ import moment from 'moment';
 import { target, paid_icon, unpaid_icon } from '../../assets/icons';
 import { numberDivider } from '../../assets/misc/functions';
 import styles from '../../styles/expense/ExpenseTable.module.sass';
+import TableContainer from '@mui/material/TableContainer';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import Paper from '@mui/material/Paper';
 
 const ExpenseTable = (props) => {
-  const test = (e, url) => {
+  const { expenses, editInvoice } = props;
+  const openLink = (e, url) => {
     e.stopPropagation();
     window.open(url, '_blank').focus();
   };
 
   return (
-    <div className={styles.container}>
-      <table>
-        <thead className={styles.table_head}>
-          <tr className={styles.table}>
-            <th className={styles.table_payment}></th>
-            <th className={styles.table_date}>Date</th>
-            <th className={styles.table_firm}>Firma</th>
-            <th className={styles.table_desc}>Description</th>
-            <th className={styles.table_amount}>Amount</th>
-            <th className={styles.table_link}>Invoice</th>
-          </tr>
-        </thead>
-        <tbody className={styles.table_body}>
-          {props.expenses?.map((el, index) => {
-            return (
-              <tr
-                onClick={(e) => props.editInvoice(e, el)}
-                className={
-                  styles.table_row +
-                  ' ' +
-                  (index % 2 === 1 ? styles.table_row_gray : '')
-                }
-                key={index}
+    <>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 700 }} size={'small'}>
+          <TableHead>
+            <TableRow>
+              <TableCell>#</TableCell>
+              <TableCell>Date</TableCell>
+              <TableCell>Firma</TableCell>
+              <TableCell>Description</TableCell>
+              <TableCell>Amount</TableCell>
+              <TableCell>Invoice</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {expenses?.map((exp) => (
+              <TableRow
+                key={exp.id}
+                scope={'row'}
+                onClick={(e) => editInvoice(e, exp)}
+                className={styles.invoice_row}
               >
-                <td>{el.isPaid ? paid_icon : unpaid_icon}</td>
-                <td>{moment(el.date).format('DD.MM.YYYY')}</td>
-                <td>{el.firm}</td>
-                <td>{el.description}</td>
-                <td>{numberDivider(el.amount)} €</td>
-                <td>
-                  {el.documentLink.length > 0 ? (
-                    <button onClick={(e) => test(e, el.documentLink)}>
-                      <p>Invoice {target}</p>
+                <TableCell className={styles.payment_icon}>
+                  {exp.isPaid ? paid_icon : unpaid_icon}
+                </TableCell>
+                <TableCell>{exp.date}</TableCell>
+                <TableCell>{exp.firm}</TableCell>
+                <TableCell>{exp.description}</TableCell>
+                <TableCell>{exp.amount}</TableCell>
+                <TableCell>
+                  {exp.documentLink.length > 0 ? (
+                    <button onClick={(e) => openLink(e, exp.documentLink)}>
+                      <p className={styles.invoice_link}>Invoice {target}</p>
                     </button>
                   ) : (
                     <p>No Invoice</p>
                   )}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 };
 

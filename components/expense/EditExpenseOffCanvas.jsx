@@ -7,6 +7,16 @@ import globalStyles from '../../styles/Global.module.sass';
 import { close_icon } from '../../assets/icons';
 import { numberDivider } from '../../assets/misc/functions';
 
+import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import { InputLabel } from '@mui/material';
+import Button from '@mui/material/Button';
+import { style } from '@mui/system';
+
 const EditExpenseOffCanvas = (props) => {
   const { objects, categories } = useAppContext();
   const { expense, isOpen, close, editChangeHandler } = props;
@@ -37,7 +47,6 @@ const EditExpenseOffCanvas = (props) => {
         }
       })
       .catch((err) => console.log(err));
-    // TODO: Add notification!
     setLoading(false);
   };
 
@@ -54,115 +63,130 @@ const EditExpenseOffCanvas = (props) => {
         <div className={styles.container_body}>
           <div className={styles.formGroupContainer}>
             <div className={styles.formGroupContainer_inner}>
-              <label htmlFor="expenseDate">Date</label>
-              <input
+              <TextField
+                className={styles.input}
+                variant={'outlined'}
                 type="date"
                 id="expenseDate"
                 name="date"
                 value={expense?.date}
                 onChange={changeHandler}
+                autoComplete="off"
+                size={'small'}
               />
             </div>
             <div className={styles.formGroupContainer_inner}>
-              <label htmlFor="expenseVendor">Vendor</label>
-              <input
+              <TextField
+                className={styles.input}
                 type="text"
                 id="expenseVendor"
                 name="firm"
                 value={expense?.firm}
                 onChange={changeHandler}
+                autoComplete="off"
+                size={'small'}
+                placeholder={'Firm'}
               />
             </div>
             <div className={styles.formGroupContainer_inner}>
-              <label htmlFor="expenseDesc">Description</label>
-              <input
+              <TextField
+                className={styles.input}
                 type="text"
                 id="expenseDesc"
                 name="description"
                 value={expense?.description}
                 onChange={changeHandler}
+                autoComplete="off"
+                size={'small'}
+                placeholder={'Description'}
               />
             </div>
           </div>
           <div className={styles.formGroupContainer}>
             <div className={styles.formGroupContainer_inner}>
-              <label htmlFor="object">Object</label>
-              <select
-                id="object"
-                name="objectId"
-                value={expense?.objectId}
-                onChange={changeHandler}
-              >
-                <option value="-" disabled>
-                  Please Select an Object
-                </option>
-                {objects.map((obj) => {
-                  return (
-                    <option key={obj.id} value={obj.id}>
+              <FormControl>
+                <Select
+                  className={styles.input}
+                  id="object"
+                  name="objectId"
+                  value={expense?.objectId}
+                  onChange={changeHandler}
+                  size={'small'}
+                  defaultValue={expense?.objectId}
+                >
+                  {objects.map((obj) => (
+                    <MenuItem key={obj.id} value={obj.id}>
                       {obj.name}
-                    </option>
-                  );
-                })}
-              </select>
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </div>
             <div className={styles.formGroupContainer_inner}>
-              <label htmlFor="category">Category</label>
-              <select
-                id="category"
-                name="categoryId"
-                value={expense?.categoryId}
-                onChange={changeHandler}
-                disabled={categories.length < 1 && true}
-              >
-                <option value="-" disabled>
-                  Please Select a Category
-                </option>
-                {categories.map((cat) => {
-                  if (cat.isHouse === expense.objectIsHouse)
-                    return (
-                      <option key={cat.id} value={cat.id}>
-                        {cat.name}
-                      </option>
-                    );
-                })}
-              </select>
+              <FormControl>
+                <Select
+                  id="category"
+                  name="categoryId"
+                  value={expense?.categoryId}
+                  onChange={changeHandler}
+                  disabled={categories.length < 1 && true}
+                  className={styles.input}
+                  size={'small'}
+                >
+                  {categories.map(
+                    (cat) =>
+                      cat.isHouse === expense.objectIsHouse && (
+                        <MenuItem key={cat.id} value={cat.id}>
+                          {cat.name}
+                        </MenuItem>
+                      )
+                  )}
+                </Select>
+              </FormControl>
             </div>
           </div>
           <div className={styles.formGroupContainer}>
             <div className={styles.formGroupContainer_inner}>
-              <label htmlFor="expenseAmount">Amount</label>
-              <input
+              <TextField
                 type="text"
                 id="expenseAmount"
                 name="amount"
                 value={expense?.amount}
                 onChange={amountFieldChangeHandler}
+                className={styles.input}
+                size={'small'}
               />
             </div>
             <div className={styles.formGroupContainer_inner}>
-              <label htmlFor="invoiceLink">Dropbox Link</label>
-              <input
+              <TextField
                 type="text"
                 id="documentLink"
                 name="documentLink"
                 value={expense?.documentLink}
                 onChange={changeHandler}
+                className={styles.input}
+                size={'small'}
               />
             </div>
             <div className={styles.formGroupContainer_inner}>
-              <label htmlFor="isPaid">Payment Status</label>
-              <input
-                type="checkbox"
-                id="isPaid"
-                name="isPaid"
-                checked={expense?.isPaid}
-                onChange={changeHandler}
+              <FormControlLabel
+                control={
+                  <Switch
+                    abel="Payment Status"
+                    id="isPaid"
+                    name="isPaid"
+                    checked={expense.isPaid}
+                    onChange={changeHandler}
+                  />
+                }
+                label="Paid"
               />
             </div>
           </div>
           <div className={styles.formGroupContainer}>
             <div className={styles.formGroupContainer_inner}>
-              <button
+              <Button
+                variant={'contained'}
                 className={globalStyles.primaryButton}
                 onClick={formSubmit}
                 disabled={loading}
@@ -173,7 +197,7 @@ const EditExpenseOffCanvas = (props) => {
                   </div>
                 )}
                 Save
-              </button>
+              </Button>
             </div>
           </div>
         </div>
