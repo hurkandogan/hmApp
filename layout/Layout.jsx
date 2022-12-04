@@ -14,11 +14,14 @@ const Layout = ({ children }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    setTimeout(() => dispatch(clearAlert()), 5000);
+    if (alert.display) {
+      setTimeout(() => dispatch(clearAlert()), 5000);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [alert]);
 
   if (true) {
+    // Authentication will be added instead of true
     return (
       <div className={styles.container}>
         <Sidebar />

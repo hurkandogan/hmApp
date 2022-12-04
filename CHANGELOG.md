@@ -1,3 +1,8 @@
+<h4>Version: 0.1.6</h4>
+<ul>
+    <li>Material UI is added for the forms</li>
+</ul>
+
 <h4>Version: 0.1.5</h4>
 <ul>
     <li>Sidebar fixes for external links</li>

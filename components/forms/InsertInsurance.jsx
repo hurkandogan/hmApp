@@ -5,21 +5,24 @@ import globalStyles from '../../styles/Global.module.sass';
 import saveInsurance from '../../service/insurances/saveInsurance';
 
 // Components
-import TextField from '../atoms/TextField';
-import Button from '../atoms/Button';
-import SelectBox from '../atoms/SelectBox';
+import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import { InputLabel } from '@mui/material';
+import Button from '@mui/material/Button';
 
 const InsertInsurance = () => {
   const INITIAL_STATE = {
     insurance_name: '',
     insurance_vendor: '',
     insurance_number: '',
-    insurance_object: '-',
+    insurance_object: '',
     yearly_amount: '',
     contract_start_date: '',
     contract_end_date: '',
     contract_renewal: '',
-    payment_type: '-',
+    payment_type: '',
     insurance_paper_link: '',
     monthly_amount: '',
     description: '',
@@ -29,16 +32,12 @@ const InsertInsurance = () => {
 
   const [insurance, setInsurance] = useState(INITIAL_STATE);
 
-  const changeHandler = (e, selectBoxName = null) => {
-    if (selectBoxName) {
-      setInsurance({ ...insurance, [selectBoxName]: e });
+  const changeHandler = (e) => {
+    const { type, checked, name, value } = e.target;
+    if (type === 'checkbox') {
+      setInsurance({ ...insurance, [name]: checked ? 1 : 0 });
     } else {
-      const { type, checked, name, value } = e.target;
-      if (type === 'checkbox') {
-        setInsurance({ ...insurance, [name]: checked ? 1 : 0 });
-      } else {
-        setInsurance({ ...insurance, [name]: value });
-      }
+      setInsurance({ ...insurance, [name]: value });
     }
   };
 
@@ -102,14 +101,22 @@ const InsertInsurance = () => {
       </div>
       <div className={styles.formGroupContainer}>
         <div className={styles.formGroupContainer_inner}>
-          <SelectBox
-            id="insurance_object"
-            name="insurance_object"
-            value={insurance.insurance_object}
-            onChange={changeHandler}
-            options={objects}
-            label="Object"
-          />
+          <FormControl>
+            <InputLabel id="insurance_object">Choose a property</InputLabel>
+            <Select
+              id="insurance_object"
+              name="insurance_object"
+              value={insurance.insurance_object}
+              label={'Choose a property'}
+              onChange={changeHandler}
+            >
+              {objects.map((obj) => (
+                <MenuItem key={obj.id} value={obj.id}>
+                  {obj.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </div>
         <div className={styles.formGroupContainer_inner}>
           <TextField
@@ -140,7 +147,10 @@ const InsertInsurance = () => {
             name="contract_start_date"
             value={insurance.contract_start_date}
             onChange={changeHandler}
-            label="Start Date"
+            label="Contract Start Date"
+            InputLabelProps={{
+              shrink: true,
+            }}
           />
         </div>
         <div className={styles.formGroupContainer_inner}>
@@ -150,11 +160,12 @@ const InsertInsurance = () => {
             name="contract_end_date"
             value={insurance.contract_end_date}
             onChange={changeHandler}
-            label="End Date"
+            label="Contract End Date"
+            InputLabelProps={{
+              shrink: true,
+            }}
           />
         </div>
-      </div>
-      <div className={styles.formGroupContainer}>
         <div className={styles.formGroupContainer_inner}>
           <TextField
             type="date"
@@ -162,21 +173,41 @@ const InsertInsurance = () => {
             name="contract_renewal"
             value={insurance.contract_renewal}
             onChange={changeHandler}
-            label="Renewal Date"
+            label="Contact Renewal"
+            InputLabelProps={{
+              shrink: true,
+            }}
           />
         </div>
+      </div>
+      <div className={styles.formGroupContainer}>
         <div className={styles.formGroupContainer_inner}>
-          <SelectBox
+          <FormControl>
+            <InputLabel id="insurance_object">
+              Choose a payment method
+            </InputLabel>
+            <Select
+              type="text"
+              id="payment_type"
+              name="payment_type"
+              value={insurance.payment_type}
+              onChange={changeHandler}
+              label="Choose a payment method"
+            >
+              <MenuItem value={'auto'}>Automatic</MenuItem>
+              <MenuItem value={'bank_transfer'}>Bank Transfer</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+        <div className={styles.formGroupContainer_inner}>
+          <TextField
             type="text"
-            id="payment_type"
-            name="payment_type"
-            value={insurance.payment_type}
+            id="insurance_paper_link"
+            name="insurance_paper_link"
+            autoComplete="off"
+            value={insurance.insurance_paper_link}
             onChange={changeHandler}
-            options={[
-              { id: 'auto', name: 'Auto' },
-              { id: 'bank_transfer', name: 'Bank Transfer' },
-            ]}
-            label="Payment Method"
+            label="Insurance Link"
           />
         </div>
       </div>
@@ -192,33 +223,18 @@ const InsertInsurance = () => {
             label="Description"
           />
         </div>
-        <div className={styles.formGroupContainer_inner}>
-          <TextField
-            type="text"
-            id="insurance_paper_link"
-            name="insurance_paper_link"
-            autoComplete="off"
-            value={insurance.insurance_paper_link}
-            onChange={changeHandler}
-            label="Insurance Link"
-          />
-        </div>
       </div>
       <div className={styles.formGroupContainer}>
-        <Button
-          type={'primary'}
-          onClick={formSubmit}
-          disabled={loading}
-          text={`Submit ${
-            loading ? (
-              <div className={globalStyles.spinner} role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
-            ) : (
-              ''
-            )
-          }`}
-        />
+        <Button variant="contained" onClick={formSubmit} disabled={loading}>
+          {loading ? (
+            <div className={globalStyles.spinner} role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          ) : (
+            ''
+          )}
+          Submit
+        </Button>
       </div>
     </div>
   );
