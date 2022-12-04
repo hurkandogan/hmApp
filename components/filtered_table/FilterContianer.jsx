@@ -14,7 +14,7 @@ const FilterContainer = (props) => {
             props.isOpen ? '' : styles.isOpen
           }`}
         >
-          <Filters />
+          {/* <Filters /> */}
         </div>
       </div>
     </>
