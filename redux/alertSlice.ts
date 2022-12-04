@@ -14,13 +14,13 @@ export const alertSlice = createSlice({
   initialState,
   reducers: {
     showAlert: (state, action: PayloadAction<Alert>) => {
-      state.display = action.payload.display;
+      state.display = true;
       state.status = action.payload.status;
       state.msg = action.payload.msg;
       state.timeout = action.payload.timeout;
     },
     clearAlert: (state) => {
-      state.display = initialState.display;
+      state.display = false;
       state.status = initialState.status;
       state.msg = initialState.msg;
       state.timeout = initialState.timeout;
