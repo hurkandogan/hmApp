@@ -140,7 +140,7 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link href="/filtered_table/all_expenses" passHref>
+            <Link href="/filtered_table/expenses" passHref>
               <button className={globalStyles.sidebarButton}>Expenses</button>
             </Link>
           </li>

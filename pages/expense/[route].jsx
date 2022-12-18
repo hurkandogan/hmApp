@@ -62,25 +62,10 @@ const House = () => {
 
   const handleSelectedCategory = (cat_id) => setSelectedCategory(cat_id);
 
-  const editInvoiceClose = () => {
-    setIsEditOpen(false);
-    setSelectedExpense({});
-    loadHouseData();
-  };
-
   const editInvoice = (e, data) => {
     let invoice = data;
     setIsEditOpen(true);
     setSelectedExpense(invoice);
-  };
-
-  const editChangeHandler = (name, value) => {
-    setSelectedExpense((prevState) => {
-      return {
-        ...prevState,
-        [name]: value,
-      };
-    });
   };
 
   const showOilStatusModal = () => setOilStatusModal(!oilStatusModal);
@@ -150,12 +135,7 @@ const House = () => {
           </div>
         </div>
       </div>
-      <EditExpenseOffCanvas
-        isOpen={isEditOpen}
-        close={editInvoiceClose}
-        expense={selectedExpense}
-        editChangeHandler={editChangeHandler}
-      />
+      <EditExpenseOffCanvas />
       <ModalBox
         active={oilStatusModal}
         close={closeOilStatusModal}

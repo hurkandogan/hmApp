@@ -10,8 +10,13 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Paper from '@mui/material/Paper';
 
+// Redux
+import { useAppDispatch } from '../../redux/hooks';
+import { editSelectedExpense } from '../../redux/editInvoice.slice';
+
 const ExpenseTable = (props) => {
   const { expenses, editInvoice } = props;
+  const dispatch = useAppDispatch();
   const openLink = (e, url) => {
     e.stopPropagation();
     window.open(url, '_blank').focus();
@@ -36,7 +41,7 @@ const ExpenseTable = (props) => {
               <TableRow
                 key={exp.id}
                 scope={'row'}
-                onClick={(e) => editInvoice(e, exp)}
+                onClick={(e) => dispatch(editSelectedExpense(exp))}
                 className={styles.invoice_row}
               >
                 <TableCell className={styles.payment_icon}>
