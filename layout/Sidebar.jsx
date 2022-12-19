@@ -13,8 +13,11 @@ import {
   column_icon,
 } from '../assets/icons';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const Sidebar = () => {
+  const router = useRouter();
+  const currentRoute = router.asPath;
   const { data: session } = useSession();
   const {
     setObjects,
@@ -127,26 +130,26 @@ const Sidebar = () => {
         >
           <li>
             <Link href="/forms/insert_expense" passHref>
-              <button className={globalStyles.sidebarButton}>
+              <button className={`${globalStyles.sidebarButton} ${ currentRoute === '/forms/insert_expense' && globalStyles.active }`}>
                 Add Expense
               </button>
             </Link>
           </li>
           <li>
             <Link href="/forms/insert_insurance" passHref>
-              <button className={globalStyles.sidebarButton}>
+              <button className={`${globalStyles.sidebarButton} ${ currentRoute === '/forms/insert_insurance' && globalStyles.active }`}>
                 Add Insurance
               </button>
             </Link>
           </li>
           <li>
             <Link href="/filtered_table/expenses" passHref>
-              <button className={globalStyles.sidebarButton}>Expenses</button>
+              <button className={`${globalStyles.sidebarButton} ${ currentRoute === '/filtered_table/expenses' && globalStyles.active }`}>Expenses</button>
             </Link>
           </li>
           <li>
             <Link href="/filtered_table/insurances" passHref>
-              <button className={globalStyles.sidebarButton}>Insurances</button>
+              <button className={`${globalStyles.sidebarButton} ${ currentRoute === '/filtered_table/insurances' && globalStyles.active }`} >Insurances</button>
             </Link>
           </li>
         </div>
