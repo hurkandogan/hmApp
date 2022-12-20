@@ -3,7 +3,10 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import Alert from '@mui/material/Alert';
 import styles from '../styles/Layout.module.sass';
+import EditExpenseOffCanvas from '../components/expense/EditExpenseOffCanvas';
 //import { useSession, signIn } from 'next-auth/react';
+
+// Redux
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
 import { clearAlert } from '../redux/alertSlice';
 
@@ -34,6 +37,7 @@ const Layout = ({ children }) => {
             <Alert severity={alert.status}>{alert.msg}</Alert>
           </div>
         )}
+        <EditExpenseOffCanvas />
       </div>
     );
   } else {

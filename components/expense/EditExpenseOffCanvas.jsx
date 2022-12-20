@@ -15,26 +15,36 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { InputLabel } from '@mui/material';
 import Button from '@mui/material/Button';
-import { style } from '@mui/system';
+
+// Redux
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import {
+  editSelectedExpense,
+  clearSelectedExpense,
+  expenseIsEdited,
+  stateChangeHandler,
+} from '../../redux/editInvoice.slice';
 
 const EditExpenseOffCanvas = (props) => {
   const { objects, categories } = useAppContext();
-  const { expense, isOpen, close, editChangeHandler } = props;
+  const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
+  const showForm = useAppSelector((state) => state.editInvoice.showForm);
+  const expense = useAppSelector((state) => state.editInvoice.expense);
 
   const changeHandler = (e) => {
     const { type, checked, name, value } = e.target;
     if (type === 'checkbox') {
-      editChangeHandler(name, checked ? 1 : 0);
+      dispatch(stateChangeHandler({ name: name, checked: checked ? 1 : 0 }));
     } else {
-      editChangeHandler(name, value);
+      dispatch(stateChangeHandler({ name: name, value: value }));
     }
   };
 
   const amountFieldChangeHandler = (e) => {
     const { name, value } = e.target;
     let dottedValue = value.replace(/,/g, '.');
-    editChangeHandler(name, dottedValue);
+    dispatch(stateChangeHandler({ name: name, value: dottedValue }));
   };
 
   const formSubmit = () => {
@@ -43,7 +53,8 @@ const EditExpenseOffCanvas = (props) => {
     editExpense(expense)
       .then((res) => {
         if (res.status === 200) {
-          close();
+          dispatch(clearSelectedExpense());
+          dispatch(expenseIsEdited());
         }
       })
       .catch((err) => console.log(err));
@@ -51,12 +62,18 @@ const EditExpenseOffCanvas = (props) => {
   };
 
   return (
-    <div className={styles.page_wrapper + ' ' + (isOpen && styles.show)}>
-      <div className={styles.empty_field_close_div} onClick={close}></div>
-      <div className={styles.container + ' ' + (isOpen && styles.open)}>
+    <div className={styles.page_wrapper + ' ' + (showForm && styles.show)}>
+      <div
+        className={styles.empty_field_close_div}
+        onClick={() => dispatch(clearSelectedExpense())}
+      ></div>
+      <div className={styles.container + ' ' + (showForm && styles.open)}>
         <div className={styles.container_header}>
           <h1>Edit Invoice</h1>
-          <p className={styles.close_icon} onClick={close}>
+          <p
+            className={styles.close_icon}
+            onClick={() => dispatch(clearSelectedExpense())}
+          >
             {close_icon}
           </p>
         </div>
@@ -133,14 +150,11 @@ const EditExpenseOffCanvas = (props) => {
                   className={styles.input}
                   size={'small'}
                 >
-                  {categories.map(
-                    (cat) =>
-                      cat.isHouse === expense.objectIsHouse && (
-                        <MenuItem key={cat.id} value={cat.id}>
-                          {cat.name}
-                        </MenuItem>
-                      )
-                  )}
+                  {categories.map((cat) => (
+                    <MenuItem key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </div>
@@ -187,7 +201,6 @@ const EditExpenseOffCanvas = (props) => {
             <div className={styles.formGroupContainer_inner}>
               <Button
                 variant={'contained'}
-                className={globalStyles.primaryButton}
                 onClick={formSubmit}
                 disabled={loading}
               >
