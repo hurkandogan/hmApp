@@ -50,7 +50,7 @@ const ExpenseTable = (props) => {
                 <TableCell>{exp.date}</TableCell>
                 <TableCell>{exp.firm}</TableCell>
                 <TableCell>{exp.description}</TableCell>
-                <TableCell>{exp.amount}</TableCell>
+                <TableCell>{exreacp.amount}</TableCell>
                 <TableCell>
                   {exp.documentLink.length > 0 ? (
                     <button onClick={(e) => openLink(e, exp.documentLink)}>

@@ -8,10 +8,13 @@ import styles from '../styles/App.module.sass';
 import Layout from '../layout/Layout';
 import { AppProvider } from '../context';
 import { SessionProvider } from 'next-auth/react';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 // Redux
 import { store } from '../redux/store';
 import { Provider } from 'react-redux';
+
+
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (

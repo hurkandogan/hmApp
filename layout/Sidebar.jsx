@@ -13,9 +13,12 @@ import {
   column_icon,
 } from '../assets/icons';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const Sidebar = () => {
   const { data: session } = useSession();
+  const router = useRouter();
+  console.log(router);
   const {
     setObjects,
     sidebarObjects,
@@ -127,7 +130,12 @@ const Sidebar = () => {
         >
           <li>
             <Link href="/forms/insert_expense" passHref>
-              <button className={globalStyles.sidebarButton}>
+              <button
+                className={`${globalStyles.sidebarButton} ${
+                  router.asPath === '/forms/insert_expense' &&
+                  globalStyles.active
+                }`}
+              >
                 Add Expense
               </button>
             </Link>
