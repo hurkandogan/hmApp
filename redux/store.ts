@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-
 // Reducer
 import alertSlice from './alertSlice';
 import editInvoiceSlice from './editInvoice.slice';

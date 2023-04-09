@@ -17,16 +17,16 @@ const Home = () => {
   }, [selectedYear]);
 
   const loadData = () => {
-    getDashboardTotals({ selectedYear: selectedYear })
-      .then((res) => {
-        if (res.data.data) {
-          const data = []
-            .concat(res.data.data.objects)
-            .sort((a, b) => (a.sort_number > b.sort_number ? 1 : -1));
-          setDashboardData(data);
-        }
-      })
-      .catch((err) => console.log(err));
+    // getDashboardTotals({ selectedYear: selectedYear })
+    //   .then((res) => {
+    //     if (res.data.data) {
+    //       const data = []
+    //         .concat(res.data.data.objects)
+    //         .sort((a, b) => (a.sort_number > b.sort_number ? 1 : -1));
+    //       setDashboardData(data);
+    //     }
+    //   })
+    //   .catch((err) => console.log(err));
   };
 
   const toggleGroupContainer = (index) => {

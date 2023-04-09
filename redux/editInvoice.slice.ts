@@ -47,7 +47,7 @@ export const editExpenseSlice = createSlice({
     },
     stateChangeHandler: (
       state,
-      action: PayloadAction<{ name: string; value: string }>
+      action: PayloadAction<{ name: string; value: string | boolean }>
     ) => {
       const { name, value } = action.payload;
       state.value.expense[name] = value;

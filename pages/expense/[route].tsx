@@ -150,7 +150,7 @@ const House = () => {
                       className={
                         styles.tab_title +
                         ' ' +
-                        (el.val === selectedCategory
+                        (el.val === (selectedCategory as string)
                           ? styles.tab_title_active
                           : '')
                       }
@@ -164,10 +164,9 @@ const House = () => {
             <CategoryTab
               editExpense={editInvoice}
               category={selectedCategory}
-              expenses={expenses.filter((exp) => {
-                console.log(selectedCategory);
-                return exp.category === selectedCategory;
-              })}
+              expenses={expenses.filter(
+                (exp) => exp.category === selectedCategory
+              )}
             />
           </div>
         </div>
