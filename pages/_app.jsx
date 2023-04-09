@@ -8,15 +8,29 @@ import styles from '../styles/App.module.sass';
 import Layout from '../layout/Layout';
 import { AppProvider } from '../context';
 import { SessionProvider } from 'next-auth/react';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { db } from '../config/Firebase';
+import { collection, query, getDocs } from 'firebase/firestore';
+import { useState } from 'react';
 
 // Redux
 import { store } from '../redux/store';
 import { Provider } from 'react-redux';
-
-
+import { useEffect } from 'react';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+  const [data, setData] = useState({});
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    getDocs(collection(db, 'properties')).then((res) => {
+      console.log(res);
+      res.forEach((doc) => {
+        console.log(`${doc.id} => ${doc.data().sub_properties}`);
+      });
+    });
+  };
   return (
     <div className={styles.container}>
       <Head>

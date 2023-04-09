@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import getCategories from '../service/categories/getCategories';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import styles from '../styles/Sidebar.module.sass';
 import globalStyles from '../styles/Global.module.sass';
-import getObjects from '../service/objects/getObjects';
-import { useAppContext } from '../context/index';
 import {
   house,
   dashboard_arrow,
@@ -12,55 +10,24 @@ import {
   dashboard_icon,
   column_icon,
 } from '../assets/icons';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useAppSelector } from '../redux/hooks';
+import { useAppContext } from '../context';
+import Property from '../types/Property';
 
 const Sidebar = () => {
   const router = useRouter();
   const currentRoute = router.asPath;
-  const { data: session } = useSession();
+  const properties = useAppSelector((state) => state.properties.value);
 
-  const {
-    setObjects,
-    sidebarObjects,
-    setSidebarObjects,
-    setSelectedObject,
-    setCategories,
-  } = useAppContext();
+  const [openedGroup, setOpenedGroup] = useState<string[]>([]);
 
-  const [openedGroup, setOpenedGroup] = useState([]);
+  const { setSelectedObject } = useAppContext();
 
-  useEffect(() => {
-    getObjects()
-      .then((res) => {
-        const { data } = res.data;
-        if (data) setSidebarObjects(data);
-        const allObjects = [];
-        for (const object of data) {
-          if (object.sub_objects && object.sub_objects.length > 0) {
-            for (const sub_object of object.sub_objects)
-              allObjects.push(sub_object);
-          } else {
-            allObjects.push(object);
-          }
-        }
-        setObjects(allObjects);
-      })
-      .catch((err) => console.log(err));
-    getCategories()
-      .then((res) => {
-        if (res.data.data) setCategories(res.data.data);
-      })
-      .catch((err) => console.log(err));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleMenuClick = (object) => {
+  const handleMenuClick = (object: Property) => {
     setSelectedObject(object);
   };
 
-  const handleClapMenu = (id) => {
-    console.log(id);
+  const handleClapMenu = (id: string) => {
     if (openedGroup.includes(id)) {
       setOpenedGroup((prevState) => prevState.filter((el) => el !== id));
     } else {
@@ -81,7 +48,7 @@ const Sidebar = () => {
           >
             Change Log
           </a>
-          <p>{session?.user.name ? session?.user.name : session?.user.email}</p>
+          {/* <p>{session?.user.name ? session?.user.name : session?.user.email}</p> */}
           <hr className={styles.sidebarMenuSeperator} />
         </div>
       </div>
@@ -143,40 +110,59 @@ const Sidebar = () => {
           </li>
           <li>
             <Link href="/forms/insert_insurance" passHref>
-              <button className={`${globalStyles.sidebarButton} ${ currentRoute === '/forms/insert_insurance' && globalStyles.active }`}>
+              <button
+                className={`${globalStyles.sidebarButton} ${
+                  currentRoute === '/forms/insert_insurance' &&
+                  globalStyles.active
+                }`}
+              >
                 Add Insurance
               </button>
             </Link>
           </li>
           <li>
             <Link href="/filtered_table/expenses" passHref>
-              <button className={`${globalStyles.sidebarButton} ${ currentRoute === '/filtered_table/expenses' && globalStyles.active }`}>Expenses</button>
+              <button
+                className={`${globalStyles.sidebarButton} ${
+                  currentRoute === '/filtered_table/expenses' &&
+                  globalStyles.active
+                }`}
+              >
+                Expenses
+              </button>
             </Link>
           </li>
           <li>
             <Link href="/filtered_table/insurances" passHref>
-              <button className={`${globalStyles.sidebarButton} ${ currentRoute === '/filtered_table/insurances' && globalStyles.active }`} >Insurances</button>
+              <button
+                className={`${globalStyles.sidebarButton} ${
+                  currentRoute === '/filtered_table/insurances' &&
+                  globalStyles.active
+                }`}
+              >
+                Insurances
+              </button>
             </Link>
           </li>
         </div>
 
-        {sidebarObjects.map((object) => {
-          if (object.sub_objects) {
+        {properties.map((el) => {
+          if (el.sub_property) {
             return (
               <div>
                 <div
                   className={styles.sidebar_menu_header}
-                  onClick={() => handleClapMenu(object.id)}
+                  onClick={() => handleClapMenu(el.id)}
                 >
                   <span className={styles.sidebar_menu_header_text}>
                     <span className={styles.sidebar_menu_header_house_icon}>
                       {house}
                     </span>
-                    {object.name}
+                    {el.name}
                   </span>
                   <span
                     className={
-                      openedGroup.includes(object.id)
+                      openedGroup.includes(el.id)
                         ? styles.menu_open
                         : styles.menu_closed
                     }
@@ -192,20 +178,17 @@ const Sidebar = () => {
                   className={
                     styles.sidebar_menu_objects +
                     ' ' +
-                    (openedGroup.includes(object.id)
+                    (openedGroup.includes(el.id)
                       ? styles.sidebar_menu_objects_open
                       : '')
                   }
                 >
-                  {object.sub_objects.map((sub_object) => {
+                  {el.sub_property.map((sub: Property) => {
                     return (
-                      <li
-                        key={sub_object.id}
-                        onClick={() => handleMenuClick(sub_object)}
-                      >
-                        <Link href={'/expense/' + sub_object.route} passHref>
+                      <li key={sub.id} onClick={() => handleMenuClick(sub)}>
+                        <Link href={'/expense/' + sub.id} passHref>
                           <button className={globalStyles.sidebarButton}>
-                            {sub_object.name}
+                            {sub.name}
                           </button>
                         </Link>
                       </li>
@@ -248,13 +231,13 @@ const Sidebar = () => {
               : '')
           }
         >
-          {sidebarObjects.map((object) => {
-            if (object.isMenu && !object.parent_object) {
+          {properties.map((el) => {
+            if (!el.sub_property) {
               return (
-                <li key={object.id} onClick={() => handleMenuClick(object)}>
-                  <Link href={'/expense/' + object.route} passHref>
+                <li key={el.id} onClick={() => handleMenuClick(el)}>
+                  <Link href={'/expense/' + el.id} passHref>
                     <button className={globalStyles.sidebarButton}>
-                      {object.name}
+                      {el.name}
                     </button>
                   </Link>
                 </li>

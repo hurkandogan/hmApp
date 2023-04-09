@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getAnalytics, isSupported } from 'firebase/analytics';
+import { getFirestore } from 'firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -14,12 +15,12 @@ const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_FB_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FB_APP_ID,
   measurementId: process.env.NEXT_PUBLIC_FB_MEASUREMENT_ID,
+  databaseURL: process.env.NEXT_PUBLIC_FB_DB_URL,
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = isSupported().then((res) => (res ? getAnalytics(app) : null));
-
-const Firebase = { app, analytics };
-
-export default Firebase;
+export const app = initializeApp(firebaseConfig);
+export const analytics = isSupported().then((res) =>
+  res ? getAnalytics(app) : null
+);
+export const db = getFirestore(app);

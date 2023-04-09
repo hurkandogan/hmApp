@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import styles from '../../styles/expense/CategoryTab.module.sass';
 import ExpenseTable from './ExpenseTable';
 import { numberDivider } from '../../assets/misc/functions';
@@ -9,21 +10,21 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Paper from '@mui/material/Paper';
 import { target, paid_icon, unpaid_icon } from '../../assets/icons';
+import Expense from '../../types/Expense';
 
-const CategoryTab = (props) => {
-  const { category, editInvoice } = props;
-  const openLink = (e, url) => {
-    e.stopPropagation();
-    window.open(url, '_blank').focus();
-  };
+interface Props {
+  expenses: Expense[];
+  category: string;
+  editExpense(e: any, data: Expense): void;
+}
+
+const CategoryTab: FC<Props> = ({ category, expenses, editExpense }) => {
   return (
     <div className={styles.container}>
       <div className={styles.tab_header}>
-        <span>
-          Total Amount: {numberDivider(parseFloat(category?.categoryTotal))} €
-        </span>
+        <span>Total Amount: {numberDivider(parseFloat(category))} €</span>
       </div>
-      <ExpenseTable expenses={category?.expenses} editInvoice={editInvoice} />
+      <ExpenseTable expenses={expenses} editExpense={editExpense} />
     </div>
   );
 };

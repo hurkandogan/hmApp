@@ -3,11 +3,13 @@ import { configureStore } from '@reduxjs/toolkit';
 // Reducer
 import alertSlice from './alertSlice';
 import editInvoiceSlice from './editInvoice.slice';
+import propertiesSlice from './properties.slice';
 
 export const store = configureStore({
   reducer: {
     alert: alertSlice,
     editInvoice: editInvoiceSlice,
+    properties: propertiesSlice,
   },
 });
 

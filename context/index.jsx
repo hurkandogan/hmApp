@@ -9,7 +9,7 @@ const AppProvider = ({ children }) => {
   const [objects, setObjects] = useState([]);
   const [sidebarObjects, setSidebarObjects] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedObject, setSelectedObject] = useState('');
 
   return (
