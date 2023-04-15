@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styles from '../styles/Sidebar.module.sass';
@@ -12,7 +12,7 @@ import {
 } from '../assets/icons';
 import { useAppSelector } from '../redux/hooks';
 import { useAppContext } from '../context';
-import Property from '../types/Property';
+import { Property } from '../types/Property';
 
 const Sidebar = () => {
   const router = useRouter();

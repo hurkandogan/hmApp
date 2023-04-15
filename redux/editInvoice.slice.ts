@@ -1,6 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import Expense from '../types/Expense';
-import { ChangeEvent } from 'react';
 
 const initialState: {
   value: {

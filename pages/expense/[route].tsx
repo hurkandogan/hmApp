@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useAppContext } from '../../context/index';
 import { useRouter } from 'next/router';
 import styles from '../../styles/expense/Index.module.sass';
-import moment from 'moment';
 // Services
 import {
   getDatabase,
@@ -10,50 +9,30 @@ import {
   onValue,
   query,
   equalTo,
-  orderByKey,
   orderByChild,
 } from 'firebase/database';
 // Assets
 import { house_filled } from '../../assets/icons';
-import { numberDivider } from '../../assets/misc/functions';
 
 // Components
 import CategoryTab from '../../components/expense/CategoryTab';
 import EditExpenseOffCanvas from '../../components/expense/EditExpenseOffCanvas';
 import ModalBox from '../../components/ModalBox';
-import OilStatus from '../../components/expense/OilStatus';
-
+// import OilStatus from '../../components/expense/OilStatus';
 // Redux
 import { useAppSelector } from '../../redux/hooks';
-
 // Types
-import Property from '../../types/Property';
+import { Property } from '../../types/Property';
 import Expense from '../../types/Expense';
-
-const OBJECT_INITIAL_DATA = {
-  object: {},
-  objectTotal: 0,
-  expenseCount: 0,
-  expenseList: [],
-};
 
 const House = () => {
   const router = useRouter();
   const properties = useAppSelector((state) => state.properties.value);
-  const {
-    selectedObject,
-    selectedYear,
-    selectedCategory,
-    setSelectedCategory,
-  } = useAppContext();
-  console.log(selectedObject);
+  const { selectedYear, selectedCategory, setSelectedCategory } =
+    useAppContext();
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [object, setObject] = useState(OBJECT_INITIAL_DATA);
   const [property, setProperty] = useState<Property>();
-  const [selectedExpense, setSelectedExpense] = useState({});
-  const [isEditOpen, setIsEditOpen] = useState(false);
   const [oilStatusModal, setOilStatusModal] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const db = getDatabase();
 
@@ -92,17 +71,12 @@ const House = () => {
       property?.available_categories && property?.available_categories[0].val
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query.route, selectedYear]);
+  }, [router.query.route, selectedYear, property]);
 
   const handleSelectedCategory = (cat_id: string) =>
     setSelectedCategory(cat_id);
 
-  const editInvoice = (e: any, data: Expense) => {
-    setIsEditOpen(true);
-    setSelectedExpense(data);
-  };
-
-  const showOilStatusModal = () => setOilStatusModal(!oilStatusModal);
+  //const showOilStatusModal = () => setOilStatusModal(!oilStatusModal);
   const closeOilStatusModal = () => setOilStatusModal(false);
 
   return (
@@ -162,8 +136,6 @@ const House = () => {
               <div className={styles.offset}></div>
             </div>
             <CategoryTab
-              editExpense={editInvoice}
-              category={selectedCategory}
               expenses={expenses.filter(
                 (exp) => exp.category === selectedCategory
               )}

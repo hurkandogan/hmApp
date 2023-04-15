@@ -3,7 +3,6 @@ import { useAppContext } from '../context';
 import { dashboard_arrow } from '../assets/icons';
 import ObjectTotal from '../components/dashboard/ObjectTotal';
 import styles from '../styles/Home.module.sass';
-import getDashboardTotals from '../service/dashboard/getDashboardTotals';
 import { numberDivider } from '../assets/misc/functions';
 
 const Home = () => {

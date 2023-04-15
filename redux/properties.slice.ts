@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import Property from '../types/Property';
+import { Property } from '../types/Property';
+import { Categories } from '../constants/Categories';
 
 const initialState: { value: Property[] } = {
   value: [
@@ -7,25 +8,43 @@ const initialState: { value: Property[] } = {
       id: 'berliner_str',
       name: 'Berliner Str.',
       sort_number: 0,
+      available_categories: [Categories.PRAXIS, Categories.GENERAL],
+    },
+    {
+      id: 'carl_private',
+      name: 'Carl Prv..',
+      sort_number: 1,
+      available_categories: [Categories.GENERAL],
+    },
+    {
+      id: 'zehn_str_32',
+      name: 'Zehnstr. 32',
+      sort_number: 2,
       available_categories: [
-        { val: 'praxis', label: 'Praxis' },
-        { val: 'general', label: 'General' },
-        { val: 'carl_private', label: 'Carl' },
+        Categories.SIDE_COSTS,
+        Categories.RENOVATION,
+        Categories.COSTS,
       ],
+    },
+    {
+      id: 'hurkan_expenses',
+      name: "Hurkas's Expenses",
+      sort_number: 3,
+      available_categories: [Categories.EXPENSES],
     },
     {
       id: 'gaisberg_str',
       name: 'Gaisbergstr.',
-      sort_number: 1,
+      sort_number: 14,
       sub_property: [
         {
           id: 'gaisberg_str_gb',
           name: 'Gaisbergstr. Gebäude',
           sort_number: 0,
           available_categories: [
-            { val: 'side_cost', label: 'Side Costs' },
-            { val: 'renovation', label: 'Renovation Costs' },
-            { val: 'Costs', label: 'Costs' },
+            Categories.SIDE_COSTS,
+            Categories.RENOVATION,
+            Categories.COSTS,
           ],
         },
         {
@@ -33,9 +52,9 @@ const initialState: { value: Property[] } = {
           name: 'Gaisbergstr. EG',
           sort_number: 1,
           available_categories: [
-            { val: 'side_cost', label: 'Side Costs' },
-            { val: 'renovation', label: 'Renovation Costs' },
-            { val: 'Costs', label: 'Costs' },
+            Categories.SIDE_COSTS,
+            Categories.RENOVATION,
+            Categories.COSTS,
           ],
         },
         {
@@ -43,9 +62,9 @@ const initialState: { value: Property[] } = {
           name: 'Gaisbergstr. 1. Fl.',
           sort_number: 2,
           available_categories: [
-            { val: 'side_cost', label: 'Side Costs' },
-            { val: 'renovation', label: 'Renovation Costs' },
-            { val: 'Costs', label: 'Costs' },
+            Categories.SIDE_COSTS,
+            Categories.RENOVATION,
+            Categories.COSTS,
           ],
         },
         {
@@ -53,9 +72,9 @@ const initialState: { value: Property[] } = {
           name: 'Gaisbergstr. DG',
           sort_number: 3,
           available_categories: [
-            { val: 'side_cost', label: 'Side Costs' },
-            { val: 'renovation', label: 'Renovation Costs' },
-            { val: 'Costs', label: 'Costs' },
+            Categories.SIDE_COSTS,
+            Categories.RENOVATION,
+            Categories.COSTS,
           ],
         },
       ],
@@ -63,16 +82,16 @@ const initialState: { value: Property[] } = {
     {
       id: 'oftersheim',
       name: 'Oftersheim',
-      sort_number: 2,
+      sort_number: 5,
       sub_property: [
         {
           id: 'oftersheim_gb',
           name: 'Oftersheim Gebäude',
           sort_number: 0,
           available_categories: [
-            { val: 'side_cost', label: 'Side Costs' },
-            { val: 'renovation', label: 'Renovation Costs' },
-            { val: 'Costs', label: 'Costs' },
+            Categories.SIDE_COSTS,
+            Categories.RENOVATION,
+            Categories.COSTS,
           ],
         },
         {
@@ -80,9 +99,9 @@ const initialState: { value: Property[] } = {
           name: 'Oftersheim EG',
           sort_number: 1,
           available_categories: [
-            { val: 'side_cost', label: 'Side Costs' },
-            { val: 'renovation', label: 'Renovation Costs' },
-            { val: 'Costs', label: 'Costs' },
+            Categories.SIDE_COSTS,
+            Categories.RENOVATION,
+            Categories.COSTS,
           ],
         },
         {
@@ -90,9 +109,9 @@ const initialState: { value: Property[] } = {
           name: 'Oftersheim 1. Fl.',
           sort_number: 2,
           available_categories: [
-            { val: 'side_cost', label: 'Side Costs' },
-            { val: 'renovation', label: 'Renovation Costs' },
-            { val: 'Costs', label: 'Costs' },
+            Categories.SIDE_COSTS,
+            Categories.RENOVATION,
+            Categories.COSTS,
           ],
         },
         {
@@ -100,28 +119,12 @@ const initialState: { value: Property[] } = {
           name: 'Oftersheim DG',
           sort_number: 3,
           available_categories: [
-            { val: 'side_cost', label: 'Side Costs' },
-            { val: 'renovation', label: 'Renovation Costs' },
-            { val: 'Costs', label: 'Costs' },
+            Categories.SIDE_COSTS,
+            Categories.RENOVATION,
+            Categories.COSTS,
           ],
         },
       ],
-    },
-    {
-      id: 'zehn_str_32',
-      name: 'Zehnstr. 32',
-      sort_number: 3,
-      available_categories: [
-        { val: 'side_cost', label: 'Side Costs' },
-        { val: 'renovation', label: 'Renovation Costs' },
-        { val: 'Costs', label: 'Costs' },
-      ],
-    },
-    {
-      id: 'hurkan_expenses',
-      name: "Hurkas's Expenses",
-      sort_number: 4,
-      available_categories: [{ val: 'expenses', label: 'Expenses' }],
     },
   ],
 };

@@ -1,9 +1,14 @@
-export default interface Property {
+export interface Property {
   id: string;
   name: string;
   sort_number: number;
-  available_categories?: { val: string; label: string }[];
+  available_categories?: Category[];
   sub_property?: SubProperty[];
+}
+
+export interface Category {
+  val: string;
+  label: string;
 }
 
 export interface SubProperty extends Property {}

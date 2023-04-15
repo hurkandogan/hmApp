@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, ChangeEvent } from 'react';
 import styles from '../../styles/modules/Form.module.sass';
 import globalStyles from '../../styles/Global.module.sass';
 import { validateExpenseFields } from '../../validation/InsertExpense';
@@ -8,11 +8,9 @@ import { getDatabase, ref, set, push } from 'firebase/database';
 // Redux
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { showAlert, clearAlert } from '../../redux/alertSlice';
-// Services
-import saveExpense from '../../service/expenses/saveExpense';
 // Types
 import Expense from '../../types/Expense';
-import Property from '../../types/Property';
+import { Property } from '../../types/Property';
 // Components
 import TextField from '@mui/material/TextField';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -92,28 +90,23 @@ const InsertExpense = () => {
       setLoading(true);
       const postRef = ref(db, 'expenses');
       const pushedRef = push(postRef);
-      console.log(pushedRef);
-      set(pushedRef, expense).then((res) => console.log(res));
-      // saveExpense(expense)
-      //   .then((res) => {
-      //     if (res.status === 200) {
-      //       dispatch(
-      //         showAlert({
-      //           display: true,
-      //           status: 'success',
-      //           msg: 'Invoice is successfully saved!',
-      //         })
-      //       );
-      //       setExpense(INITIAL_STATE);
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     showAlert({
-      //       display: true,
-      //       status: 'error',
-      //       msg: 'An error occured on saving',
-      //     });
-      //   });
+      set(pushedRef, expense)
+        .then((res) =>
+          dispatch(
+            showAlert({
+              display: true,
+              status: 'success',
+              msg: 'Invoice is successfully saved!',
+            })
+          )
+        )
+        .catch((err) =>
+          showAlert({
+            display: true,
+            status: 'error',
+            msg: 'An error occured on saving' + err,
+          })
+        );
       setLoading(false);
     }
   };

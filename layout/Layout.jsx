@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import Alert from '@mui/material/Alert';
 import styles from '../styles/Layout.module.sass';
 import EditExpenseOffCanvas from '../components/expense/EditExpenseOffCanvas';
-import { app as firebaseInstance } from '../config/Firebase';
+import { Button } from '@mui/material';
 import {
   getAuth,
   signInWithPopup,
@@ -40,8 +39,11 @@ const Layout = ({ children }) => {
     );
   } else {
     return (
-      <div className={styles.container}>
-        <button onClick={() => login()}>Sign In</button>
+      <div className={styles.loginContainer}>
+        <h1>Welcome to House Management System</h1>
+        <Button variant={'contained'} onClick={() => login()}>
+          Sign In with Google Account
+        </Button>
       </div>
     );
   }
