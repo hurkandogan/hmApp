@@ -4,6 +4,7 @@ export interface Property {
   sort_number: number;
   available_categories?: Category[];
   sub_property?: SubProperty[];
+  totals?: { name: string; total: number }[];
 }
 
 export interface Category {

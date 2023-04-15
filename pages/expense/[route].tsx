@@ -8,12 +8,12 @@ import {
   ref,
   onValue,
   query,
-  equalTo,
   orderByChild,
+  startAfter,
+  endAt,
 } from 'firebase/database';
 // Assets
 import { house_filled } from '../../assets/icons';
-
 // Components
 import CategoryTab from '../../components/expense/CategoryTab';
 import EditExpenseOffCanvas from '../../components/expense/EditExpenseOffCanvas';
@@ -54,8 +54,9 @@ const House = () => {
     });
     const starCountRef = query(
       ref(db, 'expenses/'),
-      orderByChild('property'),
-      equalTo(route as string)
+      orderByChild('date'),
+      startAfter(`${selectedYear}-01-01`),
+      endAt(`${selectedYear}-12-31`)
     );
     onValue(starCountRef, (snapshot) => {
       const data = snapshot.val();
@@ -137,7 +138,9 @@ const House = () => {
             </div>
             <CategoryTab
               expenses={expenses.filter(
-                (exp) => exp.category === selectedCategory
+                (exp) =>
+                  exp.category === selectedCategory &&
+                  exp.property === router.query.route
               )}
             />
           </div>

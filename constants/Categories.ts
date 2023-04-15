@@ -8,6 +8,7 @@ export const Categories: {
   RENOVATION: Category;
   COSTS: Category;
   EXPENSES: Category;
+  INSURANCES: Category;
 } = {
   PRAXIS: { val: 'praxis', label: 'Praxis' },
   GENERAL: { val: 'general', label: 'General' },
@@ -15,5 +16,6 @@ export const Categories: {
   SIDE_COSTS: { val: 'side_cost', label: 'Side Costs' },
   RENOVATION: { val: 'renovation', label: 'Renovation Costs' },
   COSTS: { val: 'costs', label: 'Costs' },
+  INSURANCES: { val: 'insurances', label: 'Insurances' },
   EXPENSES: { val: 'expenses', label: 'Expenses' },
 };

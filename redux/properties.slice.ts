@@ -8,13 +8,17 @@ const initialState: { value: Property[] } = {
       id: 'berliner_str',
       name: 'Berliner Str.',
       sort_number: 0,
-      available_categories: [Categories.PRAXIS, Categories.GENERAL],
+      available_categories: [
+        Categories.PRAXIS,
+        Categories.GENERAL,
+        Categories.INSURANCES,
+      ],
     },
     {
       id: 'carl_private',
       name: 'Carl Prv..',
       sort_number: 1,
-      available_categories: [Categories.GENERAL],
+      available_categories: [Categories.GENERAL, Categories.INSURANCES],
     },
     {
       id: 'zehn_str_32',
@@ -24,13 +28,19 @@ const initialState: { value: Property[] } = {
         Categories.SIDE_COSTS,
         Categories.RENOVATION,
         Categories.COSTS,
+        Categories.INSURANCES,
       ],
     },
     {
-      id: 'hurkan_expenses',
-      name: "Hurkas's Expenses",
-      sort_number: 3,
-      available_categories: [Categories.EXPENSES],
+      id: 'zehn_str_34',
+      name: 'Zehnstr. 34',
+      sort_number: 2,
+      available_categories: [
+        Categories.SIDE_COSTS,
+        Categories.RENOVATION,
+        Categories.COSTS,
+        Categories.INSURANCES,
+      ],
     },
     {
       id: 'gaisberg_str',
@@ -45,6 +55,7 @@ const initialState: { value: Property[] } = {
             Categories.SIDE_COSTS,
             Categories.RENOVATION,
             Categories.COSTS,
+            Categories.INSURANCES,
           ],
         },
         {
@@ -55,6 +66,7 @@ const initialState: { value: Property[] } = {
             Categories.SIDE_COSTS,
             Categories.RENOVATION,
             Categories.COSTS,
+            Categories.INSURANCES,
           ],
         },
         {
@@ -65,6 +77,7 @@ const initialState: { value: Property[] } = {
             Categories.SIDE_COSTS,
             Categories.RENOVATION,
             Categories.COSTS,
+            Categories.INSURANCES,
           ],
         },
         {
@@ -75,6 +88,7 @@ const initialState: { value: Property[] } = {
             Categories.SIDE_COSTS,
             Categories.RENOVATION,
             Categories.COSTS,
+            Categories.INSURANCES,
           ],
         },
       ],
@@ -92,6 +106,7 @@ const initialState: { value: Property[] } = {
             Categories.SIDE_COSTS,
             Categories.RENOVATION,
             Categories.COSTS,
+            Categories.INSURANCES,
           ],
         },
         {
@@ -102,6 +117,7 @@ const initialState: { value: Property[] } = {
             Categories.SIDE_COSTS,
             Categories.RENOVATION,
             Categories.COSTS,
+            Categories.INSURANCES,
           ],
         },
         {
@@ -112,6 +128,7 @@ const initialState: { value: Property[] } = {
             Categories.SIDE_COSTS,
             Categories.RENOVATION,
             Categories.COSTS,
+            Categories.INSURANCES,
           ],
         },
         {
@@ -122,9 +139,16 @@ const initialState: { value: Property[] } = {
             Categories.SIDE_COSTS,
             Categories.RENOVATION,
             Categories.COSTS,
+            Categories.INSURANCES,
           ],
         },
       ],
+    },
+    {
+      id: 'hurkan_expenses',
+      name: "Hurkas's Expenses",
+      sort_number: 3,
+      available_categories: [Categories.EXPENSES, Categories.INSURANCES],
     },
   ],
 };
