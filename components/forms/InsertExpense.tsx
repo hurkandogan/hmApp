@@ -7,7 +7,7 @@ import { getAuth } from 'firebase/auth';
 import { getDatabase, ref, set, push } from 'firebase/database';
 // Redux
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { showAlert, clearAlert } from '../../redux/alertSlice';
+import { showAlert } from '../../redux/alertSlice';
 // Types
 import Expense from '../../types/Expense';
 import { Property } from '../../types/Property';
@@ -91,7 +91,7 @@ const InsertExpense = () => {
       const postRef = ref(db, 'expenses');
       const pushedRef = push(postRef);
       set(pushedRef, expense)
-        .then((res) =>
+        .then(() =>
           dispatch(
             showAlert({
               display: true,
@@ -108,12 +108,13 @@ const InsertExpense = () => {
           })
         );
       setLoading(false);
+      setExpense(INITIAL_STATE);
     }
   };
 
   return (
     <div className={styles.container}>
-      <h1>Insert Expense</h1>
+      <h1>Add Expense</h1>
       <div className={styles.formGroupContainer}>
         <div className={styles.formGroupContainer_inner}>
           <TextField
@@ -272,7 +273,12 @@ const InsertExpense = () => {
       </div>
       <div className={styles.formGroupContainer}></div>
       <div className={styles.formGroupContainer}>
-        <Button variant="contained" onClick={formSubmit} disabled={loading}>
+        <Button
+          variant="contained"
+          onClick={formSubmit}
+          disabled={loading}
+          style={{ background: '#1976d2' }}
+        >
           {`Submit ${
             loading ? (
               <div className={globalStyles.spinner} role="status">

@@ -1,24 +1,25 @@
-import { useState } from 'react';
+import { ChangeEvent } from 'react';
 import styles from '../styles/Header.module.sass';
-import { useAppContext } from '../context/index';
 import { logout } from '../assets/icons';
 import Link from 'next/link';
-import { CONFIG } from '../config';
 import { getAuth, signOut } from 'firebase/auth';
+import { useAppSelector, useAppDispatch } from '../redux/hooks';
+import { update_year } from '../redux/selectedYear.slice';
 
 const Header = () => {
-  const [yearValues] = useState(CONFIG.years);
-  const { selectedYear, setSelectedYear } = useAppContext();
-  const handleSelectedYear = (e) => setSelectedYear(e.target.value);
   const auth = getAuth();
+  const selectedYear = useAppSelector((state) => state.selectedYear.value);
+  const dispatch = useAppDispatch();
   return (
     <div className={styles.container}>
       <select
         className={styles.selectBox}
-        onChange={handleSelectedYear}
-        value={selectedYear}
+        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+          dispatch(update_year(e.target.value))
+        }
+        value={selectedYear.selectedYear}
       >
-        {yearValues.map((el) => {
+        {selectedYear.years.map((el) => {
           return (
             <option key={el} value={el}>
               {el}

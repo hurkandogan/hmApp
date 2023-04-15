@@ -28,11 +28,13 @@ import Expense from '../../types/Expense';
 const House = () => {
   const router = useRouter();
   const properties = useAppSelector((state) => state.properties.value);
-  const { selectedYear, selectedCategory, setSelectedCategory } =
-    useAppContext();
+  const { selectedCategory, setSelectedCategory } = useAppContext();
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [property, setProperty] = useState<Property>();
   const [oilStatusModal, setOilStatusModal] = useState(false);
+  const selectedYear = useAppSelector(
+    (state) => state.selectedYear.value.selectedYear
+  );
 
   const db = getDatabase();
 

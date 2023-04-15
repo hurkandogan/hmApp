@@ -17,8 +17,10 @@ import { Property } from '../types/Property';
 const Home = () => {
   const db = getDatabase();
   const [dashboardData, setDashboardData] = useState<Property[]>();
-  const { selectedYear } = useAppContext();
   const properties = useAppSelector((state) => state.properties.value);
+  const selectedYear = useAppSelector(
+    (state) => state.selectedYear.value.selectedYear
+  );
 
   useEffect(() => {
     loadData();
