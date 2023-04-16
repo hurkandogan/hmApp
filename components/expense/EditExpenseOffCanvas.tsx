@@ -1,47 +1,78 @@
-import { useState } from 'react';
-import moment from 'moment';
-import { useAppContext } from '../../context';
-import editExpense from '../../service/expenses/editExpense';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import styles from '../../styles/expense/EditExpenseOffCanvas.module.sass';
 import globalStyles from '../../styles/Global.module.sass';
 import { close_icon } from '../../assets/icons';
-import { numberDivider } from '../../assets/misc/functions';
-
 import TextField from '@mui/material/TextField';
-import Select from '@mui/material/Select';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { InputLabel } from '@mui/material';
 import Button from '@mui/material/Button';
-
 // Redux
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import {
-  editSelectedExpense,
   clearSelectedExpense,
-  expenseIsEdited,
   stateChangeHandler,
 } from '../../redux/editInvoice.slice';
+// Types
+import { Property } from '../../types/Property';
+// Services
+import { getDatabase, ref, update } from 'firebase/database';
 
-const EditExpenseOffCanvas = (props) => {
-  const { objects, categories } = useAppContext();
+const EditExpenseOffCanvas: FC = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const showForm = useAppSelector((state) => state.editInvoice.showForm);
-  const expense = useAppSelector((state) => state.editInvoice.expense);
+  const [selectedProperty, setSelectedProperty] = useState<Property>();
+  const showForm = useAppSelector((state) => state.editInvoice.value.showForm);
+  const expense = useAppSelector((state) => state.editInvoice.value.expense);
+  const properties = useAppSelector((state) => state.properties.value.grouped);
+  const categories = useAppSelector((state) => state.categories.value);
 
-  const changeHandler = (e) => {
+  useEffect(() => {
+    setSelectedProperty(
+      properties.filter((el) => el.id === router.query.route)[0]
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [expense]);
+
+  const options: Property[] = [];
+  properties.forEach((property) => {
+    if (property.sub_property) {
+      property.sub_property.forEach((subProperty: Property) => {
+        options.push(subProperty);
+      });
+    } else {
+      options.push(property);
+    }
+  });
+
+  const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { type, checked, name, value } = e.target;
     if (type === 'checkbox') {
-      dispatch(stateChangeHandler({ name: name, checked: checked ? 1 : 0 }));
+      dispatch(
+        stateChangeHandler({ name: name, value: checked ? true : false })
+      );
     } else {
+      console.log(name, value);
       dispatch(stateChangeHandler({ name: name, value: value }));
     }
   };
+  const selectBoxChangeHandler = (e: SelectChangeEvent<string>) => {
+    const { name, value } = e.target;
+    if (name === 'property') {
+      options.forEach((el) => {
+        if (el.id === value) {
+          setSelectedProperty(el);
+        }
+      });
+    }
+    dispatch(stateChangeHandler({ name: name, value: value }));
+  };
 
-  const amountFieldChangeHandler = (e) => {
+  const amountFieldChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     let dottedValue = value.replace(/,/g, '.');
     dispatch(stateChangeHandler({ name: name, value: dottedValue }));
@@ -49,15 +80,10 @@ const EditExpenseOffCanvas = (props) => {
 
   const formSubmit = () => {
     setLoading(true);
-    expense.date = moment(expense.date).format('YYYY-MM-DD');
-    editExpense(expense)
-      .then((res) => {
-        if (res.status === 200) {
-          dispatch(clearSelectedExpense());
-          dispatch(expenseIsEdited());
-        }
-      })
-      .catch((err) => console.log(err));
+    const db = getDatabase();
+    const updates = { ['/expenses/' + expense.id]: expense };
+    update(ref(db), updates);
+    dispatch(clearSelectedExpense());
     setLoading(false);
   };
 
@@ -125,13 +151,13 @@ const EditExpenseOffCanvas = (props) => {
                 <Select
                   className={styles.input}
                   id="object"
-                  name="objectId"
-                  value={expense?.objectId}
-                  onChange={changeHandler}
+                  name="property"
+                  value={expense?.property}
+                  onChange={selectBoxChangeHandler}
                   size={'small'}
-                  defaultValue={expense?.objectId}
+                  defaultValue={expense?.property}
                 >
-                  {objects.map((obj) => (
+                  {options.map((obj) => (
                     <MenuItem key={obj.id} value={obj.id}>
                       {obj.name}
                     </MenuItem>
@@ -143,18 +169,25 @@ const EditExpenseOffCanvas = (props) => {
               <FormControl>
                 <Select
                   id="category"
-                  name="categoryId"
-                  value={expense?.categoryId}
-                  onChange={changeHandler}
-                  disabled={categories.length < 1 && true}
+                  name="category"
+                  value={expense?.category}
+                  onChange={selectBoxChangeHandler}
+                  disabled={
+                    selectedProperty?.available_categories &&
+                    selectedProperty?.available_categories.length < 1
+                  }
                   className={styles.input}
                   size={'small'}
                 >
-                  {categories.map((cat) => (
-                    <MenuItem key={cat.id} value={cat.id}>
-                      {cat.name}
-                    </MenuItem>
-                  ))}
+                  <MenuItem disabled={true}>Select a category</MenuItem>
+                  {categories &&
+                    categories.map((cat) => {
+                      return (
+                        <MenuItem key={cat.val} value={cat.val}>
+                          {cat.label}
+                        </MenuItem>
+                      );
+                    })}
                 </Select>
               </FormControl>
             </div>
@@ -174,9 +207,9 @@ const EditExpenseOffCanvas = (props) => {
             <div className={styles.formGroupContainer_inner}>
               <TextField
                 type="text"
-                id="documentLink"
-                name="documentLink"
-                value={expense?.documentLink}
+                id="link"
+                name="link"
+                value={expense.link}
                 onChange={changeHandler}
                 className={styles.input}
                 size={'small'}
@@ -186,7 +219,6 @@ const EditExpenseOffCanvas = (props) => {
               <FormControlLabel
                 control={
                   <Switch
-                    abel="Payment Status"
                     id="isPaid"
                     name="isPaid"
                     checked={expense.isPaid}

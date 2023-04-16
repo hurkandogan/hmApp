@@ -20,15 +20,16 @@ const FilteredTable = () => {
   const isExpenseEdited = useAppSelector((state) => state.editInvoice.isEdited);
 
   useEffect(() => {
-    if (route === 'expenses') {
-      getAllExpenses().then((res) => {
-        if (res.data) setData(res.data.data);
-      });
-    } else if (route === 'insurances') {
-      getAllInsurances().then((res) => {
-        if (res.data) setData(res.data.data);
-      });
-    }
+    const data = getAllInsurances();
+    console.log(data);
+    // if (route === 'expenses') {
+    //   getAllExpenses().then((res) => {
+    //     if (res.data) setData(res.data.data);
+    //   });
+    // } else if (route === 'insurances') {
+    //   const data = getAllInsurances();
+    //   console.log(data);
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route, isExpenseEdited]);
 

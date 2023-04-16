@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { FC } from 'react';
 import { target, paid_icon, unpaid_icon } from '../../assets/icons';
 import { numberDivider } from '../../assets/misc/functions';
 import styles from '../../styles/expense/ExpenseTable.module.sass';
@@ -9,18 +9,23 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Paper from '@mui/material/Paper';
-
 // Redux
 import { useAppDispatch } from '../../redux/hooks';
 import { editSelectedExpense } from '../../redux/editInvoice.slice';
+import Expense from '../../types/Expense';
 
-const ExpenseTable = (props) => {
-  const { expenses, editInvoice } = props;
+interface Props {
+  expenses: Expense[];
+}
+
+const ExpenseTable: FC<Props> = ({ expenses }) => {
   const dispatch = useAppDispatch();
-  const openLink = (e, url) => {
-    e.stopPropagation();
-    window.open(url, '_blank').focus();
-  };
+  // const openLink = (e: any, url: string) => {
+  //   e.stopPropagation();
+  //   if (typeof window !== 'undefined' || window !== null) {
+  //     window?.open(url, '_blank').focus();
+  //   }
+  // };
 
   return (
     <>
@@ -40,8 +45,9 @@ const ExpenseTable = (props) => {
             {expenses?.map((exp) => (
               <TableRow
                 key={exp.id}
-                scope={'row'}
-                onClick={(e) => dispatch(editSelectedExpense(exp))}
+                onClick={() => {
+                  dispatch(editSelectedExpense(exp));
+                }}
                 className={styles.invoice_row}
               >
                 <TableCell className={styles.payment_icon}>
@@ -50,10 +56,10 @@ const ExpenseTable = (props) => {
                 <TableCell>{exp.date}</TableCell>
                 <TableCell>{exp.firm}</TableCell>
                 <TableCell>{exp.description}</TableCell>
-                <TableCell>{exp.amount}</TableCell>
+                <TableCell>€ {numberDivider(exp.amount)}</TableCell>
                 <TableCell>
-                  {exp.documentLink.length > 0 ? (
-                    <button onClick={(e) => openLink(e, exp.documentLink)}>
+                  {exp.link.length > 0 ? (
+                    <button /* onClick={(e) => openLink(e, exp.link)} */>
                       <p className={styles.invoice_link}>Invoice {target}</p>
                     </button>
                   ) : (

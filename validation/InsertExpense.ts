@@ -6,8 +6,8 @@ export const validateExpenseFields = (data: Expense) => {
     'date',
     'firm',
     'amount',
-    'objectId',
-    'categoryId',
+    'property',
+    'category',
   ];
   let emptyFields: string[] = [];
 

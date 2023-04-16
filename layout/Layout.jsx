@@ -1,30 +1,32 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import Alert from '@mui/material/Alert';
 import styles from '../styles/Layout.module.sass';
 import EditExpenseOffCanvas from '../components/expense/EditExpenseOffCanvas';
-//import { useSession, signIn } from 'next-auth/react';
-
-// Redux
-import { useAppSelector, useAppDispatch } from '../redux/hooks';
-import { clearAlert } from '../redux/alertSlice';
+import { Button } from '@mui/material';
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+} from 'firebase/auth';
 
 const Layout = ({ children }) => {
-  // const { data: session } = useSession();
-  //if (session) {
-  const alert = useAppSelector((state) => state.alert);
-  const dispatch = useAppDispatch();
+  const auth = getAuth();
+  const provider = new GoogleAuthProvider();
+  const [loginInfo, setLoginInfo] = useState(null);
 
   useEffect(() => {
-    if (alert.display) {
-      setTimeout(() => dispatch(clearAlert()), 5000);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [alert]);
+    onAuthStateChanged(auth, (user) => {
+      setLoginInfo(user);
+    });
+  }, [auth]);
 
-  if (true) {
-    // Authentication will be added instead of true
+  const login = async () => {
+    await signInWithPopup(auth, provider).catch((err) => console.error(err));
+  };
+
+  if (loginInfo) {
     return (
       <div className={styles.container}>
         <Sidebar />
@@ -32,20 +34,16 @@ const Layout = ({ children }) => {
           <Header />
           <main className={styles.main}>{children}</main>
         </div>
-        {alert.display && (
-          <div className={styles.alert}>
-            <Alert severity={alert.status}>{alert.msg}</Alert>
-          </div>
-        )}
         <EditExpenseOffCanvas />
       </div>
     );
   } else {
     return (
-      <div className={styles.container}>
-        <button onClick={() => console.log('Sign in function should be added')}>
-          Sign In
-        </button>
+      <div className={styles.loginContainer}>
+        <h1>Welcome to House Management System</h1>
+        <Button variant={'contained'} onClick={() => login()}>
+          Sign In with Google Account
+        </Button>
       </div>
     );
   }

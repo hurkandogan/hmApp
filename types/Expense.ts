@@ -1,11 +1,13 @@
 export default interface Expense {
+  id?: string;
   date: string;
   firm: string;
   description: string;
   amount: string;
   link: string;
   isPaid: boolean;
-  categoryId: string;
-  objectId: string;
-  userId?: string;
+  category: string;
+  property: string;
+  user?: string;
+  [key: string]: string | boolean | undefined;
 }
