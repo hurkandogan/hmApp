@@ -28,7 +28,7 @@ const EditExpenseOffCanvas: FC = () => {
   const [selectedProperty, setSelectedProperty] = useState<Property>();
   const showForm = useAppSelector((state) => state.editInvoice.value.showForm);
   const expense = useAppSelector((state) => state.editInvoice.value.expense);
-  const properties = useAppSelector((state) => state.properties.value);
+  const properties = useAppSelector((state) => state.properties.value.grouped);
   const categories = useAppSelector((state) => state.categories.value);
 
   useEffect(() => {

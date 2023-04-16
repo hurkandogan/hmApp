@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useAppContext } from '../context';
 import ObjectTotal from '../components/dashboard/ObjectTotal';
 import styles from '../styles/Home.module.sass';
 import { useAppSelector } from '../redux/hooks';
@@ -17,7 +16,7 @@ import { Property } from '../types/Property';
 const Home = () => {
   const db = getDatabase();
   const [dashboardData, setDashboardData] = useState<Property[]>();
-  const properties = useAppSelector((state) => state.properties.value);
+  const properties = useAppSelector((state) => state.properties.value.all);
   const selectedYear = useAppSelector(
     (state) => state.selectedYear.value.selectedYear
   );
@@ -28,14 +27,14 @@ const Home = () => {
   }, [selectedYear]);
 
   const loadData = () => {
-    const starCountRef = query(
+    const expRef = query(
       ref(db, 'expenses/'),
       orderByChild('date'),
       startAfter(`${selectedYear}-01-01`),
       endAt(`${selectedYear}-12-31`)
     );
 
-    onValue(starCountRef, (snapshot) => {
+    onValue(expRef, (snapshot) => {
       const data = snapshot.val();
       const allData: Property[] = [];
       if (data) {

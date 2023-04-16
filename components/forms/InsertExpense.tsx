@@ -39,8 +39,10 @@ const InsertExpense = () => {
   const [selectedProperty, setSelectedProperty] = useState<Property>();
   const [requiredFields, setRequiredFields] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const properties = useAppSelector((state) => state.properties.value);
+  const properties = useAppSelector((state) => state.properties.value.all);
   const dispatch = useAppDispatch();
+
+  console.log(properties);
 
   const options: Property[] = [];
   properties.forEach((property) => {

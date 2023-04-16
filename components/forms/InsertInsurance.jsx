@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAppContext } from '../../context';
 import styles from '../../styles/modules/Form.module.sass';
 import globalStyles from '../../styles/Global.module.sass';
 import saveInsurance from '../../service/insurances/saveInsurance';
-
 // Components
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
@@ -11,26 +10,27 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import { InputLabel } from '@mui/material';
 import Button from '@mui/material/Button';
+import { useAppSelector } from '../../redux/hooks';
+
+const INITIAL_STATE = {
+  insurance_name: '',
+  insurance_vendor: '',
+  insurance_number: '',
+  insurance_object: '',
+  yearly_amount: '',
+  contract_start_date: '',
+  contract_end_date: '',
+  contract_renewal: '',
+  payment_type: '',
+  insurance_paper_link: '',
+  monthly_amount: '',
+  description: '',
+};
 
 const InsertInsurance = () => {
-  const INITIAL_STATE = {
-    insurance_name: '',
-    insurance_vendor: '',
-    insurance_number: '',
-    insurance_object: '',
-    yearly_amount: '',
-    contract_start_date: '',
-    contract_end_date: '',
-    contract_renewal: '',
-    payment_type: '',
-    insurance_paper_link: '',
-    monthly_amount: '',
-    description: '',
-  };
-
-  const { objects, loading, setLoading } = useAppContext();
-
+  const { loading, setLoading } = useAppContext();
   const [insurance, setInsurance] = useState(INITIAL_STATE);
+  const properties = useAppSelector((state) => state.properties.value.all);
 
   const changeHandler = (e) => {
     const { type, checked, name, value } = e.target;
@@ -52,15 +52,7 @@ const InsertInsurance = () => {
 
   const formSubmit = () => {
     setLoading(true);
-    saveInsurance(insurance)
-      .then((res) => {
-        if (res.status === 200) {
-          setInsurance(INITIAL_STATE);
-        }
-        // TODO: Add notification!
-      })
-      .catch((err) => console.log(err));
-    // TODO: Add notification!
+    saveInsurance(insurance);
     setLoading(false);
   };
 
@@ -114,7 +106,7 @@ const InsertInsurance = () => {
               onChange={changeHandler}
               size="small"
             >
-              {objects.map((obj) => (
+              {properties.map((obj) => (
                 <MenuItem key={obj.id} value={obj.id}>
                   {obj.name}
                 </MenuItem>
@@ -237,7 +229,12 @@ const InsertInsurance = () => {
         </div>
       </div>
       <div className={styles.formGroupContainer}>
-        <Button variant="contained" onClick={formSubmit} disabled={loading}>
+        <Button
+          variant="contained"
+          onClick={formSubmit}
+          disabled={loading}
+          style={{ background: '#1976d2' }}
+        >
           {loading ? (
             <div className={globalStyles.spinner} role="status">
               <span className="visually-hidden">Loading...</span>

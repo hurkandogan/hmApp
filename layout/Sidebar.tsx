@@ -17,7 +17,7 @@ import { Property } from '../types/Property';
 const Sidebar = () => {
   const router = useRouter();
   const currentRoute = router.asPath;
-  const properties = useAppSelector((state) => state.properties.value);
+  const properties = useAppSelector((state) => state.properties.value.grouped);
 
   const [openedGroup, setOpenedGroup] = useState<string[]>([]);
 

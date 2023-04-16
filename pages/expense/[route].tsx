@@ -27,7 +27,7 @@ import Expense from '../../types/Expense';
 
 const House = () => {
   const router = useRouter();
-  const properties = useAppSelector((state) => state.properties.value);
+  const properties = useAppSelector((state) => state.properties.value.grouped);
   const { selectedCategory, setSelectedCategory } = useAppContext();
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [property, setProperty] = useState<Property>();
@@ -35,7 +35,7 @@ const House = () => {
   const selectedYear = useAppSelector(
     (state) => state.selectedYear.value.selectedYear
   );
-
+  console.log(properties);
   const db = getDatabase();
 
   useEffect(() => {
