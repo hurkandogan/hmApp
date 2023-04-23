@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import styles from '../styles/Layout.module.sass';
-import EditExpenseOffCanvas from '../components/expense/EditExpenseOffCanvas';
+import EditExpenseOffCanvas from '../components/OffCanvas';
 import { Button } from '@mui/material';
 import {
   getAuth,
@@ -20,6 +20,7 @@ const Layout = ({ children }) => {
     onAuthStateChanged(auth, (user) => {
       setLoginInfo(user);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
   const login = async () => {

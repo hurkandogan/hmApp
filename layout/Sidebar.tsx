@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styles from '../styles/Sidebar.module.sass';
@@ -10,12 +10,14 @@ import {
   dashboard_icon,
   column_icon,
 } from '../assets/icons';
-import { useAppSelector } from '../redux/hooks';
+import { useAppSelector, useAppDispatch } from '../redux/hooks';
+import { setFormType } from '../redux/offCanvasHandler.slice';
 import { useAppContext } from '../context';
 import { Property } from '../types/Property';
 
-const Sidebar = () => {
+const Sidebar: FC = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const currentRoute = router.asPath;
   const properties = useAppSelector((state) => state.properties.value.grouped);
 
@@ -40,7 +42,7 @@ const Sidebar = () => {
       <div className={styles.user_info}>
         <div>
           <p className={styles.brand}>hugOS</p>
-          <span>0.1.4 (BETA)</span>
+          <span>0.2.0 (In Development)</span>
           <a
             href="https://github.com/hurkandogan/hmapp/blob/develop/CHANGELOG.md"
             target="_blank"
@@ -97,30 +99,27 @@ const Sidebar = () => {
           }
         >
           <li>
-            <Link href="/forms/insert_expense" passHref>
-              <button
-                className={`${globalStyles.sidebarButton} ${
-                  router.asPath === '/forms/insert_expense' &&
-                  globalStyles.active
-                }`}
-              >
-                Add Expense
-              </button>
-            </Link>
+            <button
+              onClick={() => dispatch(setFormType('new_expense'))}
+              className={`${globalStyles.sidebarButton} ${
+                router.asPath === '/forms/insert_expense' && globalStyles.active
+              }`}
+            >
+              Add Expense
+            </button>
           </li>
           <li>
-            <Link href="/forms/insert_insurance" passHref>
-              <button
-                className={`${globalStyles.sidebarButton} ${
-                  currentRoute === '/forms/insert_insurance' &&
-                  globalStyles.active
-                }`}
-              >
-                Add Insurance
-              </button>
-            </Link>
+            <button
+              onClick={() => dispatch(setFormType('new_insurance'))}
+              className={`${globalStyles.sidebarButton} ${
+                currentRoute === '/forms/insert_insurance' &&
+                globalStyles.active
+              }`}
+            >
+              Add Insurance
+            </button>
           </li>
-          <li>
+          {/* <li>
             <Link href="/filtered_table/expenses" passHref>
               <button
                 className={`${globalStyles.sidebarButton} ${
@@ -143,13 +142,13 @@ const Sidebar = () => {
                 Insurances
               </button>
             </Link>
-          </li>
+          </li> */}
         </div>
 
         {properties.map((el) => {
           if (el.sub_property) {
             return (
-              <div>
+              <div key={el.id}>
                 <div
                   className={styles.sidebar_menu_header}
                   onClick={() => handleClapMenu(el.id)}
@@ -172,7 +171,6 @@ const Sidebar = () => {
                     </span>
                   </span>
                 </div>
-
                 <hr className={styles.sidebarMenuSeperator} />
                 <div
                   className={

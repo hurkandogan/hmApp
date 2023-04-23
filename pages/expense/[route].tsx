@@ -16,7 +16,7 @@ import {
 import { house_filled } from '../../assets/icons';
 // Components
 import CategoryTab from '../../components/expense/CategoryTab';
-import EditExpenseOffCanvas from '../../components/expense/EditExpenseOffCanvas';
+import EditExpenseOffCanvas from '../../components/OffCanvas';
 import ModalBox from '../../components/ModalBox';
 // import OilStatus from '../../components/expense/OilStatus';
 // Redux
@@ -24,18 +24,20 @@ import { useAppSelector } from '../../redux/hooks';
 // Types
 import { Property } from '../../types/Property';
 import Expense from '../../types/Expense';
+import { Insurance } from '../../types/Insurance';
 
 const House = () => {
   const router = useRouter();
   const properties = useAppSelector((state) => state.properties.value.grouped);
   const { selectedCategory, setSelectedCategory } = useAppContext();
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [insurances, setInsurances] = useState<Insurance[]>();
   const [property, setProperty] = useState<Property>();
   const [oilStatusModal, setOilStatusModal] = useState(false);
   const selectedYear = useAppSelector(
     (state) => state.selectedYear.value.selectedYear
   );
-  console.log(properties);
+
   const db = getDatabase();
 
   useEffect(() => {
@@ -60,6 +62,12 @@ const House = () => {
       startAfter(`${selectedYear}-01-01`),
       endAt(`${selectedYear}-12-31`)
     );
+
+    const insRef = query(
+      ref(db, 'insurances/'),
+      orderByChild('contract_start_date')
+    );
+
     onValue(starCountRef, (snapshot) => {
       const data = snapshot.val();
       const arr: Expense[] | null = data
@@ -70,16 +78,29 @@ const House = () => {
         : null;
       if (arr) setExpenses(arr);
     });
+
+    onValue(insRef, (snapshot) => {
+      const data = snapshot.val();
+      const arr: Insurance[] | null = data
+        ? Object.entries(data).map(([id, insurance]) => ({
+            ...(insurance as Insurance),
+            id,
+          }))
+        : null;
+      if (arr) setInsurances(arr);
+    });
+
     setSelectedCategory(
       property?.available_categories && property?.available_categories[0].val
     );
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.route, selectedYear, property]);
 
   const handleSelectedCategory = (cat_id: string) =>
     setSelectedCategory(cat_id);
 
-  //const showOilStatusModal = () => setOilStatusModal(!oilStatusModal);
+  // const showOilStatusModal = () => setOilStatusModal(!oilStatusModal);
   const closeOilStatusModal = () => setOilStatusModal(false);
 
   return (
@@ -136,15 +157,31 @@ const House = () => {
                     </div>
                   );
                 })}
+              <div
+                onClick={() => handleSelectedCategory('insurances')}
+                className={
+                  styles.tab_title +
+                  ' ' +
+                  ('insurances' === (selectedCategory as string)
+                    ? styles.tab_title_active
+                    : '')
+                }
+              >
+                Insurances
+              </div>
               <div className={styles.offset}></div>
             </div>
-            <CategoryTab
-              expenses={expenses.filter(
-                (exp) =>
-                  exp.category === selectedCategory &&
-                  exp.property === router.query.route
-              )}
-            />
+            {selectedCategory === 'insurances' ? (
+              <CategoryTab insurances={insurances} />
+            ) : (
+              <CategoryTab
+                expenses={expenses.filter(
+                  (exp) =>
+                    exp.category === selectedCategory &&
+                    exp.property === router.query.route
+                )}
+              />
+            )}
           </div>
         </div>
       </div>

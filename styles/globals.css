@@ -33,3 +33,7 @@ h1 {
 .unpaid-icon {
   color: #b91c1c;
 }
+
+.MuiFormControl-root {
+  background-color: #fff !important;
+}

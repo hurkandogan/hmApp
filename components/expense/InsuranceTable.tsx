@@ -1,10 +1,9 @@
 import { FC } from 'react';
-import { numberDivider } from '../../assets/misc/functions';
 import moment from 'moment';
 import useForm from '../../hooks/useForm';
 // Styles
+import { target, paid_icon } from '../../assets/icons';
 import styles from '../../styles/expense/ExpenseTable.module.sass';
-import { target, paid_icon, unpaid_icon } from '../../assets/icons';
 // Components
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
@@ -13,15 +12,17 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Paper from '@mui/material/Paper';
+// Redux
+import { useAppDispatch } from '../../redux/hooks';
 // Types
-import Expense from '../../types/Expense';
+import { Insurance } from '../../types/Insurance';
 
 interface Props {
-  expenses: Expense[];
+  insurances: Insurance[];
 }
 
-const ExpenseTable: FC<Props> = ({ expenses }) => {
-  const { setEditExpenseData } = useForm();
+const InsuranceTable: FC<Props> = ({ insurances }) => {
+  const { setEditInsuranceData } = useForm();
   // const openLink = (e: any, url: string) => {
   //   e.stopPropagation();
   //   if (typeof window !== 'undefined' || window !== null) {
@@ -36,29 +37,35 @@ const ExpenseTable: FC<Props> = ({ expenses }) => {
           <TableHead>
             <TableRow>
               <TableCell>#</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Firma</TableCell>
+              <TableCell>Start Date</TableCell>
+              <TableCell>Insurance Firm</TableCell>
               <TableCell>Description</TableCell>
-              <TableCell>Amount</TableCell>
-              <TableCell>Invoice</TableCell>
+              <TableCell>Yearly Amount</TableCell>
+              <TableCell>Insurance Paper</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {expenses?.map((exp) => (
+            {insurances?.map((insurance) => (
               <TableRow
-                key={exp.id}
-                onClick={() => setEditExpenseData(exp)}
+                key={insurance.id}
+                onClick={() => {
+                  setEditInsuranceData(insurance);
+                }}
                 className={styles.invoice_row}
               >
                 <TableCell className={styles.payment_icon}>
-                  {exp.isPaid ? paid_icon : unpaid_icon}
+                  {paid_icon}
                 </TableCell>
-                <TableCell> {moment(exp.date).format('DD.MM.YYYY')}</TableCell>
-                <TableCell>{exp.firm}</TableCell>
-                <TableCell>{exp.description}</TableCell>
-                <TableCell>€ {numberDivider(exp.amount)}</TableCell>
                 <TableCell>
-                  {exp.link.length > 0 ? (
+                  {moment(insurance.contract_start_date).format('DD.MM.YYYY')}
+                </TableCell>
+                <TableCell>{insurance.insurance_vendor}</TableCell>
+                <TableCell>{insurance.description}</TableCell>
+                <TableCell>
+                  € {insurance.yearly_amount.toLocaleString()}
+                </TableCell>
+                <TableCell>
+                  {insurance.insurance_paper_link.length > 0 ? (
                     <button /* onClick={(e) => openLink(e, exp.link)} */>
                       <p className={styles.invoice_link}>Invoice {target}</p>
                     </button>
@@ -75,4 +82,4 @@ const ExpenseTable: FC<Props> = ({ expenses }) => {
   );
 };
 
-export default ExpenseTable;
+export default InsuranceTable;

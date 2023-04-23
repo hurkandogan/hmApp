@@ -13,7 +13,7 @@
         @apply w-full h-full
 .container
     background-color: $secondary-background-color
-    width: 400px
+    width: 500px
     height: 100%
     top: 0
     right: 0
@@ -22,9 +22,11 @@
     transform: translateX(400px)
     transition: transform 1s ease
     z-index: 99
-    @apply fixed flex flex-col px-8 py-4
+    overflow-y: scroll
+    max-height: 100%
+    @apply fixed flex flex-col px-8 py-8
     &_header
-        @apply flex flex-row justify-between align-middle px-2
+        @apply flex flex-row justify-between align-middle px-2 mb-5
         h1
             font-size: 1.5rem
             @apply font-bold
@@ -32,14 +34,6 @@
             @apply cursor-pointer
             &:hover
                 opacity: 0.5
-    .formGroupContainer
-        color: #000
-        @apply flex flex-col
-        &_inner
-            @apply flex flex-col w-full my-2
-.input
-    background-color: #FFF
-    border-radius: 5px
 .open
     transform: translateX(0)
     transition: transform 1s ease

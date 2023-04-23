@@ -6,9 +6,9 @@ export default function saveInsurance(data) {
   const pushedRef = push(postRef);
   set(pushedRef, data)
     .then(() => {
-      status: 'saved';
+      status: 'success';
     })
     .catch(() => {
-      status: 'error';
+      status: 'failed';
     });
 }

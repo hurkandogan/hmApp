@@ -1,3 +1,14 @@
+<h4>Version: 0.2.0</h4>
+<ul>
+    <li>Project is moved to Firebase</li>
+    <li>Realtime Database is configured</li>
+    <li>Authentication is added</li>
+    <li>Several bug fixes</li>
+    <li>Performance improvements</li>
+    <li>Form pages are moved to off canvas</li>
+    <li>Layout improvements</li>
+</ul>
+
 <h4>Version: 0.1.6</h4>
 <ul>
     <li>Material UI is added for the forms</li>

@@ -12,6 +12,8 @@ import {
   endAt,
 } from 'firebase/database';
 import { Property } from '../types/Property';
+import { Categories } from '../constants/Categories';
+import { Insurance } from '../types/Insurance';
 
 const Home = () => {
   const db = getDatabase();
@@ -34,21 +36,17 @@ const Home = () => {
       endAt(`${selectedYear}-12-31`)
     );
 
+    const insRef = query(
+      ref(db, 'insurances/'),
+      orderByChild('contract_start_date')
+    );
+
+    const allData: Property[] = [];
+
     onValue(expRef, (snapshot) => {
       const data = snapshot.val();
-      const allData: Property[] = [];
       if (data) {
-        let allProps: Property[] = [];
-        properties.map((el) => {
-          if (el.sub_property) {
-            el.sub_property.map((sub) => {
-              allProps.push(sub);
-            });
-          } else {
-            allProps.push(el);
-          }
-        });
-        allProps.map((prop) => {
+        properties.map((prop) => {
           const catArr: { name: string; total: number }[] = [];
           prop.available_categories?.forEach((cat) => {
             let total = 0;
@@ -64,8 +62,35 @@ const Home = () => {
           });
           allData.push({ ...prop, totals: catArr });
         });
-        setDashboardData(allData);
       }
+    });
+
+    onValue(insRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        properties.map((prop) => {
+          let insuranceTotal: { name: string; total: number } = {
+            name: Categories.INSURANCES.val,
+            total: 0,
+          };
+          let total = 0;
+          Object.keys(data).forEach((id) => {
+            const entity = data[id] as Insurance;
+            if (entity.insurance_property === prop.id)
+              total += parseInt(data[id].yearly_amount);
+          });
+          insuranceTotal = {
+            name: Categories.INSURANCES.label,
+            total: total,
+          };
+          allData.forEach((el, i) => {
+            if (prop.id === el.id) {
+              allData[i].totals?.push(insuranceTotal);
+            }
+          });
+        });
+      }
+      setDashboardData(allData);
     });
   };
 
