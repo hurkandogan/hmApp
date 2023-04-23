@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { getAuth } from 'firebase/auth';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styles from '../styles/Sidebar.module.sass';
@@ -16,6 +17,7 @@ import { useAppContext } from '../context';
 import { Property } from '../types/Property';
 
 const Sidebar: FC = () => {
+  const auth = getAuth();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const currentRoute = router.asPath;
@@ -50,8 +52,10 @@ const Sidebar: FC = () => {
           >
             Change Log
           </a>
-          {/* <p>{session?.user.name ? session?.user.name : session?.user.email}</p> */}
           <hr className={styles.sidebarMenuSeperator} />
+          <p className={styles.brand}>
+            {auth.currentUser?.displayName ? auth.currentUser?.displayName : ''}
+          </p>
         </div>
       </div>
       <ul>
