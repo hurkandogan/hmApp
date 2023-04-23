@@ -147,7 +147,7 @@ const properties: Property[] = [
   },
   {
     id: 'hurkan_expenses',
-    name: "Hurkas's Expenses",
+    name: "Hurkan's Expenses",
     sort_number: 8,
     available_categories: [Categories.EXPENSES],
   },

@@ -55,7 +55,7 @@ const Home = () => {
                 data[id].property === prop.id &&
                 data[id].category === cat.val
               )
-                total += parseInt(data[id].amount);
+                total += parseFloat(data[id].amount);
             });
             const res = { name: cat.label, total: total };
             catArr.push(res);
@@ -77,7 +77,7 @@ const Home = () => {
           Object.keys(data).forEach((id) => {
             const entity = data[id] as Insurance;
             if (entity.insurance_property === prop.id)
-              total += parseInt(data[id].yearly_amount);
+              total += parseFloat(data[id].yearly_amount);
           });
           insuranceTotal = {
             name: Categories.INSURANCES.label,

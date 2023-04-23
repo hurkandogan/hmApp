@@ -98,7 +98,11 @@ export const useForm = () => {
           ...formData,
           [e.target.name]: e.target.checked,
         });
-      } else if (e.target.name === 'amount') {
+      } else if (
+        e.target.name === 'amount' ||
+        e.target.name === 'monthly_amount' ||
+        e.target.name === 'yearly_amount'
+      ) {
         setFormData({
           ...formData,
           [e.target.name]: e.target.value.replace(/,/g, '.'),
