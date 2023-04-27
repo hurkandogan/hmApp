@@ -35,7 +35,7 @@ const InsuranceTable: FC<Props> = ({ insurances }) => {
           <TableHead>
             <TableRow>
               <TableCell>#</TableCell>
-              <TableCell>Start Date</TableCell>
+              <TableCell>End Date</TableCell>
               <TableCell>Insurance Firm</TableCell>
               <TableCell>Insurance</TableCell>
               <TableCell>Yearly Amount</TableCell>
@@ -55,7 +55,7 @@ const InsuranceTable: FC<Props> = ({ insurances }) => {
                   {paid_icon}
                 </TableCell>
                 <TableCell>
-                  {moment(insurance.contract_start_date).format('DD.MM.YYYY')}
+                  {moment(insurance.contract_end_date).format('DD.MM.YYYY')}
                 </TableCell>
                 <TableCell>{insurance.insurance_vendor}</TableCell>
                 <TableCell>{insurance.insurance_name}</TableCell>
