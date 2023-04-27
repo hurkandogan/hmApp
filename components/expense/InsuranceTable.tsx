@@ -12,8 +12,6 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Paper from '@mui/material/Paper';
-// Redux
-import { useAppDispatch } from '../../redux/hooks';
 // Types
 import { Insurance } from '../../types/Insurance';
 
@@ -39,7 +37,7 @@ const InsuranceTable: FC<Props> = ({ insurances }) => {
               <TableCell>#</TableCell>
               <TableCell>Start Date</TableCell>
               <TableCell>Insurance Firm</TableCell>
-              <TableCell>Description</TableCell>
+              <TableCell>Insurance</TableCell>
               <TableCell>Yearly Amount</TableCell>
               <TableCell>Insurance Paper</TableCell>
             </TableRow>
@@ -60,9 +58,12 @@ const InsuranceTable: FC<Props> = ({ insurances }) => {
                   {moment(insurance.contract_start_date).format('DD.MM.YYYY')}
                 </TableCell>
                 <TableCell>{insurance.insurance_vendor}</TableCell>
-                <TableCell>{insurance.description}</TableCell>
+                <TableCell>{insurance.insurance_name}</TableCell>
                 <TableCell>
-                  € {insurance.yearly_amount.toLocaleString()}
+                  {parseFloat(
+                    insurance.yearly_amount as string
+                  ).toLocaleString()}{' '}
+                  €
                 </TableCell>
                 <TableCell>
                   {insurance.insurance_paper_link.length > 0 ? (

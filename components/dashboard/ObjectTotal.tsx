@@ -27,16 +27,39 @@ const ObjectTotal: FC<Props> = (props) => {
           </div>
         </Link>
         <div className={styles.container_inner_content}>
-          {property.totals?.map((el, index) => (
-            <div key={index} className={styles.container_inner_content_item}>
-              <div className={styles.container_inner_content_item_title}>
-                {el.name}
-              </div>
-              <div className={styles.container_inner_content_item_value}>
-                {el.total.toLocaleString()} €
-              </div>
-            </div>
-          ))}
+          {property.totals?.map((el, index) => {
+            if (el.name !== 'Insurances') {
+              return (
+                <div
+                  key={index}
+                  className={styles.container_inner_content_item}
+                >
+                  <div className={styles.container_inner_content_item_title}>
+                    {el.name}
+                  </div>
+                  <div className={styles.container_inner_content_item_value}>
+                    {el.total.toLocaleString()} €
+                  </div>
+                </div>
+              );
+            } else if (el.name === 'Insurances') {
+              return (
+                property.hasInsurances && (
+                  <div
+                    key={index}
+                    className={styles.container_inner_content_item}
+                  >
+                    <div className={styles.container_inner_content_item_title}>
+                      {el.name}
+                    </div>
+                    <div className={styles.container_inner_content_item_value}>
+                      {el.total.toLocaleString()} €
+                    </div>
+                  </div>
+                )
+              );
+            }
+          })}
         </div>
       </div>
     </div>

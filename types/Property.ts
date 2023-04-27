@@ -5,6 +5,7 @@ export interface Property {
   available_categories?: Category[];
   sub_property?: SubProperty[];
   totals?: { name: string; total: number }[];
+  hasInsurances?: boolean;
 }
 
 export interface Category {

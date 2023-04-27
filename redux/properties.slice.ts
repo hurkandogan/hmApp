@@ -8,18 +8,21 @@ const properties: Property[] = [
     name: 'Berliner Str.',
     sort_number: 0,
     available_categories: [Categories.GENERAL],
+    hasInsurances: true,
   },
   {
     id: 'carl_private',
     name: 'Carl Private',
     sort_number: 1,
     available_categories: [Categories.GENERAL],
+    hasInsurances: true,
   },
   {
     id: 'praxis',
     name: 'Praxis',
     sort_number: 2,
     available_categories: [Categories.GENERAL],
+    hasInsurances: false,
   },
   {
     id: 'josef',
@@ -30,6 +33,7 @@ const properties: Property[] = [
       Categories.RENOVATION,
       Categories.COSTS,
     ],
+    hasInsurances: true,
   },
   {
     id: 'gaisberg_str',
@@ -45,6 +49,7 @@ const properties: Property[] = [
           Categories.RENOVATION,
           Categories.COSTS,
         ],
+        hasInsurances: true,
       },
       {
         id: 'gaisberg_str_eg',
@@ -55,6 +60,7 @@ const properties: Property[] = [
           Categories.RENOVATION,
           Categories.COSTS,
         ],
+        hasInsurances: true,
       },
       {
         id: 'gaisberg_str_first',
@@ -65,6 +71,7 @@ const properties: Property[] = [
           Categories.RENOVATION,
           Categories.COSTS,
         ],
+        hasInsurances: true,
       },
       {
         id: 'gaisberg_str_dg',
@@ -75,6 +82,7 @@ const properties: Property[] = [
           Categories.RENOVATION,
           Categories.COSTS,
         ],
+        hasInsurances: true,
       },
     ],
   },
@@ -92,6 +100,7 @@ const properties: Property[] = [
           Categories.RENOVATION,
           Categories.COSTS,
         ],
+        hasInsurances: true,
       },
       {
         id: 'oftersheim_eg',
@@ -102,6 +111,7 @@ const properties: Property[] = [
           Categories.RENOVATION,
           Categories.COSTS,
         ],
+        hasInsurances: true,
       },
       {
         id: 'oftersheim_first',
@@ -112,6 +122,7 @@ const properties: Property[] = [
           Categories.RENOVATION,
           Categories.COSTS,
         ],
+        hasInsurances: true,
       },
       {
         id: 'oftersheim_dg',
@@ -122,6 +133,7 @@ const properties: Property[] = [
           Categories.RENOVATION,
           Categories.COSTS,
         ],
+        hasInsurances: true,
       },
     ],
   },
@@ -134,6 +146,7 @@ const properties: Property[] = [
       Categories.RENOVATION,
       Categories.COSTS,
     ],
+    hasInsurances: true,
   },
   {
     id: 'zehn_str_34',
@@ -144,12 +157,14 @@ const properties: Property[] = [
       Categories.RENOVATION,
       Categories.COSTS,
     ],
+    hasInsurances: true,
   },
   {
     id: 'hurkan_expenses',
     name: "Hurkan's Expenses",
     sort_number: 8,
     available_categories: [Categories.EXPENSES],
+    hasInsurances: false,
   },
 ];
 

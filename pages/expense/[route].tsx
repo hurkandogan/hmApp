@@ -172,7 +172,14 @@ const House = () => {
               <div className={styles.offset}></div>
             </div>
             {selectedCategory === 'insurances' ? (
-              <CategoryTab insurances={insurances} />
+              <CategoryTab
+                insurances={
+                  insurances &&
+                  insurances.filter(
+                    (ins) => ins.insurance_property === router.query.route
+                  )
+                }
+              />
             ) : (
               <CategoryTab
                 expenses={expenses.filter(
