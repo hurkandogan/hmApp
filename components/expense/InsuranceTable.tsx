@@ -21,12 +21,13 @@ interface Props {
 
 const InsuranceTable: FC<Props> = ({ insurances }) => {
   const { setEditInsuranceData } = useForm();
-  // const openLink = (e: any, url: string) => {
-  //   e.stopPropagation();
-  //   if (typeof window !== 'undefined' || window !== null) {
-  //     window?.open(url, '_blank').focus();
-  //   }
-  // };
+  const openLink = (e: any, url: string) => {
+    e.stopPropagation();
+    if (typeof window !== 'undefined' || window !== null) {
+      const w = window.open(url, '_blank');
+      if (w) w.focus();
+    }
+  };
 
   return (
     <>
@@ -67,7 +68,11 @@ const InsuranceTable: FC<Props> = ({ insurances }) => {
                 </TableCell>
                 <TableCell>
                   {insurance.insurance_paper_link.length > 0 ? (
-                    <button /* onClick={(e) => openLink(e, exp.link)} */>
+                    <button
+                      onClick={(e) =>
+                        openLink(e, insurance.insurance_paper_link)
+                      }
+                    >
                       <p className={styles.invoice_link}>Invoice {target}</p>
                     </button>
                   ) : (

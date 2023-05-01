@@ -43,8 +43,7 @@ const Sidebar: FC = () => {
     <div className={styles.container}>
       <div className={styles.user_info}>
         <div>
-          <p className={styles.brand}>hugOS</p>
-          <span>0.2.0 (In Development)</span>
+          <span>hm - 0.2.0 Alpha</span>
           <a
             href="https://github.com/hurkandogan/hmapp/blob/develop/CHANGELOG.md"
             target="_blank"
@@ -78,7 +77,7 @@ const Sidebar: FC = () => {
             <span className={styles.sidebar_menu_header_house_icon}>
               {list_icon}
             </span>
-            General
+            Add
           </span>
           <span
             className={

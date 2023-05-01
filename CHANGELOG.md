@@ -1,3 +1,9 @@
+<h4>Version: 0.2.1</h4>
+<ul>
+    <li>Invoice Links are fixed</li>
+    <li>Layout bug fixes</li>
+</ul>
+
 <h4>Version: 0.2.0</h4>
 <ul>
     <li>Project is moved to Firebase</li>
