@@ -22,9 +22,7 @@ const CategoryTab: FC<Props> = ({ expenses, insurances }) => {
       });
       setTotal(total);
     } else if (expenses) {
-      expenses.forEach((el) => {
-        total += parseInt(el.amount);
-      });
+      expenses.forEach((el) => (total += parseInt(el.amount)));
       setTotal(total);
     }
   }, [expenses, insurances]);

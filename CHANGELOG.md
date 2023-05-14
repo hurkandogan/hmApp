@@ -1,3 +1,7 @@
+<h4>Version: 0.2.2</h4>
+<ul>
+    <li>Delete Button is added for Expenses</li>
+</ul>
 <h4>Version: 0.2.1</h4>
 <ul>
     <li>Invoice Links are fixed</li>

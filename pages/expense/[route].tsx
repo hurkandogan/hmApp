@@ -56,7 +56,7 @@ const House = () => {
         });
       }
     });
-    const starCountRef = query(
+    const expensesRef = query(
       ref(db, 'expenses/'),
       orderByChild('date'),
       startAfter(`${selectedYear}-01-01`),
@@ -68,8 +68,9 @@ const House = () => {
       orderByChild('contract_start_date')
     );
 
-    onValue(starCountRef, (snapshot) => {
+    onValue(expensesRef, (snapshot) => {
       const data = snapshot.val();
+
       const arr: Expense[] | null = data
         ? Object.entries(data).map(([id, expense]) => ({
             ...(expense as Expense),

@@ -43,7 +43,7 @@ const Sidebar: FC = () => {
     <div className={styles.container}>
       <div className={styles.user_info}>
         <div>
-          <span>hm - 0.2.0 Alpha</span>
+          <span>hm - 0.2.2A</span>
           <a
             href="https://github.com/hurkandogan/hmapp/blob/develop/CHANGELOG.md"
             target="_blank"
