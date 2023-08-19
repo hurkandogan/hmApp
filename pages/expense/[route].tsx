@@ -77,7 +77,13 @@ const House = () => {
             id,
           }))
         : null;
-      if (arr) setExpenses(arr);
+      if (arr) {
+        arr.sort((a, b) => {
+          if (a.date < b.date) return 1;
+          else return -1;
+        });
+        setExpenses(arr);
+      }
     });
 
     onValue(insRef, (snapshot) => {
