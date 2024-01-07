@@ -1,1 +1,1 @@
-This is my own project for prod purposes.
+This project is used to manage invoices for an organisation.
